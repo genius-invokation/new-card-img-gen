@@ -1,9 +1,10 @@
-import { Show, Switch, Match, For } from "solid-js";
+import { Show, Switch, Match, For, type Accessor } from "solid-js";
 import { useAppContext } from "../context/appContext";
 import type { DescriptionToken, ParsedDescription } from "../types/app";
 import { DESCRIPTION_ICON_IMAGES } from "../constants/maps";
 import { remapColors } from "../parsers/description";
-import { tagImageUrl } from "../utils";
+import { nar, tagImageUrl } from "../utils";
+
 
 export const Token = (props: { token: DescriptionToken }) => {
   const { names } = useAppContext();
@@ -11,12 +12,7 @@ export const Token = (props: { token: DescriptionToken }) => {
   return (
     <Show when={t().type}>
       <Switch fallback={<></>}>
-        <Match
-          when={
-            t().type === "plain" &&
-            (t() as DescriptionToken & { type: "plain" })
-          }
-        >
+        <Match when={nar(t, (t) => t.type === "plain")}>
           {(t) => (
             <span
               class={`description-${t().style()}`}
@@ -30,50 +26,56 @@ export const Token = (props: { token: DescriptionToken }) => {
             </span>
           )}
         </Match>
-        <Match when={t().type === "boxedKeyword"}>
-          <span class="description-variable">{(t() as any).text}</span>
+        <Match when={nar(t, (t) => t.type === "boxedKeyword")}>
+          {(t) => <span class="description-variable">{t().text}</span>}
         </Match>
-        <Match when={t().type === "icon"}>
-          {(() => {
-            const def = DESCRIPTION_ICON_IMAGES[(t() as any).id] || {};
-            return (
-              <Switch>
-                <Match when={def.imageUrl}>
-                  <img class="description-icon" src={def.imageUrl} />
-                </Match>
-                <Match when={def.tagIcon}>
-                  <span
-                    class={`description-icon-tag ${
-                      (t() as any).overrideStyle()
-                        ? "description-" + (t() as any).overrideStyle()
-                        : ""
-                    }`}
-                    style={{ "--image": `url("${tagImageUrl(def.tagIcon!)}")` }}
-                  />
-                </Match>
-              </Switch>
-            );
-          })()}
+        <Match when={nar(t, (t) => t.type === "icon")}>
+          {(t) =>
+            (() => {
+              const def = DESCRIPTION_ICON_IMAGES[t().id] || {};
+              return (
+                <Switch>
+                  <Match when={def.imageUrl}>
+                    <img class="description-icon" src={def.imageUrl} />
+                  </Match>
+                  <Match when={def.tagIcon}>
+                    <span
+                      class={`description-icon-tag ${
+                        t().overrideStyle()
+                          ? "description-" + t().overrideStyle()
+                          : ""
+                      }`}
+                      style={{
+                        "--image": `url("${tagImageUrl(def.tagIcon!)}")`,
+                      }}
+                    />
+                  </Match>
+                </Switch>
+              );
+            })()
+          }
         </Match>
-        <Match when={t().type === "reference"}>
-          <span
-            class={`description-token ref-${(t() as any).refType} ${
-              (t() as any).overrideStyle()
-                ? "description-" + (t() as any).overrideStyle()
-                : ""
-            }`}
-            style={{ "--manual-color": (t() as any).manualColor || "" }}
-          >
-            {names.get((t() as any).id) || `#${(t() as any).id}`}
-          </span>
+        <Match when={nar(t, (t) => t.type === "reference")}>
+          {(t) => (
+            <span
+              class={`description-token ref-${t().refType} ${
+                t().overrideStyle() ? "description-" + t().overrideStyle() : ""
+              }`}
+              style={{ "--manual-color": t().manualColor || "" }}
+            >
+              {names.get(t().id) || `#${t().id}`}
+            </span>
+          )}
         </Match>
         <Match when={t().type === "lineBreak"}>
           <br />
         </Match>
-        <Match when={t().type === "errored"}>
-          <span class="description-token description-errored">
-            {(t() as any).text}
-          </span>
+        <Match when={nar(t, (t) => t.type === "errored")}>
+          {(t) => (
+            <span class="description-token description-errored">
+              {t().text}
+            </span>
+          )}
         </Match>
       </Switch>
     </Show>

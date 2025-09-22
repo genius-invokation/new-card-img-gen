@@ -6,8 +6,7 @@ import { KeywordTag } from './KeywordTag';
 import { Cost } from './Cost';
 import { Description } from './Token';
 import { KEYWORD_CARDBACK_BOTTOM, KEYWORD_CARDBACK_REPEAT, KEYWORD_CARD_FRAME, COST_READONLY_ENTITIES } from '../constants/maps';
-
-const cardFaceUrl = (cardFace: string) => `images/${cardFace}.png`;
+import { cardFaceUrl } from '../utils';
 
 type AnyChild = ParsedChild & {
   cardFace?: string;

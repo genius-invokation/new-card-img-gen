@@ -7,12 +7,13 @@ import { AppContext } from './context/appContext';
 import { Character } from './components/Character';
 import { ActionCard } from './components/ActionCard';
 import { PageTitle } from './components/PageTitle';
-import { MOCK_DATA } from "./mock-data";
+import * as MOCK_DATA from "@gi-tcg/static-data";
 import "./App.css";
 
 // NOTE: 绝大多数逻辑直接从 ref/client.tsx 迁移，保证渲染/解析逻辑不被删改，仅适配 Solid API。
 // 默认应用配置（从原内联常量抽出，若需要可移动到独立文件）
 const APP_CONFIG: AppProps = {
+  solo: 'A1211',
   language: 'zh',
   authorName: 'Author',
   authorImageUrl: '/vite.svg',

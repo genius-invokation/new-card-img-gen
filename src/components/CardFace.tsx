@@ -5,8 +5,7 @@ import {
   CARD_LEGEND_FRAME,
   CARD_NORMAL_FRAME,
 } from "../constants/maps";
-
-const cardFaceUrl = (cardFace: string) => `images/${cardFace}.png`;
+import { cardFaceUrl } from "../utils";
 
 export const CardFace = (props: {
   class?: string; // Solid style
