@@ -1,8 +1,6 @@
 import { useAppContext } from '../context/appContext';
 import { MISSING_ICONS_URL, TYPE_TAG_IMG_NAME_MAP } from '../constants/maps';
-
-const tagImageUrl = (tag: string) => `/assets/UI_Gcg_Tag_${TYPE_TAG_IMG_NAME_MAP[tag]}.png`;
-const cardFaceUrl = (cardFace: string) => `images/${cardFace}.png`;
+import { cardFaceUrl, tagImageUrl } from '../utils';
 
 export const KeywordIcon = (props: { id: number; tag: string; image?: string; className?: string }) => {
   const { prepareSkillToEntityMap, data } = useAppContext();
