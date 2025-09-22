@@ -1,11 +1,11 @@
 import { Show, For } from 'solid-js';
-import type { ParsedActionCard } from '../../types/app';
-import { useAppContext } from '../../context/appContext';
+import type { ParsedActionCard } from '../types/app';
+import { useAppContext } from '../context/appContext';
 import { Tag } from './Tag';
 import { Cost } from './Cost';
 import { CardFace } from './CardFace';
 import { Children } from './Children';
-import { Description } from '../description/Token';
+import { Description } from './Token';
 
 export const ActionCard = (props: { card: ParsedActionCard }) => {
   const { displayId, language = 'zh' } = useAppContext();

@@ -1,4 +1,4 @@
-import { PAGE_TITLE_ICON } from '../../constants/maps';
+import { PAGE_TITLE_ICON } from '../constants/maps';
 
 export const PageTitle = (props: { text: string }) => (
   <div class="page-title-wrapper">

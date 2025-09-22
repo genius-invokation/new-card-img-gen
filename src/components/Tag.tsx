@@ -1,6 +1,6 @@
 import { Show } from 'solid-js';
-import { TYPE_TAG_TEXT_MAP, TYPE_TAG_IMG_NAME_MAP } from '../../constants/maps';
-import { useAppContext } from '../../context/appContext';
+import { TYPE_TAG_TEXT_MAP, TYPE_TAG_IMG_NAME_MAP } from '../constants/maps';
+import { useAppContext } from '../context/appContext';
 
 const tagImageUrl = (tag: string) => `/assets/UI_Gcg_Tag_${TYPE_TAG_IMG_NAME_MAP[tag]}.png`;
 const buffImageUrl = (buff: string) => `/assets/UI_Gcg_Buff_Common_${TYPE_TAG_IMG_NAME_MAP[buff]}.png`;

@@ -1,5 +1,5 @@
 import { Show, For } from 'solid-js';
-import { useAppContext } from '../../context/appContext';
+import { useAppContext } from '../context/appContext';
 
 export const Text = (props: { text: string | undefined | null }) => {
   const { language = 'zh' } = useAppContext();

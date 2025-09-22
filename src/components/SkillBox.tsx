@@ -1,10 +1,10 @@
 import { Show } from 'solid-js';
-import type { ParsedSkill } from '../../types/app';
-import { useAppContext } from '../../context/appContext';
-import { MISSING_ICONS_URL, TYPE_TAG_TEXT_MAP } from '../../constants/maps';
+import type { ParsedSkill } from '../types/app';
+import { useAppContext } from '../context/appContext';
+import { MISSING_ICONS_URL, TYPE_TAG_TEXT_MAP } from '../constants/maps';
 import { Cost } from './Cost';
 import { Children } from './Children';
-import { Description } from '../description/Token';
+import { Description } from './Token';
 
 export const SkillBox = (props: { skill: ParsedSkill }) => {
   const { displayId, language = 'zh' } = useAppContext();

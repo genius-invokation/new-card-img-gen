@@ -1,11 +1,11 @@
 import { For } from 'solid-js';
-import type { ParsedChild } from '../../types/app';
-import { useAppContext } from '../../context/appContext';
-import { KEYWORD_CARDBACK_BOTTOM, KEYWORD_CARDBACK_REPEAT, KEYWORD_CARD_FRAME, COST_READONLY_ENTITIES } from '../../constants/maps';
+import type { ParsedChild } from '../types/app';
+import { useAppContext } from '../context/appContext';
+import { KEYWORD_CARDBACK_BOTTOM, KEYWORD_CARDBACK_REPEAT, KEYWORD_CARD_FRAME, COST_READONLY_ENTITIES } from '../constants/maps';
 import { KeywordIcon } from './KeywordIcon';
 import { KeywordTag } from './KeywordTag';
 import { Cost } from './Cost';
-import { Description } from '../description/Token';
+import { Description } from './Token';
 
 const cardFaceUrl = (cardFace: string) => `images/${cardFace}.png`;
 

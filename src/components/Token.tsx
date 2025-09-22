@@ -1,8 +1,8 @@
 import { Show, Switch, Match } from 'solid-js';
-import { useAppContext } from '../../context/appContext';
-import type { DescriptionToken, ParsedDescription } from '../../types/app';
-import { DESCRIPTION_ICON_IMAGES, TYPE_TAG_IMG_NAME_MAP } from '../../constants/maps';
-import { remapColors } from '../../parsers/description';
+import { useAppContext } from '../context/appContext';
+import type { DescriptionToken, ParsedDescription } from '../types/app';
+import { DESCRIPTION_ICON_IMAGES, TYPE_TAG_IMG_NAME_MAP } from '../constants/maps';
+import { remapColors } from '../parsers/description';
 
 const tagImageUrl = (tag: string) => `/assets/UI_Gcg_Tag_${TYPE_TAG_IMG_NAME_MAP[tag]}.png`;
 

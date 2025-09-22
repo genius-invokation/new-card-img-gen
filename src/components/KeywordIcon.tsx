@@ -1,5 +1,5 @@
-import { useAppContext } from '../../context/appContext';
-import { MISSING_ICONS_URL, TYPE_TAG_IMG_NAME_MAP } from '../../constants/maps';
+import { useAppContext } from '../context/appContext';
+import { MISSING_ICONS_URL, TYPE_TAG_IMG_NAME_MAP } from '../constants/maps';
 
 const tagImageUrl = (tag: string) => `/assets/UI_Gcg_Tag_${TYPE_TAG_IMG_NAME_MAP[tag]}.png`;
 const cardFaceUrl = (cardFace: string) => `images/${cardFace}.png`;

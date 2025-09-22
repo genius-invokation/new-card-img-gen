@@ -4,9 +4,9 @@ import type { ActionCardRawData, CharacterRawData, EntityRawData, KeywordRawData
 import type { AppProps, AppContextValue } from "./types/app";
 import { parseCharacter, parseActionCard } from "./parsers/description";
 import { AppContext } from './context/appContext';
-import { Character } from './components/cards/Character';
-import { ActionCard } from './components/cards/ActionCard';
-import { PageTitle } from './components/cards/PageTitle';
+import { Character } from './components/Character';
+import { ActionCard } from './components/ActionCard';
+import { PageTitle } from './components/PageTitle';
 import { MOCK_DATA } from "./mock-data";
 import "./App.css";
 

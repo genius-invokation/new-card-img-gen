@@ -1,7 +1,7 @@
 import { For } from 'solid-js';
-import type { ParsedCharacter } from '../../types/app';
-import { useAppContext } from '../../context/appContext';
-import { AVATAR_CARD_ENERGY, AVATAR_CARD_HP, SPECIAL_ENERGY_MAP } from '../../constants/maps';
+import type { ParsedCharacter } from '../types/app';
+import { useAppContext } from '../context/appContext';
+import { AVATAR_CARD_ENERGY, AVATAR_CARD_HP, SPECIAL_ENERGY_MAP } from '../constants/maps';
 import { SkillBox } from './SkillBox';
 import { CardFace } from './CardFace';
 import { Tag } from './Tag';
