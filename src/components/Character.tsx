@@ -1,4 +1,4 @@
-import { For } from 'solid-js';
+import { For, Show, createMemo } from 'solid-js';
 import type { ParsedCharacter } from '../types/app';
 import { useAppContext } from '../context/appContext';
 import { AVATAR_CARD_ENERGY, AVATAR_CARD_HP, SPECIAL_ENERGY_MAP } from '../constants/maps';
@@ -9,11 +9,13 @@ import { Tag } from './Tag';
 export const Character = (props: { character: ParsedCharacter }) => {
   const ctx = useAppContext();
   const character = () => props.character;
-  const [normalSkill, ...otherSkills] = character().parsedSkills;
+  const skillsMemo = createMemo(() => character().parsedSkills);
+  const normalSkill = createMemo(() => skillsMemo()[0]);
+  const otherSkills = createMemo(() => skillsMemo().slice(1));
   return (
     <div class="character">
       <div class="character-header">
-        <CardFace className="character-image-container" cardFace={character().cardFace}>
+  <CardFace class="character-image-container" cardFace={character().cardFace}>
           <div class="avatar-card-hp">
             <img src={AVATAR_CARD_HP} class="avatar-card-hp-image" />
             <div class="stroked-text-top">{character().hp}</div>
@@ -35,10 +37,10 @@ export const Character = (props: { character: ParsedCharacter }) => {
             <hr class="info-divider" />
             <p class="info-story">{ctx.displayStory && character().storyText}</p>
             <div class="spacer" />
-            <SkillBox skill={normalSkill} />
+            <Show when={normalSkill()}>{(sk: () => ParsedCharacter['parsedSkills'][number]) => <SkillBox skill={sk()} />}</Show>
         </div>
       </div>
-      <For each={otherSkills}>{(sk) => <SkillBox skill={sk} />}</For>
+  <For each={otherSkills()}>{(sk) => <SkillBox skill={sk} />}</For>
     </div>
   );
 };

@@ -1,7 +1,19 @@
 import { BOLD_COLOR, CHILDREN_CONFIG, DAMAGE_KEYWORD_MAP, KEYWORD_COLORS, SHOWN_KEYWORDS, correctId } from '../constants/maps';
-import type { AppContextValue, DescriptionToken, ParsedDescription, ParsedChild, ParsedSkill, SkillRawData, ActionCardRawData } from '../types/app';
+import type { AppContextValue, DescriptionToken, ParsedDescription, ParsedChild, ParsedSkill, SkillRawData, ActionCardRawData, ParsedCharacter, CharacterRawData } from '../types/app';
+
+interface ChildLikeBase {
+  id: number;
+  rawDescription: string;
+  keyMap?: Record<string, string>;
+  tags?: string[];
+  skills?: SkillRawData[];
+  buffIcon?: string;
+}
 
 // 颜色规范
+// remapColors 是纯工具函数，不依赖 Solid 响应式系统
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+/* eslint-disable solid/reactivity */
 export const remapColors = (props: { color: string | undefined; style?: 'text' | 'outline' }) => {
   const COLOR_MAPS: Record<string, Record<string, string>> = {
     '#99FFFFFF': { textColor: '#63bacd', outlineColor: '#68c4d9' },
@@ -16,6 +28,7 @@ export const remapColors = (props: { color: string | undefined; style?: 'text' |
   if (props.style === 'outline') return COLOR_MAPS[props.color] ? COLOR_MAPS[props.color].outlineColor : props.color;
   return COLOR_MAPS[props.color] ? COLOR_MAPS[props.color].textColor : props.color;
 };
+/* eslint-enable solid/reactivity */
 
 export const parseDescription = (
   ctx: AppContextValue,
@@ -57,7 +70,7 @@ export const parseDescription = (
               ? 'strong'
               : void 0;
       },
-      style() { return (this.overrideStyle() ?? 'normal') as any; },
+  style() { return (this.overrideStyle() ?? 'normal') as 'normal' | 'light' | 'dimmed' | 'strong'; },
     };
     if (text === 'BR') {
       result.push({ type: 'lineBreak' });
@@ -107,7 +120,8 @@ export const parseDescription = (
       if (usingKeywordId !== null) {
         const keyword = data.keywords.find(e => e.id === usingKeywordId);
         if (keyword) {
-          const rawName = keyword.rawName.split('|s1:').pop()!;
+          const rawNameSplit = keyword.rawName.split('|s1:');
+          const rawName = rawNameSplit[rawNameSplit.length - 1] ?? keyword.rawName;
           result.push({ type: 'hiddenKeyword', id: usingKeywordId }, ...parseDescription(ctx, rawName).map(token => {
             if (token.type === 'plain') {
               return { ...token, style: () => { const outer = styles.style(); return outer === 'normal' ? token.style() : outer; }, color: KEYWORD_COLORS[usingKeywordId] ?? token.color } as const;
@@ -118,7 +132,9 @@ export const parseDescription = (
         } else { result.push({ type: 'errored', text: `K${usingKeywordId}` }); }
       }
     } else if (text.startsWith('BOXED#')) {
-      const [_, id2, count] = text.split('#');
+  const parts = text.split('#');
+  const id2 = parts[1];
+  const count = parts[2];
       const keywordId = Number(id2);
       const { name } = data.keywords.find(e => e.id === keywordId) ?? { name: '' };
       result.push({ type: 'boxedKeyword', text: `${name}：${count}` });
@@ -134,7 +150,7 @@ export const parseDescription = (
 
 export const appendChildren = (
   ctx: AppContextValue,
-  childData: any,
+  childData: ChildLikeBase,
   scope: 'all' | 'self' | 'children' = 'all',
 ): ParsedChild[] => {
   const { data } = ctx;
@@ -145,14 +161,17 @@ export const appendChildren = (
   );
   const result: ParsedChild[] = [];
   if (scope !== 'children') {
-    const self: any = { ...childData, parsedDescription };
+    const self: ParsedChild = { ...(childData as unknown as ParsedChild), parsedDescription };
     result.push(self);
-    if ('tags' in childData && childData.tags.includes('GCG_TAG_VEHICLE') && 'skills' in childData) {
+    if (childData.tags && childData.tags.includes('GCG_TAG_VEHICLE') && childData.skills) {
       let moveBuffIcon = false;
-      for (const skill of childData.skills as SkillRawData[]) {
-        if (skill.type === 'GCG_SKILL_TAG_VEHICLE') { (skill as any).buffIcon = childData.buffIcon; moveBuffIcon = true; }
+      for (const skill of childData.skills) {
+        if (skill.type === 'GCG_SKILL_TAG_VEHICLE') {
+          (skill as unknown as { buffIcon?: string }).buffIcon = childData.buffIcon;
+          moveBuffIcon = true;
+        }
       }
-      if (moveBuffIcon) { delete self.buffIcon; }
+      if (moveBuffIcon && 'buffIcon' in self) { delete (self as unknown as { buffIcon?: string }).buffIcon; }
     }
   }
   if (scope === 'self') return result;
@@ -170,9 +189,12 @@ export const appendChildren = (
           result.push(...appendChildren(ctx, skillData, subScope));
           break; }
         case 'C': {
-          const entityData = data.genericEntities.filter(e => e.id === child.id).reduce((acc, e) => ({ ...acc, ...e }), {} as any);
-          if (!entityData) continue;
-          result.push(...appendChildren(ctx, entityData, subScope));
+          const entityDataMerged = data.genericEntities
+            .filter(e => e.id === child.id)
+            .reduce<Record<string, unknown>>((acc, e) => ({ ...acc, ...e }), {});
+          if (!('id' in entityDataMerged)) continue;
+            // entityDataMerged now behaves as ChildLikeBase
+          result.push(...appendChildren(ctx, entityDataMerged as unknown as ChildLikeBase, subScope));
           break; }
         case 'A': { break; }
       }
@@ -181,7 +203,7 @@ export const appendChildren = (
       ctx.supIds.push(-child.id);
       const keywordData = data.keywords.find(e => e.id === child.id);
       if (keywordData) {
-        result.push({ ...keywordData, type: 'GCG_RULE_EXPLANATION', parsedDescription: parseDescription(ctx, keywordData.rawDescription) } as any);
+        result.push({ ...(keywordData as unknown as ParsedChild), type: 'GCG_RULE_EXPLANATION', parsedDescription: parseDescription(ctx, keywordData.rawDescription) });
       }
     }
   }
@@ -194,10 +216,10 @@ export const parseCharacterSkill = (ctx: AppContextValue, skill: SkillRawData): 
   return { ...skill, parsedDescription, children };
 };
 
-export const parseCharacter = (ctx: AppContextValue, data: any) => {
-  ctx.supIds.push(...data.skills.flatMap((sk: SkillRawData) => (sk.hidden ? [] : [sk.id])));
-  const parsedSkills = data.skills.flatMap((skill: SkillRawData) => (skill.hidden ? [] : [parseCharacterSkill(ctx, skill)]));
-  return { ...data, parsedSkills };
+export const parseCharacter = (ctx: AppContextValue, data: CharacterRawData | ({ skills: SkillRawData[] } & Record<string, unknown>)): ParsedCharacter => {
+  ctx.supIds.push(...data.skills.flatMap((sk) => (sk.hidden ? [] : [sk.id])));
+  const parsedSkills = data.skills.flatMap((skill) => (skill.hidden ? [] : [parseCharacterSkill(ctx, skill)]));
+  return { ...(data as Record<string, unknown>), parsedSkills } as ParsedCharacter;
 };
 
 export const parseActionCard = (ctx: AppContextValue, data: ActionCardRawData) => {

@@ -1,4 +1,4 @@
-import { Show, Switch, Match } from "solid-js";
+import { Show, Switch, Match, For } from "solid-js";
 import { useAppContext } from "../context/appContext";
 import type { DescriptionToken, ParsedDescription } from "../types/app";
 import { DESCRIPTION_ICON_IMAGES } from "../constants/maps";
@@ -11,18 +11,24 @@ export const Token = (props: { token: DescriptionToken }) => {
   return (
     <Show when={t().type}>
       <Switch fallback={<></>}>
-        <Match when={t().type === "plain"}>
-          <span
-            class={`description-${(t() as any).style()}`}
-            style={{
-              "--color": remapColors({ color: (t() as any).color }) || "",
-              "--outline":
-                remapColors({ color: (t() as any).color, style: "outline" }) ||
-                "",
-            }}
-          >
-            {(t() as any).text}
-          </span>
+        <Match
+          when={
+            t().type === "plain" &&
+            (t() as DescriptionToken & { type: "plain" })
+          }
+        >
+          {(t) => (
+            <span
+              class={`description-${t().style()}`}
+              style={{
+                "--color": remapColors({ color: t().color }) || "",
+                "--outline":
+                  remapColors({ color: t().color, style: "outline" }) || "",
+              }}
+            >
+              {t().text}
+            </span>
+          )}
         </Match>
         <Match when={t().type === "boxedKeyword"}>
           <span class="description-variable">{(t() as any).text}</span>
@@ -30,19 +36,22 @@ export const Token = (props: { token: DescriptionToken }) => {
         <Match when={t().type === "icon"}>
           {(() => {
             const def = DESCRIPTION_ICON_IMAGES[(t() as any).id] || {};
-            return def.imageUrl ? (
-              <img class="description-icon" src={def.imageUrl} />
-            ) : def.tagIcon ? (
-              <span
-                class={`description-icon-tag ${
-                  (t() as any).overrideStyle()
-                    ? "description-" + (t() as any).overrideStyle()
-                    : ""
-                }`}
-                style={{ "--image": `url("${tagImageUrl(def.tagIcon!)}")` }}
-              />
-            ) : (
-              <></>
+            return (
+              <Switch>
+                <Match when={def.imageUrl}>
+                  <img class="description-icon" src={def.imageUrl} />
+                </Match>
+                <Match when={def.tagIcon}>
+                  <span
+                    class={`description-icon-tag ${
+                      (t() as any).overrideStyle()
+                        ? "description-" + (t() as any).overrideStyle()
+                        : ""
+                    }`}
+                    style={{ "--image": `url("${tagImageUrl(def.tagIcon!)}")` }}
+                  />
+                </Match>
+              </Switch>
             );
           })()}
         </Match>
@@ -73,8 +82,6 @@ export const Token = (props: { token: DescriptionToken }) => {
 
 export const Description = (props: { description: ParsedDescription }) => (
   <>
-    {props.description.map((token) => (
-      <Token token={token} />
-    ))}
+    <For each={props.description}>{(token) => <Token token={token} />}</For>
   </>
 );

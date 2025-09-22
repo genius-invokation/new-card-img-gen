@@ -13,5 +13,9 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
   );
 }
 
-render(() => <App />, root!);
+if (root instanceof HTMLElement) {
+  render(() => <App />, root);
+} else {
+  throw new Error('Root element with id "root" not found');
+}
 

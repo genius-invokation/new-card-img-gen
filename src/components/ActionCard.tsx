@@ -35,7 +35,7 @@ export const ActionCard = (props: { card: ParsedActionCard }) => {
       </div>
       <CardFace
         isLegend={card().tags.includes("GCG_TAG_LEGEND")}
-        className="action-card-image-container"
+        class="action-card-image-container"
         cardFace={card().cardFace}
       >
         <Cost

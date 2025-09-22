@@ -19,16 +19,20 @@ export const Text = (props: { text: string | undefined | null }) => {
 const Chinese = (props: { text: string }) => {
   const parts = () =>
     props.text.includes("·") ? props.text.split("·") : ([] as string[]);
-  return parts().length === 0 ? (
-    <>{props.text}</>
-  ) : (
-    <For each={parts()}>
-      {(part, i) => (
-        <>
-          {part}
-          {i() < parts().length - 1 && <span class="middot">·</span>}
-        </>
+  return (
+    <>
+      {parts().length === 0 ? (
+        <>{props.text}</>
+      ) : (
+        <For each={parts()}>
+          {(part, i) => (
+            <>
+              {part}
+              {i() < parts().length - 1 && <span class="middot">·</span>}
+            </>
+          )}
+        </For>
       )}
-    </For>
+    </>
   );
 };

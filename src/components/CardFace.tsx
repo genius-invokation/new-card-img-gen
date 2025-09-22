@@ -9,14 +9,16 @@ import {
 const cardFaceUrl = (cardFace: string) => `images/${cardFace}.png`;
 
 export const CardFace = (props: {
-  className?: string;
+  class?: string; // Solid style
+  className?: string; // backward compatibility
   isLegend?: boolean;
   cardFace: string;
   children?: JSX.Element;
 }) => {
   const { cardbackImage = "UI_Gcg_CardBack_Fonta_03" } = useAppContext();
+  const mergedClass = () => props.class ?? props.className ?? "";
   return (
-    <div class={`card-face-component ${props.className ?? ""}`}>
+    <div class={`card-face-component ${mergedClass()}`}>
       <img src={`/assets/${cardbackImage}.png`} class="card-back" />
       <img src={CARD_BACK_FRAME} class="card-frame-shadow" />
       <div class="card-face">

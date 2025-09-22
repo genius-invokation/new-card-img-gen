@@ -1085,7 +1085,7 @@ const Token = ({ token }: { token: DescriptionToken }) => {
         </>
       );
     }
-    case "reference":
+    case "reference": {
       const overrideStyleClass = token.overrideStyle()
         ? `description-${token.overrideStyle()}`
         : "";
@@ -1099,6 +1099,7 @@ const Token = ({ token }: { token: DescriptionToken }) => {
           <Text text={names.get(token.id) ?? `#${token.id}`} />
         </span>
       );
+    }
     case "lineBreak":
       return <br />;
     case "errored":
