@@ -1,5 +1,5 @@
 import { useAppContext } from '../context/appContext';
-import { MISSING_ICONS_URL, TYPE_TAG_IMG_NAME_MAP } from '../constants/maps';
+import { MISSING_ICONS_URL } from '../constants/maps';
 import { cardFaceUrl, tagImageUrl } from '../utils';
 
 export const KeywordIcon = (props: { id: number; tag: string; image?: string; className?: string }) => {

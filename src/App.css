@@ -793,7 +793,7 @@ span:not(.keyword-description):has(
   display: flex;
   flex-direction: row;
   gap: var(--marker-width);
-  margin-left: calc(0- var(--marker-gap) - var(--marker-width));
+  margin-left: calc(0 - var(--marker-gap) - var(--marker-width));
   font-size: 2.5rem;
   line-height: 1;
   color: #716a64;
