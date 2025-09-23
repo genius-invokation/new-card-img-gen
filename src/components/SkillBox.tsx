@@ -7,6 +7,7 @@ import { Children } from "./Children";
 import { Description } from "./Token";
 import { cardFaceUrl } from "../utils";
 import { Text } from "./Text";
+import "./SkillBox.css";
 
 export const SkillBox = (props: { skill: ParsedSkill }) => {
   const { displayId, language } = useAppContext();

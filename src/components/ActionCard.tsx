@@ -7,6 +7,7 @@ import { CardFace } from "./CardFace";
 import { Children } from "./Children";
 import { Description } from "./Token";
 import { Text } from "./Text";
+import "./ActionCard.css";
 
 export const ActionCard = (props: { card: ParsedActionCard }) => {
   const { displayId, language } = useAppContext();

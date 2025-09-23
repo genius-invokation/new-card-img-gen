@@ -6,6 +6,7 @@ import {
   CARD_NORMAL_FRAME,
 } from "../constants";
 import { cardFaceUrl } from "../utils";
+import "./CardFace.css";
 
 export const CardFace = (props: {
   class?: string; // Solid style

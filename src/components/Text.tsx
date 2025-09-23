@@ -1,5 +1,6 @@
-import { Show, For, createEffect } from "solid-js";
+import { Show, For } from "solid-js";
 import { useAppContext } from "../context";
+import "./Text.css";
 
 export const Text = (props: { text: string | undefined | null }) => {
   const { language } = useAppContext();

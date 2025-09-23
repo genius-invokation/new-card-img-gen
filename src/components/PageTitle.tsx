@@ -1,5 +1,6 @@
 import { PAGE_TITLE_ICON } from "../constants";
 import { Text } from "./Text";
+import "./PageTitle.css";
 
 export const PageTitle = (props: { text: string }) => (
   <div class="page-title-wrapper">

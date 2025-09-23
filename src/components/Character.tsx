@@ -10,6 +10,7 @@ import { SkillBox } from "./SkillBox";
 import { CardFace } from "./CardFace";
 import { Tag } from "./Tag";
 import { Text } from "./Text";
+import "./Character.css";
 
 export const Character = (props: { character: ParsedCharacter }) => {
   const ctx = useAppContext();

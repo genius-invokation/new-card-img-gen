@@ -1,6 +1,7 @@
 import { Show, Switch, Match } from "solid-js";
 import { useAppContext } from "../context";
 import { cardFaceUrl, tagImageUrl } from "../utils";
+import "./KeywordIcon.css";
 
 interface KeywordIconProps {
   id: number;
@@ -12,7 +13,7 @@ interface KeywordIconProps {
 export const KeywordIcon = (props: KeywordIconProps) => {
   const { prepareSkillToEntityMap, data } = useAppContext();
 
-  const chooseImage = (id: number, image?: string) =>
+  const chooseImage = (_id: number, image?: string) =>
     image ? cardFaceUrl(image) : tagImageUrl("GCG_CARD_EVENT");
 
   const prepareEntityId = () => prepareSkillToEntityMap.get(props.id);

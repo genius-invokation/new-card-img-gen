@@ -1,0 +1,42 @@
+.keyword-cost-group,
+.skill-cost-group {
+  position: absolute;
+  top: 1.15rem;
+  right: 1.9rem;
+  display: flex;
+  flex-direction: row;
+  --stroked-font-size: 2.68rem;
+  --stroked-width: 3px;
+}
+
+.keyword-cost-group .cost,
+.skill-cost-group .cost {
+  display: grid;
+  grid-template: 1fr / 1fr;
+  place-items: center;
+
+  & > * {
+    grid-column: 1;
+    grid-row: 1;
+  }
+}
+
+.dice-icon {
+  width: 5.5rem;
+  height: 5.5rem;
+  transform: translateY(-0.12rem);
+  margin: 0 -0.25rem;
+  position: relative;
+  z-index: 0;
+}
+
+.cost[data-readonly="true"]::after {
+  content: " ";
+  background: center / contain no-repeat url("/assets/frame/read.png");
+  position: absolute;
+  bottom: 0.2rem;
+  right: -0.6rem;
+  width: 2.4rem;
+  height: 2.4rem;
+  z-index: 1;
+}

@@ -1,10 +1,11 @@
-import { Show, Switch, Match, For, type Accessor } from "solid-js";
+import { Show, Switch, Match, For } from "solid-js";
 import { useAppContext } from "../context";
 import type { DescriptionToken, ParsedDescription } from "../types";
 import { DESCRIPTION_ICON_IMAGES } from "../constants";
 import { remapColors } from "../parser";
 import { nar, tagImageUrl } from "../utils";
 import { Text } from "./Text";
+import "./Token.css";
 
 export const Token = (props: { token: DescriptionToken }) => {
   const { names } = useAppContext();

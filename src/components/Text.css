@@ -1,0 +1,8 @@
+.english-text {
+  letter-spacing: -0.05em;
+}
+
+.middot {
+  margin-inline-start: -0.2em;
+  margin-inline-end: -0.18em;
+}

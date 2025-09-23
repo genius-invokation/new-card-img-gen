@@ -1,0 +1,54 @@
+.tag {
+  height: 4rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 9999px;
+  --fg-color: #fefef4;
+  border: var(--bg-color) 3px solid;
+  background-color: var(--bg-color);
+}
+
+.tag[data-tag-type="character"] {
+  --bg-color: #b5977f;
+  --fg-color: #fef7eb;
+}
+
+.tag[data-tag-type="cardType"] {
+  --bg-color: #706f6f;
+}
+
+.tag[data-tag-type="cardTag"] {
+  --bg-color: #4d6b91;
+}
+
+.tag-text {
+  font-size: 2.5rem;
+  color: var(--fg-color);
+  padding: 0.15rem 1.5rem 0;
+  white-space: nowrap;
+}
+
+.tag-icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  background-color: var(--fg-color);
+}
+
+.tag-icon-mask {
+  height: 90%;
+  width: 90%;
+  mask-size: contain;
+  mask-position: center;
+  mask-image: var(--image);
+  background-color: var(--bg-color);
+}
+
+.tag-icon-image {
+  height: 95%;
+  width: 95%;
+}

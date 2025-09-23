@@ -1,0 +1,94 @@
+span:not(.keyword-description):has(
+    .description-variable,
+    .description-token
+  ) {
+  display: inline;
+  white-space: pre-wrap;
+  word-break: break-word;
+  text-align: justify;
+  text-indent: 0;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.description-errored {
+  background-color: #1f1f1f;
+  color: #d75959;
+  font-family: "MSYH", sans-serif;
+  font-weight: bold;
+  border-radius: 0.2em;
+  font-size: 0.8em;
+  padding: 0 0.25em 0.05em 0.25em;
+  margin: 2px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.description-icon {
+  width: 1.2em;
+  vertical-align: -0.35em;
+}
+
+.description-icon-tag {
+  width: 1.2em;
+  height: 1.2em;
+  display: inline-block;
+  vertical-align: text-top;
+  background-color: currentColor;
+  mask-image: var(--image);
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+}
+
+.description-light:not(#fkYouCss) {
+  color: var(--color, #9d918c);
+}
+
+.description-dimmed:not(#fkYouCss) {
+  color: var(--color, inherit);
+  -webkit-text-stroke-width: 0.025em;
+  -webkit-text-stroke-color: var(--outline, #9d918c);
+}
+
+.description-strong,
+.keyword-description .ref-C {
+  color: var(--color, #aa8d76);
+}
+
+.skill-description .ref-A,
+.keyword-description .ref-A,
+.keyword-description .ref-S,
+.description-normal {
+  color: var(--color, inherit);
+}
+
+.skill-description .ref-C,
+.skill-description .ref-S,
+.action-card-description .ref-C {
+  background-color: #f0eadd;
+  color: #716864;
+  border-radius: 12px;
+  padding: 4px 10px 2px 10px;
+  margin: 2px;
+  line-height: 1.5;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.action-card-description .ref-A,
+.action-card-description .ref-S {
+  color: var(--manual-color, inherit);
+}
+
+.description-variable {
+  display: inline;
+  background-color: #b3a5a5;
+  color: #fefef4;
+  border-radius: 12px;
+  padding: 4px 16px 2px 16px;
+  margin-right: 12px;
+  line-height: 1.36;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}

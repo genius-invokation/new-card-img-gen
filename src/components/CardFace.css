@@ -1,0 +1,50 @@
+.card-face-component {
+  position: relative;
+  --card-width: calc(0.55 * var(--card-container-height));
+}
+
+.card-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--card-width);
+  --front-card-translate-x: calc(0.1637 * var(--card-container-height));
+  --front-card-translate-y: calc(0.0274 * var(--card-container-height));
+  transform: translate(
+      var(--front-card-translate-x),
+      var(--front-card-translate-y)
+    )
+    rotate(4.2deg);
+}
+
+.card-frame-shadow {
+  height: var(--card-container-height);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.card-face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--card-width);
+  --front-card-translate-x: calc(0.0647 * var(--card-container-height));
+  --front-card-translate-y: calc(0.0225 * var(--card-container-height));
+  transform: translate(
+      var(--front-card-translate-x),
+      var(--front-card-translate-y)
+    )
+    rotate(-2.5deg);
+  aspect-ratio: 7/12;
+}
+
+.card-face-image {
+  width: 100%;
+}
+
+.card-frame {
+  position: absolute;
+  height: 100%;
+  inset: 0;
+}

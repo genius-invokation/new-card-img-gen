@@ -3,6 +3,7 @@ import { TYPE_TAG_TEXT_MAP } from "../constants";
 import { useAppContext } from "../context";
 import { tagImageUrl } from "../utils";
 import { Text } from "./Text";
+import "./Tag.css";
 
 export const Tag = (props: {
   type: "character" | "cardType" | "cardTag";

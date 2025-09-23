@@ -1,0 +1,140 @@
+.child-layout {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.6rem;
+  margin-bottom: 0.6rem;
+  padding: 0;
+  gap: 1rem;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.keyword-box-wrapper {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  column-gap: 0.625rem;
+}
+
+.keyword-line {
+  flex-shrink: 0;
+  background-color: #b4967e;
+  width: 0.625rem;
+}
+
+.keyword-card {
+  width: 9.375rem;
+  min-height: 14.625rem;
+  flex-shrink: 0;
+  position: relative;
+  padding-top: 1rem;
+  padding-bottom: 6.25rem;
+}
+
+.keyword-card-back-repeat {
+  width: 9.375rem;
+  height: 100%;
+  background-image: var(--image);
+  background-repeat: repeat-y;
+  background-position: bottom;
+  background-size: contain;
+  opacity: 0.8;
+}
+
+.keyword-card-back-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 9.375rem;
+  height: 6.25rem;
+  opacity: 0.8;
+}
+
+.keyword-card-face {
+  position: absolute;
+  top: 2px;
+  left: 1px;
+  width: 148px;
+  height: 230px;
+  border-radius: 1rem;
+}
+
+.keyword-card-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 150px;
+  height: 234px;
+}
+
+.keyword-box {
+  flex-grow: 1;
+  background-color: var(--keyword-bg-color);
+  border-radius: 0 1.8rem 1.8rem 0;
+  padding: 1.7rem 2.5rem 1.15rem 1.8rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  --marker-gap: 1rem;
+  --marker-width: 1rem;
+}
+
+.keyword-buff-box {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+
+.keyword-title-box {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.keyword-title {
+  display: flex;
+  flex-direction: row;
+  gap: var(--marker-width);
+  margin-left: calc(0 - var(--marker-gap) - var(--marker-width));
+  font-size: 2.5rem;
+  line-height: 1;
+  color: #716a64;
+}
+
+.keyword-title .middot {
+  margin-inline-start: calc(-0.2em - var(--marker-gap));
+  margin-inline-end: calc(-0.18em - var(--marker-gap));
+}
+
+.keyword-tags {
+  margin-top: 0.3rem;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  margin-left: 0.15rem;
+  flex-wrap: wrap;
+}
+
+.keyword-tags .id-box {
+  height: 2.5rem;
+  overflow: visible;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 0.25rem;
+  --fg-color: #fefef4;
+  --bg-color: #cab5a1;
+  background-color: var(--bg-color);
+  opacity: 0.5;
+}
+
+.keyword-description {
+  margin-top: 0.1875rem;
+  font-size: 2.3rem;
+  line-height: 1.36;
+  color: #716864;
+  white-space: pre-wrap;
+  word-break: break-word;
+  text-align: justify;
+  text-indent: 0;
+}

@@ -1,0 +1,81 @@
+.skill-type {
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  height: 4rem;
+  padding: 0.25rem 1.8rem 0;
+  background-color: #b4967e;
+  border: 1px solid #b4967e;
+  border-radius: 1.8rem 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fefef4;
+  font-size: 2.5rem;
+}
+
+.skill-box {
+  position: relative;
+  margin: 0 1.5rem;
+  background-color: #fefef4;
+  border: 1px solid #b4967e;
+  border-radius: 1.8rem;
+  padding: 8rem 1.75rem 1rem 1.75rem;
+  box-sizing: border-box;
+  overflow: visible;
+  word-break: break-word;
+  display: flex;
+  flex-direction: column;
+}
+
+.skill-icon {
+  position: absolute;
+  top: 68px;
+  left: 25px;
+  width: 75px;
+  height: 75px;
+  background-color: #716864;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+}
+
+.skill-title {
+  position: relative;
+  margin: -2.6875rem 10rem -0.3125rem 4.5rem;
+  font-size: 3rem;
+  line-height: 1;
+  color: #716a64;
+}
+
+.skill-title .id-box {
+  height: 2.5rem;
+  overflow: visible;
+  display: inline;
+  align-items: center;
+  white-space: nowrap;
+  border-radius: 0.25rem;
+  --fg-color: #fefef4;
+  --bg-color: #cab5a1;
+  background-color: var(--bg-color);
+  margin-left: 1rem;
+  padding-inline: 1rem;
+  padding-top: 0.15rem;
+  vertical-align: 0.25rem;
+  font-size: 2rem;
+  color: var(--fg-color);
+  opacity: 0.5;
+}
+
+.skill-description {
+  margin-top: 1rem;
+  position: relative;
+  font-size: 2.5rem;
+  line-height: 1.5;
+  color: #716864;
+  white-space: pre-wrap;
+  word-break: break-word;
+  text-align: justify;
+  text-indent: 0;
+}

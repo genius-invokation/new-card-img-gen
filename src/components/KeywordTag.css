@@ -1,0 +1,47 @@
+.keyword-tag {
+  height: 2.5rem;
+  overflow: visible;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 0.25rem;
+  --fg-color: #fefef4;
+  --bg-color: #cab5a1;
+  background-color: var(--bg-color);
+}
+
+.keyword-tag-icon-container {
+  height: 110%;
+  margin-left: 0.5rem;
+  padding: 0.6rem;
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  background-color: var(--keyword-bg-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.keyword-tag-text {
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--fg-color);
+  padding: 0.125rem 1.1rem 0;
+}
+
+.keyword-tag-image {
+  height: 150%;
+  aspect-ratio: 1;
+  flex-shrink: 0;
+}
+
+.keyword-tag-icon {
+  height: 110%;
+  aspect-ratio: 1;
+  flex-shrink: 0;
+  mask-size: cover;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-image: var(--image);
+  background-color: var(--bg-color);
+}

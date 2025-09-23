@@ -18,6 +18,7 @@ import {
 } from "../constants";
 import { cardFaceUrl } from "../utils";
 import { Text } from "./Text";
+import "./Children.css";
 
 type AnyChild = ParsedChild & {
   cardFace?: string;

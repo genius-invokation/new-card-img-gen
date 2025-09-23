@@ -1,0 +1,24 @@
+.buff-icon {
+  width: 5.2rem;
+  height: 5.2rem;
+  position: relative;
+  margin-right: 0.6rem;
+  margin-top: -0.15rem;
+  margin-left: -0.2rem;
+}
+
+.buff-mask {
+  width: 5.2rem;
+  height: 5.2rem;
+  position: relative;
+  margin-right: 0.6rem;
+  margin-top: -0.15rem;
+  margin-left: -0.2rem;
+  aspect-ratio: 1;
+  flex-shrink: 0;
+  mask-size: cover;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-image: var(--image);
+  background-color: #716a64;
+}
