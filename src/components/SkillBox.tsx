@@ -1,10 +1,11 @@
 import { Show } from "solid-js";
 import type { ParsedSkill } from "../types/app";
 import { useAppContext } from "../context/appContext";
-import { MISSING_ICONS_URL, TYPE_TAG_TEXT_MAP } from "../constants/maps";
+import { TYPE_TAG_TEXT_MAP } from "../constants/maps";
 import { Cost } from "./Cost";
 import { Children } from "./Children";
 import { Description } from "./Token";
+import { cardFaceUrl } from "../utils";
 
 export const SkillBox = (props: { skill: ParsedSkill }) => {
   const { displayId, language = "zh" } = useAppContext();
@@ -19,11 +20,7 @@ export const SkillBox = (props: { skill: ParsedSkill }) => {
         <div
           class="skill-icon"
           style={{
-            "mask-image": `url("${
-              skill().icon
-                ? `/images/${skill().icon}.png`
-                : MISSING_ICONS_URL[skill().id]
-            }")`,
+            "mask-image": `url("${cardFaceUrl(skill().icon ?? "")}")`,
           }}
         />
         <div class="skill-title">

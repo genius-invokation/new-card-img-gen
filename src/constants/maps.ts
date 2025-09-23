@@ -1,7 +1,3 @@
-
-export const MISSING_ICONS_URL: Record<number, string> = {
-};
-
 export const CHILDREN_CONFIG: Record<number, string> = {
   11142: "$[C111141],$[C111142],$[C111143]", // 茜特菈莉 E 有个不知道哪来的错误夜魂加持
   12082: "$[C112081],$[C112082]", // 妮露 E
@@ -14,8 +10,10 @@ export const CHILDREN_CONFIG: Record<number, string> = {
   14091: "_", // 丽莎 A
   14092: "$[C114091]", // 丽莎 E
   14121: "_", // 克洛琳德 A
+  14151: "_", // 瓦雷莎 A
   15114: "$[C115113],$[C115114],$[C115115],$[C115116],$[C115117]", // 恰斯卡 P
   15133: "$[C115133],$[C115134],$[C115135],$[C115136]", // 鹿野院 Q
+  15153: "$[C115153],$[C115154],$[C115155],$[C115156]", // 伊法 Q
   16063: "$[C116062]", // 五郎 Q
   16092: "$[C116091],$[C116092],$[C116093],$[C116095],$[C116096]", // 千织 E
   216091: "$[C116094]", // 千织 天赋
@@ -31,6 +29,7 @@ export const CHILDREN_CONFIG: Record<number, string> = {
   22052: "_", // 水丘丘 E
   22053: "$[C122051],$[S1220511],$[S1220512]$[C122052]", // 水丘丘 Q
   23032: "$[C123032]", // 火镀金旅团 E
+  23053: "_", // 火龙王 Q
   27032: "$[C127033]", // 草镀金旅团 E
   322027:
     "$[C302206],$[C302207],$[C302208],$[C302209],$[C302210],$[C302211],$[C302212],$[C302213],$[C302214],$[C302215]", // 瑟琳
@@ -39,11 +38,13 @@ export const CHILDREN_CONFIG: Record<number, string> = {
   332032: "$[C332033],$[C332034],$[C332035]", // 幻戏倒计时
   333020: "$[C333021],$[C333022],$[C333023],$[C333024],$[C333025],$[C333026]", // 奇瑰之汤
   333027: "_", // 纵声欢唱
-};
+} as Record<number, string>;
 
-export const SHOWN_KEYWORDS = [1012, 1013];
+// 需要展示的规则解释ID
+export const SHOWN_KEYWORDS = [1012, 1013, 66];
+
 export const COST_READONLY_ENTITIES = [
-  112131, 112132, 112133, 112142, 115112, 116102, 116112, 333021, 333022,
+  112131, 112132, 112133, 112142, 115112, 115152, 116102, 116112, 333021, 333022,
   333023, 333024, 333025, 333026,
 ];
 
@@ -144,6 +145,7 @@ export const TYPE_TAG_TEXT_MAP: Record<string, Record<string, string>> = {
     GCG_TAG_IMMUNE_FREEZING: "免疫冻结",
     GCG_TAG_SLOWLY: "战斗行动",
     GCG_TAG_NATION_SIMULANKA: "希穆兰卡",
+    GCG_TAG_ADVENTURE_PLACE: "冒险地点",
   },
   en: {
     GCG_RULE_EXPLANATION: "Detailed Rules",
@@ -204,6 +206,8 @@ export const TYPE_TAG_TEXT_MAP: Record<string, Record<string, string>> = {
     GCG_TAG_IMMUNE_CONTROL: "Immune to Control",
     GCG_TAG_IMMUNE_FREEZING: "Immune to Frozen",
     GCG_TAG_SLOWLY: "Combat Action",
+    GCG_TAG_NATION_SIMULANKA: "Simulanka",
+    GCG_TAG_ADVENTURE_PLACE: "Adventure Spot",
   },
 };
 
@@ -252,6 +256,8 @@ export const TYPE_TAG_IMG_NAME_MAP: Record<string, string> = {
   GCG_TAG_ALLY: "Card_Ally",
   GCG_TAG_ITEM: "Card_Item",
   GCG_TAG_SLOWLY: "Card_CombatAction",
+  GCG_TAG_NATION_SIMULANKA: "Card_Simulanka",
+  GCG_TAG_ADVENTURE_PLACE: "Card_Adventure",
 };
 
 export const DESCRIPTION_ICON_IMAGES = {
@@ -307,6 +313,7 @@ export const DESCRIPTION_ICON_IMAGES = {
   3505: { tagIcon: "GCG_TAG_ARKHE_OUSIA" },
   // ?: { tagIcon: "GCG_TAG_CAMP_SACREAD" },
   // ?: { tagIcon: "GCG_TAG_CAMP_ERIMITE" },
+  3901: { tagIcon: "GCG_TAG_ADVENTURE_PLACE" },
 } as Record<number, { imageUrl?: string; tagIcon?: string }>;
 
 export const KEYWORD_COLORS: Record<number, string> = {

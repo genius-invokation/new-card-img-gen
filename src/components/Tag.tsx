@@ -1,7 +1,7 @@
 import { Show } from "solid-js";
 import { TYPE_TAG_TEXT_MAP } from "../constants/maps";
 import { useAppContext } from "../context/appContext";
-import { buffImageUrl, tagImageUrl } from "../utils";
+import { tagImageUrl } from "../utils";
 
 export const Tag = (props: {
   type: "character" | "cardType" | "cardTag";
@@ -22,7 +22,7 @@ export const Tag = (props: {
               />
             }
           >
-            <img class="tag-icon-image" src={buffImageUrl(props.tag)} />
+            <img class="tag-icon-image" src={tagImageUrl(props.tag)} />
           </Show>
         </div>
         <div class="tag-text">{TYPE_TAG_TEXT_MAP[language][props.tag]}</div>
