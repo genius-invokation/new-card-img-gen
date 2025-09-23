@@ -1,5 +1,5 @@
 import { Show, Switch, Match } from "solid-js";
-import { useAppContext } from "../context/appContext";
+import { useAppContext } from "../context";
 import { cardFaceUrl, tagImageUrl } from "../utils";
 
 interface KeywordIconProps {

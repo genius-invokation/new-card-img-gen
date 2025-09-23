@@ -1,5 +1,5 @@
 import type { Accessor } from "solid-js";
-import { TYPE_TAG_IMG_NAME_MAP } from "./constants/maps";
+import { TYPE_TAG_IMG_NAME_MAP } from "./constants";
 
 export const tagImageUrl = (tag: string) =>
   tag.startsWith("GCG_TAG_ELEMENT_")

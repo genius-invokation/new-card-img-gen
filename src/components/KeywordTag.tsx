@@ -1,6 +1,6 @@
 import { Show } from "solid-js";
-import { TYPE_TAG_TEXT_MAP } from "../constants/maps";
-import { useAppContext } from "../context/appContext";
+import { TYPE_TAG_TEXT_MAP } from "../constants";
+import { useAppContext } from "../context";
 
 export const KeywordTag = (props: {
   tag: string;

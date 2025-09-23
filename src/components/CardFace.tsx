@@ -1,10 +1,10 @@
 import type { JSX } from "solid-js";
-import { useAppContext } from "../context/appContext";
+import { useAppContext } from "../context";
 import {
   CARD_BACK_FRAME,
   CARD_LEGEND_FRAME,
   CARD_NORMAL_FRAME,
-} from "../constants/maps";
+} from "../constants";
 import { cardFaceUrl } from "../utils";
 
 export const CardFace = (props: {

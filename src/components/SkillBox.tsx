@@ -1,7 +1,7 @@
 import { Show } from "solid-js";
-import type { ParsedSkill } from "../types/app";
-import { useAppContext } from "../context/appContext";
-import { TYPE_TAG_TEXT_MAP } from "../constants/maps";
+import type { ParsedSkill } from "../types";
+import { useAppContext } from "../context";
+import { TYPE_TAG_TEXT_MAP } from "../constants";
 import { Cost } from "./Cost";
 import { Children } from "./Children";
 import { Description } from "./Token";

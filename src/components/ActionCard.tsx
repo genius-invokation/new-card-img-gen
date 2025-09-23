@@ -1,6 +1,6 @@
 import { Show, For } from "solid-js";
-import type { ParsedActionCard } from "../types/app";
-import { useAppContext } from "../context/appContext";
+import type { ParsedActionCard } from "../types";
+import { useAppContext } from "../context";
 import { Tag } from "./Tag";
 import { Cost } from "./Cost";
 import { CardFace } from "./CardFace";

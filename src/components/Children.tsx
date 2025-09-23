@@ -4,8 +4,8 @@ import type {
   ParsedActionCard,
   ParsedEntity,
   ParsedKeyword,
-} from "../types/app";
-import { useAppContext } from "../context/appContext";
+} from "../types";
+import { useAppContext } from "../context";
 import { KeywordIcon } from "./KeywordIcon";
 import { KeywordTag } from "./KeywordTag";
 import { Cost } from "./Cost";
@@ -15,7 +15,7 @@ import {
   KEYWORD_CARDBACK_REPEAT,
   KEYWORD_CARD_FRAME,
   COST_READONLY_ENTITIES,
-} from "../constants/maps";
+} from "../constants";
 import { cardFaceUrl } from "../utils";
 import { Text } from "./Text";
 

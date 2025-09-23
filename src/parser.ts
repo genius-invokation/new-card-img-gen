@@ -5,7 +5,7 @@ import {
   KEYWORD_COLORS,
   SHOWN_KEYWORDS,
   correctId,
-} from "../constants/maps";
+} from "./constants";
 import type {
   AppContextValue,
   DescriptionToken,
@@ -16,7 +16,7 @@ import type {
   ActionCardRawData,
   ParsedCharacter,
   CharacterRawData,
-} from "../types/app";
+} from "./types";
 
 interface ChildLikeBase {
   id: number;

@@ -1,8 +1,8 @@
 import { Show, Switch, Match, For, type Accessor } from "solid-js";
-import { useAppContext } from "../context/appContext";
-import type { DescriptionToken, ParsedDescription } from "../types/app";
-import { DESCRIPTION_ICON_IMAGES } from "../constants/maps";
-import { remapColors } from "../parsers/description";
+import { useAppContext } from "../context";
+import type { DescriptionToken, ParsedDescription } from "../types";
+import { DESCRIPTION_ICON_IMAGES } from "../constants";
+import { remapColors } from "../parser";
 import { nar, tagImageUrl } from "../utils";
 import { Text } from "./Text";
 

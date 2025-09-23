@@ -1,9 +1,9 @@
 import { createSignal, createMemo, createEffect, onCleanup } from "solid-js";
 import { For, Show } from "solid-js";
 import type { ActionCardRawData, CharacterRawData, EntityRawData, KeywordRawData, SkillRawData } from "@gi-tcg/static-data";
-import type { AppProps, AppContextValue } from "./types/app";
-import { parseCharacter, parseActionCard } from "./parsers/description";
-import { AppContext } from './context/appContext';
+import type { AppProps, AppContextValue } from "./types";
+import { parseCharacter, parseActionCard } from "./parser";
+import { AppContext } from './context';
 import { Character } from './components/Character';
 import { ActionCard } from './components/ActionCard';
 import { PageTitle } from './components/PageTitle';

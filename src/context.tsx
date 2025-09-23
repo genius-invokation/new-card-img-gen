@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'solid-js';
-import type { AppContextValue } from '../types/app';
+import type { AppContextValue } from './types';
 
 export const AppContext = createContext<AppContextValue>();
 export const useAppContext = () => {
