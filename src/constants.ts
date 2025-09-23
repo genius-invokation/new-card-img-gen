@@ -53,20 +53,20 @@ export const correctId: Record<number, number> = { 12123: 12112 };
 export const CARD_BACK_FRAME = "/assets/frame/avatar_card_frame_2.png";
 export const CARD_NORMAL_FRAME = "/assets/frame/card_frame_normal.png";
 export const CARD_LEGEND_FRAME = "/assets/frame/card_frame_legend.png";
-export const AVATAR_CARD_HP = "/assets/frame/UI_TeyvatCard_LifeBg.png";
-export const AVATAR_CARD_ENERGY = "/assets/frame/UI_TeyvatCard_LifeBg3.png";
 export const KEYWORD_CARD_FRAME = "/assets/frame/keyword_card_frame.png";
 export const KEYWORD_CARDBACK_REPEAT =
-  "/assets/frame/UI_Gcg_CardBack_Repeat.png";
+  "/assets/frame/card_back_repeat.png";
 export const KEYWORD_CARDBACK_BOTTOM =
-  "/assets/frame/UI_Gcg_CardBack_Bottom.png";
+  "/assets/frame/card_back_bottom.png";
 export const PAGE_TITLE_ICON = "/assets/frame/pagetitle.png";
 
+export const AVATAR_CARD_HP = "/assets/UI_TeyvatCard_LifeBg.png";
+export const AVATAR_CARD_ENERGY = "/assets/UI_TeyvatCard_LifeBg3.png";
 export const SPECIAL_ENERGY_MAP: Record<
   number,
   { type: string; count: number }
 > = {
-  1315: { type: "/assets/frame/UI_TeyvatCard_LifeBg_Mavuika1.png", count: 3 },
+  1315: { type: "/assets/UI_TeyvatCard_LifeBg_Mavuika1.png", count: 3 },
 };
 
 export const COST_TYPE_IMG_NAME_MAP: Record<string, string> = {
