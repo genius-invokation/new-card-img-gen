@@ -1,7 +1,7 @@
 import type { ActionCardRawData, CharacterRawData, EntityRawData, KeywordRawData, PlayCost, SkillRawData } from '@gi-tcg/static-data';
 
 export interface AppProps {
-  language?: 'en' | 'zh';
+  language: 'en' | 'zh';
   localData?: boolean;
   beta?: boolean;
   authorName?: string;
@@ -9,7 +9,7 @@ export interface AppProps {
   version?: `v${number}.${number}.${number}${'' | `-beta`}`;
   solo?: `${'C' | 'A'}${number}`;
   mirroredLayout?: boolean;
-  cardbackImage?: string;
+  cardbackImage: string;
   displayId?: boolean;
   displayStory?: boolean;
   debug?: boolean;

@@ -6,9 +6,10 @@ import { Cost } from "./Cost";
 import { Children } from "./Children";
 import { Description } from "./Token";
 import { cardFaceUrl } from "../utils";
+import { Text } from "./Text";
 
 export const SkillBox = (props: { skill: ParsedSkill }) => {
-  const { displayId, language = "zh" } = useAppContext();
+  const { displayId, language } = useAppContext();
   const skill = () => props.skill;
   return (
     <Show when={!skill().hidden}>
@@ -16,7 +17,9 @@ export const SkillBox = (props: { skill: ParsedSkill }) => {
         <div class="skill-type">
           {TYPE_TAG_TEXT_MAP[language][skill().type]}
         </div>
-        {skill().playCost && <Cost type="skill" cost={skill().playCost} />}
+        <Show when={skill().playCost?.length > 0}>
+          <Cost type="skill" cost={skill().playCost} />
+        </Show>
         <div
           class="skill-icon"
           style={{
@@ -24,8 +27,10 @@ export const SkillBox = (props: { skill: ParsedSkill }) => {
           }}
         />
         <div class="skill-title">
-          {skill().name}
-          {displayId && <span class="id-box">ID: {skill().id}</span>}
+          <Text text={skill().name} />
+          <Show when={displayId}>
+            <span class="id-box">ID: {skill().id}</span>
+          </Show>
         </div>
         <div class={`skill-description skill-description-${language}`}>
           <Description description={skill().parsedDescription} />

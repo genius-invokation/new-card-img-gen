@@ -6,16 +6,19 @@ import { Cost } from "./Cost";
 import { CardFace } from "./CardFace";
 import { Children } from "./Children";
 import { Description } from "./Token";
+import { Text } from "./Text";
 
 export const ActionCard = (props: { card: ParsedActionCard }) => {
-  const { displayId, language = "zh" } = useAppContext();
+  const { displayId, language } = useAppContext();
   const card = () => props.card;
   return (
     <div class="action-card">
       <div class="action-card-info figure">
         <div class="action-card-title">
-          {card().name}
-          {displayId && <span class="id-box">ID: {card().id}</span>}
+          <Text text={card().name} />
+          <Show when={displayId}>
+            <span class="id-box">ID: {card().id}</span>
+          </Show>
         </div>
         <div class="action-card-tags">
           <Tag type="cardType" tag={card().type} />

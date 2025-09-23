@@ -13,7 +13,7 @@ import "./App.css";
 // NOTE: 绝大多数逻辑直接从 ref/client.tsx 迁移，保证渲染/解析逻辑不被删改，仅适配 Solid API。
 // 默认应用配置（从原内联常量抽出，若需要可移动到独立文件）
 const APP_CONFIG: AppProps = {
-  solo: 'A1211',
+  solo: 'A1703',
   language: 'zh',
   authorName: 'Author',
   authorImageUrl: '/vite.svg',

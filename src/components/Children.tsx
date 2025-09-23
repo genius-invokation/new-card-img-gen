@@ -1,12 +1,23 @@
-import { For, Show } from 'solid-js';
-import type { ParsedChild, ParsedActionCard, ParsedEntity, ParsedKeyword } from '../types/app';
-import { useAppContext } from '../context/appContext';
-import { KeywordIcon } from './KeywordIcon';
-import { KeywordTag } from './KeywordTag';
-import { Cost } from './Cost';
-import { Description } from './Token';
-import { KEYWORD_CARDBACK_BOTTOM, KEYWORD_CARDBACK_REPEAT, KEYWORD_CARD_FRAME, COST_READONLY_ENTITIES } from '../constants/maps';
-import { cardFaceUrl } from '../utils';
+import { For, Show } from "solid-js";
+import type {
+  ParsedChild,
+  ParsedActionCard,
+  ParsedEntity,
+  ParsedKeyword,
+} from "../types/app";
+import { useAppContext } from "../context/appContext";
+import { KeywordIcon } from "./KeywordIcon";
+import { KeywordTag } from "./KeywordTag";
+import { Cost } from "./Cost";
+import { Description } from "./Token";
+import {
+  KEYWORD_CARDBACK_BOTTOM,
+  KEYWORD_CARDBACK_REPEAT,
+  KEYWORD_CARD_FRAME,
+  COST_READONLY_ENTITIES,
+} from "../constants/maps";
+import { cardFaceUrl } from "../utils";
+import { Text } from "./Text";
 
 type AnyChild = ParsedChild & {
   cardFace?: string;
@@ -19,7 +30,7 @@ type AnyChild = ParsedChild & {
 };
 
 export const Children = (props: { children: ParsedChild[] }) => {
-  const { displayId, language = 'zh', prepareSkillToEntityMap } = useAppContext();
+  const { displayId, language, prepareSkillToEntityMap } = useAppContext();
 
   return (
     <div class="child-layout">
@@ -32,28 +43,53 @@ export const Children = (props: { children: ParsedChild[] }) => {
               <div class="keyword-line" />
               <Show when={child.cardFace}>
                 <div class="keyword-card">
-                  <img src={KEYWORD_CARDBACK_BOTTOM} class="keyword-card-back-bottom" />
-                  <div class="keyword-card-back-repeat" style={{ '--image': `url("${KEYWORD_CARDBACK_REPEAT}")` }} />
-                  <img src={cardFaceUrl(child.cardFace || '')} class="keyword-card-face" />
+                  <img
+                    src={KEYWORD_CARDBACK_BOTTOM}
+                    class="keyword-card-back-bottom"
+                  />
+                  <div
+                    class="keyword-card-back-repeat"
+                    style={{ "--image": `url("${KEYWORD_CARDBACK_REPEAT}")` }}
+                  />
+                  <img
+                    src={cardFaceUrl(child.cardFace || "")}
+                    class="keyword-card-face"
+                  />
                   <img src={KEYWORD_CARD_FRAME} class="keyword-card-frame" />
                 </div>
               </Show>
               <div class="keyword-box">
                 <div class="keyword-buff-box">
                   <Show when={!child.cardFace}>
-                    <KeywordIcon id={child.id} tag={child.type || 'GCG_RULE_EXPLANATION'} image={child.buffIcon || child.icon} />
+                    <KeywordIcon
+                      id={child.id}
+                      tag={child.type || "GCG_RULE_EXPLANATION"}
+                      image={child.buffIcon || child.icon}
+                    />
                   </Show>
                   <div class="keyword-title-box">
-                    <div class="keyword-title">{child.name}</div>
+                    <div class="keyword-title">
+                      <Text text={child.name} />
+                    </div>
                     <div class="keyword-tags">
-                      <KeywordTag tag={child.type || 'GCG_RULE_EXPLANATION'} />
-                      <For each={child.tags || []}>{(tag) => <KeywordTag tag={tag} />}</For>
-                      <Show when={showPrepare}><KeywordTag tag="GCG_TAG_PREPARE_SKILL" /></Show>
+                      <KeywordTag tag={child.type || "GCG_RULE_EXPLANATION"} />
+                      <For each={child.tags || []}>
+                        {(tag) => <KeywordTag tag={tag} />}
+                      </For>
+                      <Show when={showPrepare}>
+                        <KeywordTag tag="GCG_TAG_PREPARE_SKILL" />
+                      </Show>
                       <Show when={displayId}>
-                        <div class="id-box"><div class="keyword-tag-text">ID: {child.id}</div></div>
+                        <div class="id-box">
+                          <div class="keyword-tag-text">ID: {child.id}</div>
+                        </div>
                       </Show>
                       <Show when={showPrepare && displayId}>
-                        <div class="id-box"><div class="keyword-tag-text">ID: {prepareSkillToEntityMap.get(child.id)}</div></div>
+                        <div class="id-box">
+                          <div class="keyword-tag-text">
+                            ID: {prepareSkillToEntityMap.get(child.id)}
+                          </div>
+                        </div>
                       </Show>
                     </div>
                   </div>
@@ -61,12 +97,25 @@ export const Children = (props: { children: ParsedChild[] }) => {
                 <Show when={child.playCost}>
                   <Cost
                     type="keyword"
-                    cost={child.playCost && child.playCost.length === 0 ? [{ type: 'GCG_COST_DICE_SAME', count: 0 }] : (child.playCost || [])}
-                    readonly={COST_READONLY_ENTITIES.includes(child.id) || showPrepare}
+                    cost={
+                      child.playCost && child.playCost.length === 0
+                        ? [{ type: "GCG_COST_DICE_SAME", count: 0 }]
+                        : child.playCost || []
+                    }
+                    readonly={
+                      COST_READONLY_ENTITIES.includes(child.id) || showPrepare
+                    }
                   />
                 </Show>
-                <div class={`keyword-description keyword-description-${language}`}>
-                  <Description description={(child as ParsedActionCard | ParsedEntity | ParsedKeyword).parsedDescription} />
+                <div
+                  class={`keyword-description keyword-description-${language}`}
+                >
+                  <Description
+                    description={
+                      (child as ParsedActionCard | ParsedEntity | ParsedKeyword)
+                        .parsedDescription
+                    }
+                  />
                 </div>
               </div>
             </div>

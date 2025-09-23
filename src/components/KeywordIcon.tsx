@@ -27,7 +27,7 @@ export const KeywordIcon = (props: KeywordIconProps) => {
 
   const getBuffIcon = (e: { id: number } | undefined, fallback?: string) => {
     // Some entity records may expose buffIcon dynamically; treat as optional string property
-    return (e && (e as unknown as { buffIcon?: string }).buffIcon) || fallback;
+    return (e && (e as { buffIcon?: string }).buffIcon) || fallback;
   };
   const isSkillMask = () =>
     ["GCG_SKILL_TAG_A", "GCG_SKILL_TAG_E", "GCG_SKILL_TAG_Q"].includes(

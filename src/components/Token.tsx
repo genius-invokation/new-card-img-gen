@@ -4,7 +4,7 @@ import type { DescriptionToken, ParsedDescription } from "../types/app";
 import { DESCRIPTION_ICON_IMAGES } from "../constants/maps";
 import { remapColors } from "../parsers/description";
 import { nar, tagImageUrl } from "../utils";
-
+import { Text } from "./Text";
 
 export const Token = (props: { token: DescriptionToken }) => {
   const { names } = useAppContext();
@@ -22,12 +22,16 @@ export const Token = (props: { token: DescriptionToken }) => {
                   remapColors({ color: t().color, style: "outline" }) || "",
               }}
             >
-              {t().text}
+              <Text text={t().text} />
             </span>
           )}
         </Match>
         <Match when={nar(t, (t) => t.type === "boxedKeyword")}>
-          {(t) => <span class="description-variable">{t().text}</span>}
+          {(t) => (
+            <span class="description-variable">
+              <Text text={t().text} />
+            </span>
+          )}
         </Match>
         <Match when={nar(t, (t) => t.type === "icon")}>
           {(t) =>
@@ -63,7 +67,7 @@ export const Token = (props: { token: DescriptionToken }) => {
               }`}
               style={{ "--manual-color": t().manualColor || "" }}
             >
-              {names.get(t().id) || `#${t().id}`}
+              <Text text={names.get(t().id) || `#${t().id}`} />
             </span>
           )}
         </Match>
@@ -73,7 +77,7 @@ export const Token = (props: { token: DescriptionToken }) => {
         <Match when={nar(t, (t) => t.type === "errored")}>
           {(t) => (
             <span class="description-token description-errored">
-              {t().text}
+              <Text text={t().text} />
             </span>
           )}
         </Match>

@@ -14,7 +14,7 @@ export const CardFace = (props: {
   cardFace: string;
   children?: JSX.Element;
 }) => {
-  const { cardbackImage = "UI_Gcg_CardBack_Fonta_03" } = useAppContext();
+  const { cardbackImage } = useAppContext();
   const mergedClass = () => props.class ?? props.className ?? "";
   return (
     <div class={`card-face-component ${mergedClass()}`}>

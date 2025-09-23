@@ -1,9 +1,12 @@
 import { PAGE_TITLE_ICON } from "../constants/maps";
+import { Text } from "./Text";
 
 export const PageTitle = (props: { text: string }) => (
   <div class="page-title-wrapper">
     <img class="page-title-icon" src={PAGE_TITLE_ICON} />
-    <div class="page-title">{props.text}</div>
+    <div class="page-title">
+      <Text text={props.text} />
+    </div>
     <div class="page-title-tail">
       <svg width="80" height="192">
         <polyline

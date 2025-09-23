@@ -7,7 +7,7 @@ export const KeywordTag = (props: {
   image?: string;
   className?: string;
 }) => {
-  const { language = "zh" } = useAppContext();
+  const { language } = useAppContext();
   return (
     <Show when={TYPE_TAG_TEXT_MAP[language][props.tag]}>
       <div class={`keyword-tag ${props.className ?? ""}`}>
