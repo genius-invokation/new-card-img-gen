@@ -81,15 +81,11 @@ export const Children = (props: { children: ParsedChild[] }) => {
                         <KeywordTag tag="GCG_TAG_PREPARE_SKILL" />
                       </Show>
                       <Show when={displayId}>
-                        <div class="id-box">
-                          <div class="keyword-tag-text">ID: {child.id}</div>
-                        </div>
+                        <div class="id-box">ID: {child.id}</div>
                       </Show>
                       <Show when={showPrepare && displayId}>
                         <div class="id-box">
-                          <div class="keyword-tag-text">
-                            ID: {prepareSkillToEntityMap.get(child.id)}
-                          </div>
+                          ID: {prepareSkillToEntityMap.get(child.id)}
                         </div>
                       </Show>
                     </div>

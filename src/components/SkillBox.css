@@ -18,7 +18,7 @@
 .skill-box {
   position: relative;
   margin: 0 1.5rem;
-  background-color: #fefef4;
+  background-color: var(--box-bg-color);
   border: 1px solid #b4967e;
   border-radius: 1.8rem;
   padding: 8rem 1.75rem 1rem 1.75rem;
@@ -50,22 +50,8 @@
 }
 
 .skill-title .id-box {
-  height: 2.5rem;
-  overflow: visible;
-  display: inline;
-  align-items: center;
-  white-space: nowrap;
-  border-radius: 0.25rem;
-  --fg-color: #fefef4;
-  --bg-color: #cab5a1;
-  background-color: var(--bg-color);
   margin-left: 1rem;
-  padding-inline: 1rem;
-  padding-top: 0.15rem;
   vertical-align: 0.25rem;
-  font-size: 2rem;
-  color: var(--fg-color);
-  opacity: 0.5;
 }
 
 .skill-description {

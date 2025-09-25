@@ -69,7 +69,7 @@
 
 .keyword-box {
   flex-grow: 1;
-  background-color: var(--keyword-bg-color);
+  background-color: #f0eadd;
   border-radius: 0 1.8rem 1.8rem 0;
   padding: 1.7rem 2.5rem 1.15rem 1.8rem;
   overflow: hidden;
@@ -115,18 +115,6 @@
   flex-wrap: wrap;
 }
 
-.keyword-tags .id-box {
-  height: 2.5rem;
-  overflow: visible;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  border-radius: 0.25rem;
-  --fg-color: #fefef4;
-  --bg-color: #cab5a1;
-  background-color: var(--bg-color);
-  opacity: 0.5;
-}
 
 .keyword-description {
   margin-top: 0.1875rem;
