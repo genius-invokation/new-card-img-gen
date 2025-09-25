@@ -41,7 +41,10 @@ export const CHILDREN_CONFIG: Record<number, string> = {
 } as Record<number, string>;
 
 // 需要展示的规则解释ID
-export const SHOWN_KEYWORDS = [1012, 1013, 66];
+export const SHOWN_KEYWORDS = [
+  1012, // 汲取对应元素的力量
+  1013, // 「焚尽的炽炎魔女」
+];
 
 export const COST_READONLY_ENTITIES = [
   112131, 112132, 112133, 112142, 115112, 115152, 116102, 116112, 333021, 333022,
@@ -317,7 +320,10 @@ export const DESCRIPTION_ICON_IMAGES = {
 } as Record<number, { imageUrl?: string; tagIcon?: string }>;
 
 export const KEYWORD_COLORS: Record<number, string> = {
+  // 穿透伤害
   310: "#d8b456",
+
+  // 伤害
   100: "#d9b253",
   101: "#63bacd",
   102: "#488ccb",
@@ -326,23 +332,27 @@ export const KEYWORD_COLORS: Record<number, string> = {
   105: "#5ca8a6",
   106: "#d29d5d",
   107: "#88b750",
-  150: "#d9b253",
-  151: "#63bacd",
-  152: "#488ccb",
-  153: "#d6684b",
-  154: "#917ce8",
-  155: "#5ca8a6",
-  156: "#d29d5d",
-  157: "#88b750",
-  200: "#d9b253",
+
+  // 自走棋伤害
+  // 150: "#d9b253",
+  // 151: "#63bacd",
+  // 152: "#488ccb",
+  // 153: "#d6684b",
+  // 154: "#917ce8",
+  // 155: "#5ca8a6",
+  // 156: "#d29d5d",
+  // 157: "#88b750",
+
+  // 附着
   201: "#63bacd",
   202: "#488ccb",
   203: "#d6684b",
   204: "#917ce8",
-  205: "#5ca8a6",
-  206: "#d29d5d",
+  // 205: "#5ca8a6",
+  // 206: "#d29d5d",
   207: "#88b750",
-  210: "#d9b253",
+
+  // 元素相关反应
   211: "#63bacd",
   212: "#488ccb",
   213: "#d6684b",
@@ -350,23 +360,17 @@ export const KEYWORD_COLORS: Record<number, string> = {
   215: "#5ca8a6",
   216: "#d29d5d",
   217: "#88b750",
-  250: "#d9b253",
-  251: "#63bacd",
-  252: "#488ccb",
-  253: "#d6684b",
-  254: "#917ce8",
-  255: "#5ca8a6",
-  256: "#d29d5d",
-  257: "#88b750",
-  260: "#d9b253",
-  261: "#63bacd",
-  262: "#488ccb",
-  263: "#d6684b",
-  264: "#917ce8",
-  265: "#5ca8a6",
-  266: "#d29d5d",
-  267: "#88b750",
-  300: "#d9b253",
+
+  // 自走棋元素相关反应
+  // 261: "#63bacd",
+  // 262: "#488ccb",
+  // 263: "#d6684b",
+  // 264: "#917ce8",
+  // 265: "#5ca8a6",
+  // 266: "#d29d5d",
+  // 267: "#88b750",
+  
+  // 元素骰子
   301: "#63bacd",
   302: "#488ccb",
   303: "#d6684b",
