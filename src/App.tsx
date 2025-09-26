@@ -30,15 +30,18 @@ export const App = () => {
       alert(`未找到渲染区域`);
       return;
     }
+    const originalParent = renderingArea.parentElement;
     let objectUrl: string | null = null;
-    const { width, height } = getComputedStyle(renderingArea);
     try {
       captureContainer.innerHTML = "";
-      captureContainer.append(renderingArea.cloneNode(true));
+      captureContainer.append(renderingArea);
+      // make them reflow (?)
+      await new Promise((r) => setTimeout(r, 100));
+      const { width, height } = getComputedStyle(renderingArea);
       const blob = await toBlob(captureContainer, {
         type: "image/png",
-        width: parseInt(width),
-        height: parseInt(height),
+        width: parseFloat(width),
+        height: parseFloat(height),
       });
       if (!blob) {
         alert("导出失败");
@@ -54,7 +57,7 @@ export const App = () => {
       if (objectUrl) {
         URL.revokeObjectURL(objectUrl);
       }
-      captureContainer.innerHTML = "";
+      originalParent?.append(renderingArea);
     }
   };
 
@@ -69,7 +72,7 @@ export const App = () => {
         displayId: () => !!config().displayId,
       }}
     >
-      <div class="app">
+      <div class="app" bool:data-dev={import.meta.env.DEV}>
         <div class="sidebar">
           <header class="header">
             <h1>卡图生成</h1>
