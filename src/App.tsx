@@ -1,17 +1,24 @@
-import { createSignal } from "solid-js";
-import { type AppConfig } from "./types";
+import { createSignal, createResource, Show } from "solid-js";
+import type { AppConfig, AllRawData } from "./types";
 import { GlobalSettings } from "./context";
-import * as MOCK_DATA from "@gi-tcg/static-data";
 import "./App.css";
 import { Renderer } from "./components/renderer/Renderer";
 import { Forms } from "./components/form/Forms";
 import { toBlob } from "html-to-image";
+import { createEffect } from "solid-js";
 
 // NOTE: 绝大多数逻辑直接从 ref/client.tsx 迁移，保证渲染/解析逻辑不被删改，仅适配 Solid API。
 
+const EMPTY_DATA: AllRawData = {
+  keywords: [],
+  characters: [],
+  actionCards: [],
+  entities: [],
+};
+
 const APP_CONFIG: AppConfig = {
-  solo: "A1315",
-  data: MOCK_DATA,
+  solo: "A1503",
+  data: EMPTY_DATA,
   language: "zh",
   authorName: "Author",
   authorImageUrl: "/vite.svg",
@@ -22,6 +29,20 @@ const APP_CONFIG: AppConfig = {
 };
 
 export const App = () => {
+  const [npmData] = createResource(async () => {
+    const data = await import(
+    // @ts-expect-error Remote module no typings
+      /* @vite-ignore */ "https://esm.sh/@gi-tcg/static-data"
+    );
+    return data;
+  });
+  createEffect(() => {
+    if (npmData.state === "ready") {
+      console.log("Loaded data from npm:", npmData());
+      setConfig((c) => ({ ...c, data: npmData() }));
+    }
+  });
+
   const [config, setConfig] = createSignal<AppConfig>(APP_CONFIG);
 
   const exportImage = async () => {
@@ -81,7 +102,13 @@ export const App = () => {
           <Forms config={config()} onSubmit={setConfig} />
         </div>
         <div class="renderer-container">
-          <Renderer {...config()} />
+          
+          <Show
+            when={npmData.state === "ready"}
+            fallback={<div>Loading data...</div>}
+          >
+            <Renderer {...config()} />
+          </Show>
         </div>
         <div class="capture-container" ref={captureContainer} />
         <div class="capturing-hint">生成图片中</div>

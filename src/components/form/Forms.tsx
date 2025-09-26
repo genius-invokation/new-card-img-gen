@@ -1,5 +1,7 @@
 import { createForm } from "@felte/solid";
 import type { AppConfig } from "../../types";
+import { createEffect, on } from "solid-js";
+import "./Forms.css";
 
 export interface FormsProps {
   config: AppConfig;
@@ -7,19 +9,33 @@ export interface FormsProps {
 }
 
 export const Forms = (props: FormsProps) => {
-  const { form } = createForm({
+  const { form, setData, setFields } = createForm<AppConfig>({
     onSubmit: (data) => {
       console.log(data);
-      const newConfig = { ...props.config, ...data };
-      props.onSubmit(newConfig);
+      props.onSubmit({ ...props.config, ...data });
     },
   });
+  createEffect(
+    on(
+      () => props.config,
+      (config) => {
+        setData(config);
+        setFields("solo", config.solo);
+      },
+    ),
+  );
   void form;
   return (
     <div>
-      <form use:form>
+      <form use:form class="temp-form">
         <input name="solo" placeholder="Solo ID" />
-        <button type="submit">Submit</button>
+        <input name="cardbackImage" />
+        <input name="language" />
+        <input name="authorName" />
+        <input name="authorImageUrl" />
+        <button type="submit">
+          Submit
+        </button>
       </form>
     </div>
   );
