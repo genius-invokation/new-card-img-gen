@@ -21,7 +21,7 @@ const APP_CONFIG: AppConfig = {
   data: EMPTY_DATA,
   language: "zh",
   authorName: "Author",
-  authorImageUrl: "/vite.svg",
+  authorImageUrl: `${import.meta.env.BASE_URL}vite.svg`,
   cardbackImage: "UI_Gcg_CardBack_Fonta_03",
   displayId: true,
   displayStory: true,
@@ -31,7 +31,7 @@ const APP_CONFIG: AppConfig = {
 export const App = () => {
   const [npmData] = createResource(async () => {
     const data = await import(
-    // @ts-expect-error Remote module no typings
+      // @ts-expect-error Remote module no typings
       /* @vite-ignore */ "https://esm.sh/@gi-tcg/static-data"
     );
     return data;
@@ -74,6 +74,11 @@ export const App = () => {
       link.href = objectUrl;
       link.click();
       link.remove();
+    } catch (e) {
+      if (e instanceof Error) {
+        alert(`导出失败: ${e}`);
+      }
+      console.error(e);
     } finally {
       if (objectUrl) {
         URL.revokeObjectURL(objectUrl);
@@ -102,7 +107,6 @@ export const App = () => {
           <Forms config={config()} onSubmit={setConfig} />
         </div>
         <div class="renderer-container">
-          
           <Show
             when={npmData.state === "ready"}
             fallback={<div>Loading data...</div>}
