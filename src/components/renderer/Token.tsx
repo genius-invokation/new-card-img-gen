@@ -1,9 +1,9 @@
 import { Show, Switch, Match, For } from "solid-js";
-import { useRenderContext } from "../context";
-import type { DescriptionToken, ParsedDescription } from "../types";
-import { DESCRIPTION_ICON_IMAGES } from "../constants";
-import { remapColors } from "../parser";
-import { nar, tagImageUrl } from "../utils";
+import { useRenderContext } from "../../context";
+import type { DescriptionToken, ParsedDescription } from "../../types";
+import { DESCRIPTION_ICON_IMAGES } from "../../constants";
+import { remapColors } from "../../parser";
+import { nar, tagImageUrl } from "../../utils";
 import { Text } from "./Text";
 import "./Token.css";
 

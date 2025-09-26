@@ -38,100 +38,30 @@
 }
 
 #root {
-  position: relative;
-  width: 1712px;
-  user-select: none;
+  height: 100vh;
+  width: 100vw;
+  overflow: clip;
 }
 
-.layout {
-  --page-bg-color: 247, 247, 235;
-  --box-bg-color: #fefef4;
-
-  font-family: "HYWH", sans-serif;
-
-  padding: 9rem 4rem 2.5rem;
-  overflow: hidden;
-  word-break: break-word;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  background: top/contain no-repeat url("/assets/frame/header_decor.png"),
-    rgb(var(--page-bg-color));
-}
-
-.layout.single-action-card {
-  background: top/contain no-repeat
-    url("/assets/frame/header_decor_onecard.png") rgb(var(--page-bg-color));
-}
-
-.version-layout {
-  margin: -1.5rem 1.5rem;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.version-text {
-  height: 3.2rem;
+.app {
+  height: 100%;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0.3rem 2rem 0 1.5rem;
-  background-color: var(--box-bg-color);
-  border: 1px solid #b4967e;
-  border-radius: 1.6rem;
-  overflow: hidden;
-  word-break: break-word;
-  font-size: 2.25rem;
-  line-height: 1;
-  color: #bdb6af;
-  white-space: pre-wrap;
-  text-align: justify;
-  text-indent: 0;
 }
 
-.logo {
-  height: 8rem;
-  opacity: 0.8;
-  margin-top: -0.5rem;
+.sidebar {
+  height: 100%;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
 }
 
-@layer shared {
-  .figure {
-    background: top right / 17.75rem no-repeat url("/assets/frame/figure.png");
-  }
-  .stroked-text-top {
-    z-index: 12;
-    font-size: var(--stroked-font-size);
-    color: #ffffff;
-    white-space: nowrap;
-    line-height: 1;
-  }
+.renderer-container {
+  height: 100%;
+  width: 50%;
 
-  .stroked-text-bottom {
-    z-index: 11;
-    font-size: var(--stroked-font-size);
-    color: #ffffff;
-    -webkit-text-stroke: var(--stroked-width) #4c443a;
-    white-space: nowrap;
-    line-height: 1;
-  }
-
-  .id-box {
-    display: inline-flex;
-    flex-direction: row;
-    align-items: center;
-    padding-top: 0.15rem;
-    padding-inline: 1rem;
-
-    height: 2.5rem;
-    font-size: 2rem;
-    border-radius: 0.25rem;
-    overflow: visible;
-    white-space: nowrap;
-    background-color: #cab5a1;
-    color: var(--box-bg-color);
-    opacity: 0.5;
-  }
+  overflow-x: clip;
+  overflow-y: scroll;
 }

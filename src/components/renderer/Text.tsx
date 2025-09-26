@@ -1,5 +1,5 @@
 import { Show, For } from "solid-js";
-import { useGlobalSettings } from "../context";
+import { useGlobalSettings } from "../../context";
 import "./Text.css";
 
 export const Text = (props: { text: string | undefined | null }) => {

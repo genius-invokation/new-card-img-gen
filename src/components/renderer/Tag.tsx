@@ -1,7 +1,7 @@
 import { Show } from "solid-js";
-import { TYPE_TAG_TEXT_MAP } from "../constants";
-import { useGlobalSettings } from "../context";
-import { tagImageUrl } from "../utils";
+import { TYPE_TAG_TEXT_MAP } from "../../constants";
+import { useGlobalSettings } from "../../context";
+import { tagImageUrl } from "../../utils";
 import { Text } from "./Text";
 import "./Tag.css";
 

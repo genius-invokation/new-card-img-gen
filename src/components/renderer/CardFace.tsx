@@ -1,11 +1,11 @@
 import type { JSX } from "solid-js";
-import { useGlobalSettings } from "../context";
+import { useGlobalSettings } from "../../context";
 import {
   CARD_BACK_FRAME,
   CARD_LEGEND_FRAME,
   CARD_NORMAL_FRAME,
-} from "../constants";
-import { cardFaceUrl } from "../utils";
+} from "../../constants";
+import { cardFaceUrl } from "../../utils";
 import "./CardFace.css";
 
 export const CardFace = (props: {

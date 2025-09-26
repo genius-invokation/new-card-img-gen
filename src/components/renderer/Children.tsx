@@ -4,8 +4,8 @@ import type {
   ParsedActionCard,
   ParsedEntity,
   ParsedKeyword,
-} from "../types";
-import { useGlobalSettings, useRenderContext } from "../context";
+} from "../../types";
+import { useGlobalSettings, useRenderContext } from "../../context";
 import { KeywordIcon } from "./KeywordIcon";
 import { KeywordTag } from "./KeywordTag";
 import { Cost } from "./Cost";
@@ -15,8 +15,8 @@ import {
   KEYWORD_CARDBACK_REPEAT,
   KEYWORD_CARD_FRAME,
   COST_READONLY_ENTITIES,
-} from "../constants";
-import { cardFaceUrl } from "../utils";
+} from "../../constants";
+import { cardFaceUrl } from "../../utils";
 import { Text } from "./Text";
 import "./Children.css";
 

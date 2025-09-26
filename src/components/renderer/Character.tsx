@@ -1,11 +1,11 @@
 import { For, Show, createMemo } from "solid-js";
-import type { ParsedCharacter } from "../types";
-import { useGlobalSettings } from "../context";
+import type { ParsedCharacter } from "../../types";
+import { useGlobalSettings } from "../../context";
 import {
   AVATAR_CARD_ENERGY,
   AVATAR_CARD_HP,
   SPECIAL_ENERGY_MAP,
-} from "../constants";
+} from "../../constants";
 import { SkillBox } from "./SkillBox";
 import { CardFace } from "./CardFace";
 import { Tag } from "./Tag";

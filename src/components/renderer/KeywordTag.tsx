@@ -1,6 +1,6 @@
 import { createEffect, Show } from "solid-js";
-import { TYPE_TAG_TEXT_MAP } from "../constants";
-import { useGlobalSettings } from "../context";
+import { TYPE_TAG_TEXT_MAP } from "../../constants";
+import { useGlobalSettings } from "../../context";
 import "./KeywordTag.css";
 
 export const KeywordTag = (props: {

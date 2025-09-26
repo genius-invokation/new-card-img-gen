@@ -1,4 +1,4 @@
-import { PAGE_TITLE_ICON } from "../constants";
+import { PAGE_TITLE_ICON } from "../../constants";
 import { Text } from "./Text";
 import "./PageTitle.css";
 

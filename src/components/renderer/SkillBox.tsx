@@ -1,11 +1,11 @@
 import { Show } from "solid-js";
-import type { ParsedSkill } from "../types";
-import { useGlobalSettings } from "../context";
-import { TYPE_TAG_TEXT_MAP } from "../constants";
+import type { ParsedSkill } from "../../types";
+import { useGlobalSettings } from "../../context";
+import { TYPE_TAG_TEXT_MAP } from "../../constants";
 import { Cost } from "./Cost";
 import { Children } from "./Children";
 import { Description } from "./Token";
-import { cardFaceUrl } from "../utils";
+import { cardFaceUrl } from "../../utils";
 import { Text } from "./Text";
 import "./SkillBox.css";
 
