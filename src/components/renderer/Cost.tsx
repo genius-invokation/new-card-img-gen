@@ -4,7 +4,7 @@ import { COST_TYPE_IMG_NAME_MAP } from "../../constants";
 import "./Cost.css";
 
 const diceImageUrl = (type: string) =>
-  `/assets/UI_Gcg_DiceL_${COST_TYPE_IMG_NAME_MAP[type]}_Glow_HD.png`;
+  `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_${COST_TYPE_IMG_NAME_MAP[type]}_Glow_HD.png`;
 
 export const Cost = (props: {
   type: "skill" | "keyword" | "actionCard";

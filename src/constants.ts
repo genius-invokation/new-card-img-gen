@@ -53,23 +53,23 @@ export const COST_READONLY_ENTITIES = [
 
 export const correctId: Record<number, number> = { 12123: 12112 };
 
-export const CARD_BACK_FRAME = "/assets/frame/avatar_card_frame_2.png";
-export const CARD_NORMAL_FRAME = "/assets/frame/card_frame_normal.png";
-export const CARD_LEGEND_FRAME = "/assets/frame/card_frame_legend.png";
-export const KEYWORD_CARD_FRAME = "/assets/frame/keyword_card_frame.png";
+export const CARD_BACK_FRAME = `${import.meta.env.BASE_URL}assets/frame/avatar_card_frame_2.png`;
+export const CARD_NORMAL_FRAME = `${import.meta.env.BASE_URL}assets/frame/card_frame_normal.png`;
+export const CARD_LEGEND_FRAME = `${import.meta.env.BASE_URL}assets/frame/card_frame_legend.png`;
+export const KEYWORD_CARD_FRAME = `${import.meta.env.BASE_URL}assets/frame/keyword_card_frame.png`;
 export const KEYWORD_CARDBACK_REPEAT =
-  "/assets/frame/card_back_repeat.png";
+  `${import.meta.env.BASE_URL}assets/frame/card_back_repeat.png`;
 export const KEYWORD_CARDBACK_BOTTOM =
-  "/assets/frame/card_back_bottom.png";
-export const PAGE_TITLE_ICON = "/assets/frame/pagetitle.png";
+  `${import.meta.env.BASE_URL}assets/frame/card_back_bottom.png`;
+export const PAGE_TITLE_ICON = `${import.meta.env.BASE_URL}assets/frame/pagetitle.png`;
 
-export const AVATAR_CARD_HP = "/assets/UI_TeyvatCard_LifeBg.png";
-export const AVATAR_CARD_ENERGY = "/assets/UI_TeyvatCard_LifeBg3.png";
+export const AVATAR_CARD_HP = `${import.meta.env.BASE_URL}assets/UI_TeyvatCard_LifeBg.png`;
+export const AVATAR_CARD_ENERGY = `${import.meta.env.BASE_URL}assets/UI_TeyvatCard_LifeBg3.png`;
 export const SPECIAL_ENERGY_MAP: Record<
   number,
   { type: string; count: number }
 > = {
-  1315: { type: "/assets/UI_TeyvatCard_LifeBg_Mavuika1.png", count: 3 },
+  1315: { type: `${import.meta.env.BASE_URL}assets/UI_TeyvatCard_LifeBg_Mavuika1.png`, count: 3 },
 };
 
 export const COST_TYPE_IMG_NAME_MAP: Record<string, string> = {
@@ -264,29 +264,28 @@ export const TYPE_TAG_IMG_NAME_MAP: Record<string, string> = {
 };
 
 export const DESCRIPTION_ICON_IMAGES = {
-  4007: { imageUrl: `/assets/UI_Gcg_Keyword_Shield.png` },
-  2100: { imageUrl: `/assets/UI_Gcg_Keyword_Element_Physics.png` },
-  2101: { imageUrl: `/assets/UI_Gcg_Keyword_Element_Ice.png` },
-  2102: { imageUrl: `/assets/UI_Gcg_Keyword_Element_Water.png` },
-  2103: { imageUrl: `/assets/UI_Gcg_Keyword_Element_Fire.png` },
-  2104: { imageUrl: `/assets/UI_Gcg_Keyword_Element_Electric.png` },
-  2105: { imageUrl: `/assets/UI_Gcg_Keyword_Element_Wind.png` },
-  2106: { imageUrl: `/assets/UI_Gcg_Keyword_Element_Rock.png` },
-  2107: { imageUrl: `/assets/UI_Gcg_Keyword_Element_Grass.png` },
-  1101: { imageUrl: `/assets/UI_Gcg_DiceL_Ice.png` },
-  1102: { imageUrl: `/assets/UI_Gcg_DiceL_Water.png` },
-  1103: { imageUrl: `/assets/UI_Gcg_DiceL_Fire.png` },
-  1104: { imageUrl: `/assets/UI_Gcg_DiceL_Elec.png` },
-  1105: { imageUrl: `/assets/UI_Gcg_DiceL_Wind.png` },
-  1106: { imageUrl: `/assets/UI_Gcg_DiceL_Rock.png` },
-  1107: { imageUrl: `/assets/UI_Gcg_DiceL_Grass.png` },
-  1108: { imageUrl: `/assets/UI_Gcg_DiceL_Same.png` },
-  1109: { imageUrl: `/assets/UI_Gcg_DiceL_Diff.png` },
-  1110: { imageUrl: `/assets/UI_Gcg_Keyword_Energy.png` },
-  1111: { imageUrl: `/assets/UI_Gcg_DiceL_Any.png` },
-  1112: { imageUrl: `/assets/UI_Gcg_Keyword_Legend.png` },
-  // 1113: "元素精通",
-  4008: { imageUrl: `/assets/UI_Gcg_Keyword_Fighting_Spirit.png` },
+  4007: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Shield.png` },
+  2100: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Element_Physics.png` },
+  2101: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Element_Ice.png` },
+  2102: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Element_Water.png` },
+  2103: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Element_Fire.png` },
+  2104: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Element_Electric.png` },
+  2105: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Element_Wind.png` },
+  2106: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Element_Rock.png` },
+  2107: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Element_Grass.png` },
+  1101: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Ice.png` },
+  1102: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Water.png` },
+  1103: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Fire.png` },
+  1104: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Elec.png` },
+  1105: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Wind.png` },
+  1106: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Rock.png` },
+  1107: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Grass.png` },
+  1108: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Same.png` },
+  1109: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Diff.png` },
+  1110: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Energy.png` },
+  1111: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Any.png` },
+  1112: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Legend.png` },
+  4008: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Fighting_Spirit.png` },
   3003: { tagIcon: "GCG_TAG_WEAPON" },
   3004: { tagIcon: "GCG_TAG_ARTIFACT" },
   3006: { tagIcon: "GCG_TAG_TALENT" },

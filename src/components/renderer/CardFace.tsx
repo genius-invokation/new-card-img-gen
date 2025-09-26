@@ -19,7 +19,7 @@ export const CardFace = (props: {
   const mergedClass = () => props.class ?? props.className ?? "";
   return (
     <div class={`card-face-component ${mergedClass()}`}>
-      <img src={`/assets/cardbacks/${cardbackImage()}.png`} class="card-back" />
+      <img src={`${import.meta.env.BASE_URL}assets/cardbacks/${cardbackImage()}.png`} class="card-back" />
       <img src={CARD_BACK_FRAME} class="card-frame-shadow" />
       <div class="card-face">
         <img src={cardFaceUrl(props.cardFace)} class="card-face-image" />
