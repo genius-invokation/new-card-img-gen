@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@felte/solid": "^1.2.14",
-    "html-to-image": "^1.11.13",
+    "modern-screenshot": "^4.6.6",
     "solid-js": "^1.9.9"
   },
   "devDependencies": {

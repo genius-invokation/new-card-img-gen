@@ -1,11 +1,12 @@
-import { createSignal, createResource, Show } from "solid-js";
+import { createSignal, createResource, Show, onMount } from "solid-js";
 import type { AppConfig, AllRawData } from "./types";
 import { GlobalSettings } from "./context";
 import "./App.css";
 import { Renderer } from "./components/renderer/Renderer";
 import { Forms } from "./components/form/Forms";
-import { toBlob } from "html-to-image";
 import { createEffect } from "solid-js";
+import { Portal } from "solid-js/web";
+import { domToBlob } from "modern-screenshot";
 
 // NOTE: 绝大多数逻辑直接从 ref/client.tsx 迁移，保证渲染/解析逻辑不被删改，仅适配 Solid API。
 
@@ -46,25 +47,17 @@ export const App = () => {
   const [config, setConfig] = createSignal<AppConfig>(APP_CONFIG);
 
   const exportImage = async () => {
-    const renderingArea = document.querySelector<HTMLElement>(".layout");
-    if (!renderingArea) {
-      alert(`未找到渲染区域`);
-      return;
-    }
-    const originalParent = renderingArea.parentElement;
     let objectUrl: string | null = null;
     try {
-      captureContainer.innerHTML = "";
-      captureContainer.append(renderingArea);
+      setRenderMount(captureContainer);
       // make them reflow (?)
       await new Promise((r) => setTimeout(r, 100));
-      const { width, height } = getComputedStyle(renderingArea);
-      const blob = await toBlob(captureContainer, {
+      const blob = await domToBlob(captureContainer, {
         type: "image/png",
-        width: parseFloat(width),
-        height: parseFloat(height),
+        width: captureContainer.scrollWidth,
+        height: captureContainer.scrollHeight,
       });
-      if (!blob) {
+      if (!blob.size) {
         alert("导出失败");
         return;
       }
@@ -83,11 +76,17 @@ export const App = () => {
       if (objectUrl) {
         URL.revokeObjectURL(objectUrl);
       }
-      originalParent?.append(renderingArea);
+      setRenderMount(previewContainer);
     }
   };
 
   let captureContainer!: HTMLDivElement;
+  let previewContainer!: HTMLDivElement;
+  const [renderMount, setRenderMount] = createSignal<HTMLElement>();
+
+  onMount(() => {
+    setRenderMount(previewContainer);
+  });
 
   return (
     <GlobalSettings.Provider
@@ -106,17 +105,20 @@ export const App = () => {
           </header>
           <Forms config={config()} onSubmit={setConfig} />
         </div>
-        <div class="renderer-container">
-          <Show
-            when={npmData.state === "ready"}
-            fallback={<div>Loading data...</div>}
-          >
-            <Renderer {...config()} />
-          </Show>
-        </div>
+        <div class="preview-container" ref={previewContainer} />
         <div class="capture-container" ref={captureContainer} />
         <div class="capturing-hint">生成图片中</div>
       </div>
+      <Portal mount={renderMount()}>
+        <Show
+          when={npmData.state === "ready"}
+          fallback={
+            <div class="layout loading">Loading data...</div>
+          }
+        >
+          <Renderer {...config()} />
+        </Show>
+      </Portal>
     </GlobalSettings.Provider>
   );
 };

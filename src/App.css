@@ -72,21 +72,32 @@
   align-items: center;
 }
 
-.renderer-container {
-  height: 100%;
+.preview-container {
+  height: 100vh;
+  flex-shrink: 0;
   width: 50%;
 
   overflow-x: clip;
   overflow-y: scroll;
+
+  container: layout-renderer / size;
 }
 
 .capture-container {
   position: absolute;
   width: var(--inner-width);
-  height: max-content;
+  height: min-content;
   top: 0;
   left: 0;
-  container: renderer / size;
+  container: layout-renderer / size;
+}
+
+:is(.preview-container, .capture-container) > div {
+  height: 100%;
+  width: 100%;
+  transform-origin: left top;
+  transform: scale(calc(100cqw / var(--inner-width)));
+
 }
 
 .capturing-hint {

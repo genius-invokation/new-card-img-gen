@@ -129,29 +129,31 @@ export const Renderer = (props: AppConfig) => {
   }
 
   const getRenderContext = () => renderingObjects().renderContext;
+  const empty = () =>
+    !renderingObjects().character &&
+    renderingObjects().actionCards.length === 0;
 
   return (
     <RenderContextProvider value={getRenderContext}>
-      <div class="renderer">
-        <div
-          class="layout"
-          classList={{
-            "single-action-card":
-              renderingObjects().mode === "singleActionCard",
-          }}
-        >
-          <Show when={renderingObjects().character}>
-            {(c) => <Character character={c()} />}
+      <div
+        class="layout"
+        classList={{
+          "single-action-card": renderingObjects().mode === "singleActionCard",
+          loading: empty(),
+        }}
+      >
+        <Show when={renderingObjects().character}>
+          {(c) => <Character character={c()} />}
+        </Show>
+        <For each={renderingObjects().actionCards}>
+          {(ac) => <ActionCard card={ac} />}
+        </For>
+        <Show when={empty()}>无数据</Show>
+        <div class="version-layout">
+          <div class="version-text">{props.authorName}</div>
+          <Show when={props.authorImageUrl}>
+            {(url) => <img src={url()} class="logo" />}
           </Show>
-          <For each={renderingObjects().actionCards}>
-            {(ac) => <ActionCard card={ac} />}
-          </For>
-          <div class="version-layout">
-            <div class="version-text">{props.authorName}</div>
-            <Show when={props.authorImageUrl}>
-              {(url) => <img src={url()} class="logo" />}
-            </Show>
-          </div>
         </div>
       </div>
     </RenderContextProvider>

@@ -1,15 +1,6 @@
-.renderer {
-  width: 100%;
-  height: max-content;
-  container: renderer / size;
-}
-
 .layout {
   width: var(--inner-width);
   
-  transform-origin: left top;
-  transform: scale(calc(100cqw / var(--inner-width)));
-
   --page-bg-color: 247, 247, 235;
   --box-bg-color: #fefef4;
 
@@ -29,6 +20,14 @@
   padding-top: 0;
   background: top/contain no-repeat
     url("/assets/frame/header_decor_onecard.png") rgb(var(--page-bg-color));
+}
+
+.layout.loading {
+  font-size: 2.5rem;
+  background-image: unset;
+  color: #716864;
+  padding-top: 2.5rem;
+  background: rgb(var(--page-bg-color));
 }
 
 .version-layout {
