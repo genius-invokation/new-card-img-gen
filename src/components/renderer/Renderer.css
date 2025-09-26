@@ -1,11 +1,8 @@
 .renderer {
   width: 100%;
-  height: fit-content;
-  --inner-width: 1712px;
+  height: max-content;
   container: renderer / size;
 }
-
-
 
 .layout {
   width: var(--inner-width);
@@ -29,6 +26,7 @@
 }
 
 .layout.single-action-card {
+  padding-top: 0;
   background: top/contain no-repeat
     url("/assets/frame/header_decor_onecard.png") rgb(var(--page-bg-color));
 }

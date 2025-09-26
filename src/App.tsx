@@ -1,14 +1,15 @@
-import { createSignal, createMemo } from "solid-js";
-import { type AppProps } from "./types";
+import { createSignal } from "solid-js";
+import { type AppConfig } from "./types";
 import { GlobalSettings } from "./context";
 import * as MOCK_DATA from "@gi-tcg/static-data";
 import "./App.css";
 import { Renderer } from "./components/renderer/Renderer";
 import { Forms } from "./components/form/Forms";
+import { toBlob } from "html-to-image";
 
 // NOTE: 绝大多数逻辑直接从 ref/client.tsx 迁移，保证渲染/解析逻辑不被删改，仅适配 Solid API。
 
-const APP_CONFIG: AppProps = {
+const APP_CONFIG: AppConfig = {
   solo: "A1315",
   data: MOCK_DATA,
   language: "zh",
@@ -21,7 +22,44 @@ const APP_CONFIG: AppProps = {
 };
 
 export const App = () => {
-  const [config] = createSignal<AppProps>({ ...APP_CONFIG });
+  const [config, setConfig] = createSignal<AppConfig>(APP_CONFIG);
+
+  const exportImage = async () => {
+    const renderingArea = document.querySelector<HTMLElement>(".layout");
+    if (!renderingArea) {
+      alert(`未找到渲染区域`);
+      return;
+    }
+    let objectUrl: string | null = null;
+    const { width, height } = getComputedStyle(renderingArea);
+    try {
+      captureContainer.innerHTML = "";
+      captureContainer.append(renderingArea.cloneNode(true));
+      const blob = await toBlob(captureContainer, {
+        type: "image/png",
+        width: parseInt(width),
+        height: parseInt(height),
+      });
+      if (!blob) {
+        alert("导出失败");
+        return;
+      }
+      objectUrl = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.download = `card-${Date.now()}.png`;
+      link.href = objectUrl;
+      link.click();
+      link.remove();
+    } finally {
+      if (objectUrl) {
+        URL.revokeObjectURL(objectUrl);
+      }
+      captureContainer.innerHTML = "";
+    }
+  };
+
+  let captureContainer!: HTMLDivElement;
+
   return (
     <GlobalSettings.Provider
       value={{
@@ -33,14 +71,17 @@ export const App = () => {
     >
       <div class="app">
         <div class="sidebar">
-          <div>
-            <h1>卡图制作</h1>
-          </div>
-          <Forms />
+          <header class="header">
+            <h1>卡图生成</h1>
+            <button onClick={exportImage}>导出图片</button>
+          </header>
+          <Forms config={config()} onSubmit={setConfig} />
         </div>
         <div class="renderer-container">
           <Renderer {...config()} />
         </div>
+        <div class="capture-container" ref={captureContainer} />
+        <div class="capturing-hint">生成图片中</div>
       </div>
     </GlobalSettings.Provider>
   );

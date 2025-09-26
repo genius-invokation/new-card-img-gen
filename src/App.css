@@ -38,14 +38,16 @@
 }
 
 #root {
-  height: 100vh;
-  width: 100vw;
+  min-height: 100vh;
+  min-width: 100vw;
   overflow: clip;
+
+  --inner-width: 1712px;
 }
 
 .app {
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -58,10 +60,44 @@
   flex-direction: column;
 }
 
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .renderer-container {
   height: 100%;
   width: 50%;
 
   overflow-x: clip;
   overflow-y: scroll;
+}
+
+.capture-container {
+  position: fixed;
+  width: var(--inner-width);
+  height: max-content;
+  top: 0;
+  left: 0;
+  container: renderer / size;
+}
+
+.capturing-hint {
+  display: none;
+}
+
+.capture-container:has(.layout) ~ .capturing-hint {
+  font-size: 3rem;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: white;
+  opacity: 90%;
 }

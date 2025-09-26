@@ -2,7 +2,7 @@ import { createSignal, createMemo } from "solid-js";
 import { For, Show } from "solid-js";
 import type { SkillRawData } from "@gi-tcg/static-data";
 import {
-  type AppProps,
+  type AppConfig,
   type RenderContext,
   type ParsedCharacter,
   type ParsedActionCard,
@@ -13,7 +13,7 @@ import { Character } from "./Character";
 import { ActionCard } from "./ActionCard";
 import "./Renderer.css";
 
-export const Renderer = (props: AppProps) => {
+export const Renderer = (props: AppConfig) => {
   const renderingObjects = createMemo<RenderingObjects>(() => {
     const data = props.data;
     const keywords = data.keywords;
