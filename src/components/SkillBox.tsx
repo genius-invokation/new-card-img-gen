@@ -1,6 +1,6 @@
 import { Show } from "solid-js";
 import type { ParsedSkill } from "../types";
-import { useAppContext } from "../context";
+import { useGlobalSettings } from "../context";
 import { TYPE_TAG_TEXT_MAP } from "../constants";
 import { Cost } from "./Cost";
 import { Children } from "./Children";
@@ -10,7 +10,7 @@ import { Text } from "./Text";
 import "./SkillBox.css";
 
 export const SkillBox = (props: { skill: ParsedSkill }) => {
-  const { displayId, language } = useAppContext();
+  const { displayId, language } = useGlobalSettings();
   const skill = () => props.skill;
   return (
     <Show when={!skill().hidden}>

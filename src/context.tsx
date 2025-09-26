@@ -1,9 +1,9 @@
 import { createContext, useContext, type Accessor } from "solid-js";
-import type { AppContextValue, RenderContext } from "./types";
+import type { GlobalSettingsValue, RenderContext } from "./types";
 
-export const AppContext = createContext<AppContextValue>();
-export const useAppContext = () => {
-  const ctx = useContext(AppContext);
+export const GlobalSettings = createContext<GlobalSettingsValue>();
+export const useGlobalSettings = () => {
+  const ctx = useContext(GlobalSettings);
   if (!ctx) {
     throw new Error(
       "AppContext not found: ensure your component is wrapped in <AppContext.Provider>",

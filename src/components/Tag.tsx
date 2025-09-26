@@ -1,6 +1,6 @@
 import { Show } from "solid-js";
 import { TYPE_TAG_TEXT_MAP } from "../constants";
-import { useAppContext } from "../context";
+import { useGlobalSettings } from "../context";
 import { tagImageUrl } from "../utils";
 import { Text } from "./Text";
 import "./Tag.css";
@@ -10,7 +10,7 @@ export const Tag = (props: {
   tag: string;
   className?: string;
 }) => {
-  const { language } = useAppContext();
+  const { language } = useGlobalSettings();
   return (
     <Show when={TYPE_TAG_TEXT_MAP[language()][props.tag]}>
       <div class={`tag ${props.className ?? ""}`} data-tag-type={props.type}>

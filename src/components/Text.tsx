@@ -1,9 +1,9 @@
 import { Show, For } from "solid-js";
-import { useAppContext } from "../context";
+import { useGlobalSettings } from "../context";
 import "./Text.css";
 
 export const Text = (props: { text: string | undefined | null }) => {
-  const { language } = useAppContext();
+  const { language } = useGlobalSettings();
   return (
     <Show when={props.text}>
       {(text) => (

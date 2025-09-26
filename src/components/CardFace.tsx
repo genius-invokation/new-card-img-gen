@@ -1,5 +1,5 @@
 import type { JSX } from "solid-js";
-import { useAppContext } from "../context";
+import { useGlobalSettings } from "../context";
 import {
   CARD_BACK_FRAME,
   CARD_LEGEND_FRAME,
@@ -15,7 +15,7 @@ export const CardFace = (props: {
   cardFace: string;
   children?: JSX.Element;
 }) => {
-  const { cardbackImage } = useAppContext();
+  const { cardbackImage } = useGlobalSettings();
   const mergedClass = () => props.class ?? props.className ?? "";
   return (
     <div class={`card-face-component ${mergedClass()}`}>

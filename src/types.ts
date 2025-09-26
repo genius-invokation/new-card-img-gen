@@ -69,7 +69,7 @@ export type DescriptionToken =
   | { type: "icon"; id: number; overrideStyle: () => TokenStyle | undefined };
 export type ParsedDescription = DescriptionToken[];
 
-export interface AppContextValue {
+export interface GlobalSettingsValue {
   language: Accessor<"en" | "zh">;
   cardbackImage: Accessor<string>;
   displayId: Accessor<boolean>;

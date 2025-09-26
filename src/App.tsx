@@ -8,7 +8,7 @@ import {
   type ParsedActionCard,
 } from "./types";
 import { parseCharacter, parseActionCard } from "./parser";
-import { AppContext, RenderContextProvider } from "./context";
+import { GlobalSettings, RenderContextProvider } from "./context";
 import { Character } from "./components/Character";
 import { ActionCard } from "./components/ActionCard";
 import * as MOCK_DATA from "@gi-tcg/static-data";
@@ -27,7 +27,7 @@ const APP_CONFIG: AppProps = {
   displayStory: true,
   mirroredLayout: false,
 };
-const AppImpl = (props: AppProps) => {
+const Renderer = (props: AppProps) => {
   const renderingObjects = createMemo<RenderingObjects>(() => {
     const data = props.data;
     const keywords = data.keywords;
@@ -173,7 +173,7 @@ const AppImpl = (props: AppProps) => {
 export const App = () => {
   const [config] = createSignal<AppProps>({ ...APP_CONFIG });
   return (
-    <AppContext.Provider
+    <GlobalSettings.Provider
       value={{
         language: () => config().language || "zh",
         cardbackImage: () => config().cardbackImage,
@@ -181,7 +181,7 @@ export const App = () => {
         displayId: () => !!config().displayId,
       }}
     >
-      <AppImpl {...config()} />
-    </AppContext.Provider>
+      <Renderer {...config()} />
+    </GlobalSettings.Provider>
   );
 };

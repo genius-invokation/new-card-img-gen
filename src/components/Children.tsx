@@ -5,7 +5,7 @@ import type {
   ParsedEntity,
   ParsedKeyword,
 } from "../types";
-import { useAppContext, useRenderContext } from "../context";
+import { useGlobalSettings, useRenderContext } from "../context";
 import { KeywordIcon } from "./KeywordIcon";
 import { KeywordTag } from "./KeywordTag";
 import { Cost } from "./Cost";
@@ -31,7 +31,7 @@ type AnyChild = ParsedChild & {
 };
 
 export const Children = (props: { children: ParsedChild[] }) => {
-  const { displayId, language } = useAppContext();
+  const { displayId, language } = useGlobalSettings();
   const renderContext = useRenderContext();
 
   return (

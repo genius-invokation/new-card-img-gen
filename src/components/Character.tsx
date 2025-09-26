@@ -1,6 +1,6 @@
 import { For, Show, createMemo } from "solid-js";
 import type { ParsedCharacter } from "../types";
-import { useAppContext } from "../context";
+import { useGlobalSettings } from "../context";
 import {
   AVATAR_CARD_ENERGY,
   AVATAR_CARD_HP,
@@ -13,7 +13,7 @@ import { Text } from "./Text";
 import "./Character.css";
 
 export const Character = (props: { character: ParsedCharacter }) => {
-  const ctx = useAppContext();
+  const ctx = useGlobalSettings();
   const character = () => props.character;
   const skillsMemo = createMemo(() => character().parsedSkills);
   const normalSkill = createMemo(() => skillsMemo()[0]);

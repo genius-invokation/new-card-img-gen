@@ -1,6 +1,6 @@
 import { Show, For } from "solid-js";
 import type { ParsedActionCard } from "../types";
-import { useAppContext } from "../context";
+import { useGlobalSettings } from "../context";
 import { Tag } from "./Tag";
 import { Cost } from "./Cost";
 import { CardFace } from "./CardFace";
@@ -10,7 +10,7 @@ import { Text } from "./Text";
 import "./ActionCard.css";
 
 export const ActionCard = (props: { card: ParsedActionCard }) => {
-  const { displayId, language } = useAppContext();
+  const { displayId, language } = useGlobalSettings();
   const card = () => props.card;
   return (
     <div class="action-card">
