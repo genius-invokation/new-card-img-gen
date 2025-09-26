@@ -8,7 +8,7 @@ export const Text = (props: { text: string | undefined | null }) => {
     <Show when={props.text}>
       {(text) => (
         <Show
-          when={language === "zh"}
+          when={language() === "zh"}
           fallback={<span class="english-text">{text()}</span>}
         >
           <Chinese text={text()} />

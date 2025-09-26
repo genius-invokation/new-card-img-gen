@@ -59,6 +59,11 @@
     rgb(var(--page-bg-color));
 }
 
+.layout.single-action-card {
+  background: top/contain no-repeat
+    url("/assets/frame/header_decor_onecard.png") rgb(var(--page-bg-color));
+}
+
 .version-layout {
   margin: -1.5rem 1.5rem;
   display: flex;

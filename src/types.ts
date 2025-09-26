@@ -6,20 +6,22 @@ import type {
   PlayCost,
   SkillRawData,
 } from "@gi-tcg/static-data";
+import type { Accessor } from "solid-js";
+
+type AllRawDataImpl = typeof import("@gi-tcg/static-data");
+export interface AllRawData extends AllRawDataImpl {}
 
 export interface AppProps {
   language: "en" | "zh";
-  localData?: boolean;
-  beta?: boolean;
   authorName?: string;
   authorImageUrl?: string;
+  data: AllRawData;
   version?: `v${number}.${number}.${number}${"" | `-beta`}`;
   solo?: `${"C" | "A"}${number}`;
   mirroredLayout?: boolean;
   cardbackImage: string;
   displayId?: boolean;
   displayStory?: boolean;
-  debug?: boolean;
 }
 
 export interface ParsedCharacter extends CharacterRawData {
@@ -67,19 +69,23 @@ export type DescriptionToken =
   | { type: "icon"; id: number; overrideStyle: () => TokenStyle | undefined };
 export type ParsedDescription = DescriptionToken[];
 
-export interface AppContextValue extends AppProps {
-  data: {
-    characters: CharacterRawData[];
-    actionCards: ActionCardRawData[];
-    entities: EntityRawData[];
-    genericEntities: (EntityRawData | ActionCardRawData)[];
-    skills: SkillRawData[];
-    keywords: KeywordRawData[];
-  };
+export interface AppContextValue {
+  language: Accessor<"en" | "zh">;
+  cardbackImage: Accessor<string>;
+  displayId: Accessor<boolean>;
+  displayStory: Accessor<boolean>;
+}
+
+export interface RenderContext {
+  // characters: CharacterRawData[];
+  skills: SkillRawData[];
+  keywords: KeywordRawData[];
+  genericEntities: (EntityRawData | ActionCardRawData)[];
+  /** suppressed IDs */
   supIds: number[];
   names: Map<number, string>;
-  keywordToEntityMap: Map<number, number>;
-  prepareSkillToEntityMap: Map<number, number>;
+  keywordToEntityMap: Map<number, EntityRawData>;
+  prepareSkillToEntityMap: Map<number, EntityRawData>;
 }
 
 export type {

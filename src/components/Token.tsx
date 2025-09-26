@@ -1,5 +1,5 @@
 import { Show, Switch, Match, For } from "solid-js";
-import { useAppContext } from "../context";
+import { useRenderContext } from "../context";
 import type { DescriptionToken, ParsedDescription } from "../types";
 import { DESCRIPTION_ICON_IMAGES } from "../constants";
 import { remapColors } from "../parser";
@@ -8,7 +8,7 @@ import { Text } from "./Text";
 import "./Token.css";
 
 export const Token = (props: { token: DescriptionToken }) => {
-  const { names } = useAppContext();
+  const renderContext = useRenderContext();
   const t = () => props.token;
   return (
     <Show when={t().type}>
@@ -68,7 +68,7 @@ export const Token = (props: { token: DescriptionToken }) => {
               }`}
               style={{ "--manual-color": t().manualColor || "" }}
             >
-              <Text text={names.get(t().id) || `#${t().id}`} />
+              <Text text={renderContext().names.get(t().id) || `#${t().id}`} />
             </span>
           )}
         </Match>

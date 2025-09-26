@@ -16,7 +16,7 @@ export const SkillBox = (props: { skill: ParsedSkill }) => {
     <Show when={!skill().hidden}>
       <div class="skill-box figure">
         <div class="skill-type">
-          {TYPE_TAG_TEXT_MAP[language][skill().type]}
+          {TYPE_TAG_TEXT_MAP[language()][skill().type]}
         </div>
         <Show when={skill().playCost?.length > 0}>
           <Cost type="skill" cost={skill().playCost} />
@@ -33,7 +33,7 @@ export const SkillBox = (props: { skill: ParsedSkill }) => {
             <span class="id-box">ID: {skill().id}</span>
           </Show>
         </div>
-        <div class={`skill-description skill-description-${language}`}>
+        <div class={`skill-description skill-description-${language()}`}>
           <Description description={skill().parsedDescription} />
         </div>
         <Show when={skill().children.length > 0}>

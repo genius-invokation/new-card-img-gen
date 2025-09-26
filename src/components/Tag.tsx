@@ -12,7 +12,7 @@ export const Tag = (props: {
 }) => {
   const { language } = useAppContext();
   return (
-    <Show when={TYPE_TAG_TEXT_MAP[language][props.tag]}>
+    <Show when={TYPE_TAG_TEXT_MAP[language()][props.tag]}>
       <div class={`tag ${props.className ?? ""}`} data-tag-type={props.type}>
         <div class="tag-icon-container">
           <Show
@@ -28,7 +28,7 @@ export const Tag = (props: {
           </Show>
         </div>
         <div class="tag-text">
-          <Text text={TYPE_TAG_TEXT_MAP[language][props.tag]} />
+          <Text text={TYPE_TAG_TEXT_MAP[language()][props.tag]} />
         </div>
       </div>
     </Show>

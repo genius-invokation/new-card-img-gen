@@ -7,7 +7,6 @@ import {
   correctId,
 } from "./constants";
 import type {
-  AppContextValue,
   DescriptionToken,
   ParsedDescription,
   ParsedChild,
@@ -16,6 +15,7 @@ import type {
   ActionCardRawData,
   ParsedCharacter,
   CharacterRawData,
+  RenderContext,
 } from "./types";
 
 interface ChildLikeBase {
@@ -56,12 +56,12 @@ export const remapColors = (props: {
 /* eslint-enable solid/reactivity */
 
 export const parseDescription = (
-  ctx: AppContextValue,
+  ctx: RenderContext,
   rawDescription: string,
   keyMap: Record<string, string> = {},
   ignoreParentheses = false,
 ): ParsedDescription => {
-  const { names, data, keywordToEntityMap } = ctx;
+  const { names, keywordToEntityMap } = ctx;
   const segments = rawDescription
     .replace(/<color=#FFFFFFFF>(\$\[[ACSK]\d+\])<\/color>/g, "$1")
     .replace(/<color=#([0-9A-F]{8})>/g, "###COLOR#$1###")
@@ -159,7 +159,7 @@ export const parseDescription = (
             result.push({
               type: "reference",
               refType: "C",
-              id: mappedC,
+              id: mappedC.id,
               manualColor,
               ...styles,
             });
@@ -186,7 +186,7 @@ export const parseDescription = (
         }
       }
       if (usingKeywordId !== null) {
-        const keyword = data.keywords.find((e) => e.id === usingKeywordId);
+        const keyword = ctx.keywords.find((e) => e.id === usingKeywordId);
         if (keyword) {
           const rawNameSplit = keyword.rawName.split("|s1:");
           const rawName =
@@ -223,7 +223,7 @@ export const parseDescription = (
       const id2 = parts[1];
       const count = parts[2];
       const keywordId = Number(id2);
-      const { name } = data.keywords.find((e) => e.id === keywordId) ?? {
+      const { name } = ctx.keywords.find((e) => e.id === keywordId) ?? {
         name: "",
       };
       result.push({ type: "boxedKeyword", text: `${name}：${count}` });
@@ -238,11 +238,10 @@ export const parseDescription = (
 };
 
 export const appendChildren = (
-  ctx: AppContextValue,
+  ctx: RenderContext,
   childData: ChildLikeBase,
   scope: "all" | "self" | "children" = "all",
 ): ParsedChild[] => {
-  const { data } = ctx;
   const parsedDescription = parseDescription(
     ctx,
     childData.rawDescription,
@@ -285,13 +284,13 @@ export const appendChildren = (
       ctx.supIds.push(child.id);
       switch (child.refType) {
         case "S": {
-          const skillData = data.skills.find((sk) => sk.id === child.id);
+          const skillData = ctx.skills.find((sk) => sk.id === child.id);
           if (!skillData) continue;
           result.push(...appendChildren(ctx, skillData, subScope));
           break;
         }
         case "C": {
-          const entityDataMerged = data.genericEntities
+          const entityDataMerged = ctx.genericEntities
             .filter((e) => e.id === child.id)
             .reduce<Record<string, unknown>>(
               (acc, e) => ({ ...acc, ...e }),
@@ -318,7 +317,7 @@ export const appendChildren = (
     ) {
       if (ctx.supIds.includes(-child.id)) continue;
       ctx.supIds.push(-child.id);
-      const keywordData = data.keywords.find((e) => e.id === child.id);
+      const keywordData = ctx.keywords.find((e) => e.id === child.id);
       if (keywordData) {
         result.push({
           ...(keywordData as unknown as ParsedChild),
@@ -332,7 +331,7 @@ export const appendChildren = (
 };
 
 export const parseCharacterSkill = (
-  ctx: AppContextValue,
+  ctx: RenderContext,
   skill: SkillRawData,
 ): ParsedSkill => {
   const parsedDescription = parseDescription(
@@ -346,7 +345,7 @@ export const parseCharacterSkill = (
 };
 
 export const parseCharacter = (
-  ctx: AppContextValue,
+  ctx: RenderContext,
   data:
     | CharacterRawData
     | ({ skills: SkillRawData[] } & Record<string, unknown>),
@@ -362,7 +361,7 @@ export const parseCharacter = (
 };
 
 export const parseActionCard = (
-  ctx: AppContextValue,
+  ctx: RenderContext,
   data: ActionCardRawData,
 ) => {
   ctx.supIds.push(data.id);

@@ -5,7 +5,7 @@ import type {
   ParsedEntity,
   ParsedKeyword,
 } from "../types";
-import { useAppContext } from "../context";
+import { useAppContext, useRenderContext } from "../context";
 import { KeywordIcon } from "./KeywordIcon";
 import { KeywordTag } from "./KeywordTag";
 import { Cost } from "./Cost";
@@ -31,14 +31,17 @@ type AnyChild = ParsedChild & {
 };
 
 export const Children = (props: { children: ParsedChild[] }) => {
-  const { displayId, language, prepareSkillToEntityMap } = useAppContext();
+  const { displayId, language } = useAppContext();
+  const renderContext = useRenderContext();
 
   return (
     <div class="child-layout">
       <For each={props.children}>
         {(raw) => {
           const child = raw as AnyChild;
-          const showPrepare = prepareSkillToEntityMap.has(child.id);
+          const preparing = renderContext().prepareSkillToEntityMap.get(
+            child.id,
+          );
           return (
             <div class="keyword-box-wrapper">
               <div class="keyword-line" />
@@ -77,16 +80,16 @@ export const Children = (props: { children: ParsedChild[] }) => {
                       <For each={child.tags || []}>
                         {(tag) => <KeywordTag tag={tag} />}
                       </For>
-                      <Show when={showPrepare}>
+                      <Show when={preparing}>
                         <KeywordTag tag="GCG_TAG_PREPARE_SKILL" />
                       </Show>
-                      <Show when={displayId}>
+                      <Show when={displayId()}>
                         <div class="id-box">ID: {child.id}</div>
                       </Show>
-                      <Show when={showPrepare && displayId}>
-                        <div class="id-box">
-                          ID: {prepareSkillToEntityMap.get(child.id)}
-                        </div>
+                      <Show when={displayId() && preparing}>
+                        {(preparing) => (
+                          <div class="id-box">ID: {preparing().id}</div>
+                        )}
                       </Show>
                     </div>
                   </div>
@@ -100,12 +103,12 @@ export const Children = (props: { children: ParsedChild[] }) => {
                         : child.playCost || []
                     }
                     readonly={
-                      COST_READONLY_ENTITIES.includes(child.id) || showPrepare
+                      COST_READONLY_ENTITIES.includes(child.id) || !!preparing
                     }
                   />
                 </Show>
                 <div
-                  class={`keyword-description keyword-description-${language}`}
+                  class={`keyword-description keyword-description-${language()}`}
                 >
                   <Description
                     description={
