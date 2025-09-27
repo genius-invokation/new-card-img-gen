@@ -17,8 +17,8 @@ export const Forms = (props: FormsProps) => {
       timeout: 300,
       validate: async () => {
         return void 0;
-      }
-    }
+      },
+    },
   });
   createEffect(
     on(
@@ -49,10 +49,29 @@ export const Forms = (props: FormsProps) => {
           </label>
           <input class="input" name="cardbackImage" />
 
-          <label class="fieldset-legend" for="language">
-            Language
-          </label>
-          <input class="input" name="language" />
+          <span class="fieldset-legend">Language</span>
+          <div class="grid grid-cols-2 gap-2 items-center">
+            <div class="flex flex-row items-center gap-2">
+              <input
+                type="radio"
+                id="lang-en"
+                name="language"
+                value="en"
+                class="radio"
+              />
+              <label for="lang-en">English</label>
+            </div>
+            <div class="flex flex-row items-center gap-2">
+              <input
+                type="radio"
+                id="lang-zh"
+                name="language"
+                value="zh"
+                class="radio"
+              />
+              <label for="lang-zh">中文</label>
+            </div>
+          </div>
 
           <label class="fieldset-legend" for="authorName">
             Author Name
