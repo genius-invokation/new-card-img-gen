@@ -97,11 +97,16 @@ export const App = () => {
         displayId: () => !!config().displayId,
       }}
     >
-      <div class="relative h-[100vh] w-[100vw] flex flex-col min-h-0 md:min-w-0 md:flex-row content-center items-center overflow-hidden" bool:data-dev={import.meta.env.DEV}>
+      <div
+        class="relative h-[100vh] w-[100vw] flex flex-col min-h-0 md:min-w-0 md:flex-row content-center items-center overflow-hidden"
+        bool:data-dev={import.meta.env.DEV}
+      >
         <div class="md:h-full md:w-[50%] flex flex-col">
           <header class="flex flex-row prose items-center m-4 gap-4">
             <h1 class="mb-0">卡图生成</h1>
-            <button class="btn btn-primary" onClick={exportImage}>导出图片</button>
+            <button class="btn btn-primary" onClick={exportImage}>
+              导出图片
+            </button>
           </header>
           <Forms config={config()} onSubmit={setConfig} />
         </div>
@@ -113,7 +118,9 @@ export const App = () => {
         <Show
           when={npmData.state === "ready"}
           fallback={
-            <div class="layout loading">Loading data...</div>
+            <div class="layout empty" classList={{ loading: npmData.loading }}>
+              Loading data...
+            </div>
           }
         >
           <Renderer {...config()} />

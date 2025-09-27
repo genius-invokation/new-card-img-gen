@@ -27,7 +27,7 @@
     url("/assets/frame/header_decor_onecard.png") rgb(var(--page-bg-color));
 }
 
-.layout.loading {
+.layout.empty {
   font-size: 2.5rem;
   background-image: unset;
   color: #716864;
@@ -57,7 +57,7 @@
   font-size: 2.25rem;
   line-height: 1;
   color: #bdb6af;
-  white-space: pre-wrap;
+  white-space: pre;
   text-align: justify;
   text-indent: 0;
 }

@@ -1,3 +1,5 @@
+import type { Language } from "./types";
+
 export const CHILDREN_CONFIG: Record<number, string> = {
   11142: "$[C111141],$[C111142],$[C111143]", // 茜特菈莉 E 有个不知道哪来的错误夜魂加持
   12082: "$[C112081],$[C112082]", // 妮露 E
@@ -47,29 +49,48 @@ export const SHOWN_KEYWORDS = [
 ];
 
 export const COST_READONLY_ENTITIES = [
-  112131, 112132, 112133, 112142, 115112, 115152, 116102, 116112, 333021, 333022,
-  333023, 333024, 333025, 333026,
+  112131, 112132, 112133, 112142, 115112, 115152, 116102, 116112, 333021,
+  333022, 333023, 333024, 333025, 333026,
 ];
 
 export const correctId: Record<number, number> = { 12123: 12112 };
 
-export const CARD_BACK_FRAME = `${import.meta.env.BASE_URL}assets/frame/avatar_card_frame_2.png`;
-export const CARD_NORMAL_FRAME = `${import.meta.env.BASE_URL}assets/frame/card_frame_normal.png`;
-export const CARD_LEGEND_FRAME = `${import.meta.env.BASE_URL}assets/frame/card_frame_legend.png`;
-export const KEYWORD_CARD_FRAME = `${import.meta.env.BASE_URL}assets/frame/keyword_card_frame.png`;
-export const KEYWORD_CARDBACK_REPEAT =
-  `${import.meta.env.BASE_URL}assets/frame/card_back_repeat.png`;
-export const KEYWORD_CARDBACK_BOTTOM =
-  `${import.meta.env.BASE_URL}assets/frame/card_back_bottom.png`;
-export const PAGE_TITLE_ICON = `${import.meta.env.BASE_URL}assets/frame/pagetitle.png`;
+export const CARD_BACK_FRAME = `${
+  import.meta.env.BASE_URL
+}assets/frame/avatar_card_frame_2.png`;
+export const CARD_NORMAL_FRAME = `${
+  import.meta.env.BASE_URL
+}assets/frame/card_frame_normal.png`;
+export const CARD_LEGEND_FRAME = `${
+  import.meta.env.BASE_URL
+}assets/frame/card_frame_legend.png`;
+export const KEYWORD_CARD_FRAME = `${
+  import.meta.env.BASE_URL
+}assets/frame/keyword_card_frame.png`;
+export const KEYWORD_CARDBACK_REPEAT = `${
+  import.meta.env.BASE_URL
+}assets/frame/card_back_repeat.png`;
+export const KEYWORD_CARDBACK_BOTTOM = `${
+  import.meta.env.BASE_URL
+}assets/frame/card_back_bottom.png`;
+export const PAGE_TITLE_ICON = `${
+  import.meta.env.BASE_URL
+}assets/frame/pagetitle.png`;
 
-export const AVATAR_CARD_HP = `${import.meta.env.BASE_URL}assets/UI_TeyvatCard_LifeBg.png`;
-export const AVATAR_CARD_ENERGY = `${import.meta.env.BASE_URL}assets/UI_TeyvatCard_LifeBg3.png`;
+export const AVATAR_CARD_HP = `${
+  import.meta.env.BASE_URL
+}assets/UI_TeyvatCard_LifeBg.png`;
+export const AVATAR_CARD_ENERGY = `${
+  import.meta.env.BASE_URL
+}assets/UI_TeyvatCard_LifeBg3.png`;
 export const SPECIAL_ENERGY_MAP: Record<
   number,
   { type: string; count: number }
 > = {
-  1315: { type: `${import.meta.env.BASE_URL}assets/UI_TeyvatCard_LifeBg_Mavuika1.png`, count: 3 },
+  1315: {
+    type: `${import.meta.env.BASE_URL}assets/UI_TeyvatCard_LifeBg_Mavuika1.png`,
+    count: 3,
+  },
 };
 
 export const COST_TYPE_IMG_NAME_MAP: Record<string, string> = {
@@ -264,28 +285,74 @@ export const TYPE_TAG_IMG_NAME_MAP: Record<string, string> = {
 };
 
 export const DESCRIPTION_ICON_IMAGES = {
-  4007: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Shield.png` },
-  2100: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Element_Physics.png` },
-  2101: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Element_Ice.png` },
-  2102: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Element_Water.png` },
-  2103: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Element_Fire.png` },
-  2104: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Element_Electric.png` },
-  2105: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Element_Wind.png` },
-  2106: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Element_Rock.png` },
-  2107: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Element_Grass.png` },
+  4007: {
+    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Shield.png`,
+  },
+  2100: {
+    imageUrl: `${
+      import.meta.env.BASE_URL
+    }assets/UI_Gcg_Keyword_Element_Physics.png`,
+  },
+  2101: {
+    imageUrl: `${
+      import.meta.env.BASE_URL
+    }assets/UI_Gcg_Keyword_Element_Ice.png`,
+  },
+  2102: {
+    imageUrl: `${
+      import.meta.env.BASE_URL
+    }assets/UI_Gcg_Keyword_Element_Water.png`,
+  },
+  2103: {
+    imageUrl: `${
+      import.meta.env.BASE_URL
+    }assets/UI_Gcg_Keyword_Element_Fire.png`,
+  },
+  2104: {
+    imageUrl: `${
+      import.meta.env.BASE_URL
+    }assets/UI_Gcg_Keyword_Element_Electric.png`,
+  },
+  2105: {
+    imageUrl: `${
+      import.meta.env.BASE_URL
+    }assets/UI_Gcg_Keyword_Element_Wind.png`,
+  },
+  2106: {
+    imageUrl: `${
+      import.meta.env.BASE_URL
+    }assets/UI_Gcg_Keyword_Element_Rock.png`,
+  },
+  2107: {
+    imageUrl: `${
+      import.meta.env.BASE_URL
+    }assets/UI_Gcg_Keyword_Element_Grass.png`,
+  },
   1101: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Ice.png` },
-  1102: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Water.png` },
+  1102: {
+    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Water.png`,
+  },
   1103: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Fire.png` },
   1104: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Elec.png` },
   1105: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Wind.png` },
   1106: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Rock.png` },
-  1107: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Grass.png` },
+  1107: {
+    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Grass.png`,
+  },
   1108: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Same.png` },
   1109: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Diff.png` },
-  1110: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Energy.png` },
+  1110: {
+    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Energy.png`,
+  },
   1111: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Any.png` },
-  1112: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Legend.png` },
-  4008: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Fighting_Spirit.png` },
+  1112: {
+    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Legend.png`,
+  },
+  4008: {
+    imageUrl: `${
+      import.meta.env.BASE_URL
+    }assets/UI_Gcg_Keyword_Fighting_Spirit.png`,
+  },
   3003: { tagIcon: "GCG_TAG_WEAPON" },
   3004: { tagIcon: "GCG_TAG_ARTIFACT" },
   3006: { tagIcon: "GCG_TAG_TALENT" },
@@ -368,7 +435,7 @@ export const KEYWORD_COLORS: Record<number, string> = {
   // 265: "#5ca8a6",
   // 266: "#d29d5d",
   // 267: "#88b750",
-  
+
   // 元素骰子
   301: "#63bacd",
   302: "#488ccb",
@@ -391,3 +458,22 @@ export const DAMAGE_KEYWORD_MAP: Record<string, number> = {
 };
 
 export const BOLD_COLOR = "#FFFFFFFF";
+
+export const VERSION_REPLACE_STRS: Record<string, Record<Language, string>> = {
+  "6.0": {
+    zh: "「月之一」",
+    en: "Luna I",
+  },
+  "6.1": {
+    zh: "「月之二」",
+    en: "Luna II",
+  },
+  "6.2": {
+    zh: "「月之三」",
+    en: "Luna III",
+  },
+  "6.3": {
+    zh: "「月之四」",
+    en: "Luna IV",
+  },
+};

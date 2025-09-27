@@ -6,12 +6,15 @@ import {
   type RenderContext,
   type ParsedCharacter,
   type ParsedActionCard,
+  type Language,
 } from "../../types";
 import { parseCharacter, parseActionCard } from "../../parser";
 import { GlobalSettings, RenderContextProvider } from "../../context";
 import { Character } from "./Character";
 import { ActionCard } from "./ActionCard";
 import "./Renderer.css";
+import { VERSION_REPLACE_STRS } from "../../constants";
+import { PageTitle } from "./PageTitle";
 
 export const Renderer = (props: AppConfig) => {
   const renderingObjects = createMemo<RenderingObjects>(() => {
@@ -98,33 +101,42 @@ export const Renderer = (props: AppConfig) => {
         ...collected.map((c) => parseActionCard(renderContext, c)),
       );
     }
-    return { mode, character, actionCards, renderContext };
-  });
-  // TODO
-  const versionText = createMemo(() => {
+
     const v = props.version;
-    if (!v) return;
-    let rawVersion: string = v.startsWith("v") ? v.slice(1) : v;
-    if (rawVersion.endsWith("-beta")) rawVersion = rawVersion.slice(0, -5);
-    const [major, minor, patch] = rawVersion.split(".");
-    const isBeta = Number(patch) >= 50;
-    const mainVersionText = isBeta
-      ? `${major}.${Number(minor) + 1}`
-      : `${major}.${minor}`;
-    const versionText = isBeta
-      ? ` Beta ${mainVersionText} v${Number(patch) - 49}`
-      : mainVersionText;
-    const pageTitle: Record<string, string> = {
-      zh: `${mainVersionText}版本新增行动牌`,
-      en: `Action Cards added in ${mainVersionText}`,
-    };
-    return { pageTitle, versionText };
+    let title: string | null = null;
+    let versionText: string | null = null;
+    if (v) {
+      let rawVersion: string = v.startsWith("v") ? v.slice(1) : v;
+      if (rawVersion.endsWith("-beta")) rawVersion = rawVersion.slice(0, -5);
+      const [major, minor, patch] = rawVersion.split(".");
+      const isBeta = Number(patch) >= 50;
+      let mainVersionText = isBeta
+        ? `${major}.${Number(minor) + 1}`
+        : `${major}.${minor}`;
+
+      mainVersionText =
+        VERSION_REPLACE_STRS[mainVersionText]?.[props.language] ||
+        mainVersionText;
+
+      versionText = isBeta
+        ? ` Beta ${mainVersionText} v${Number(patch) - 49}`
+        : mainVersionText;
+      if (mode === "versionedActionCards") {
+        title = {
+          zh: `${mainVersionText}版本新增行动牌`,
+          en: `Action Cards added in ${mainVersionText}`,
+        }[props.language];
+      }
+    }
+    return { mode, title, character, actionCards, versionText, renderContext };
   });
 
   interface RenderingObjects {
     mode: "character" | "singleActionCard" | "versionedActionCards" | null;
+    title: string | null;
     character: ParsedCharacter | null;
     actionCards: ParsedActionCard[];
+    versionText: string | null;
     renderContext: RenderContext;
   }
 
@@ -139,9 +151,12 @@ export const Renderer = (props: AppConfig) => {
         class="layout"
         classList={{
           "single-action-card": renderingObjects().mode === "singleActionCard",
-          loading: empty(),
+          empty: empty(),
         }}
       >
+        <Show when={renderingObjects().title}>
+          {(title) => <PageTitle text={title()} />}
+        </Show>
         <Show when={renderingObjects().character}>
           {(c) => <Character character={c()} />}
         </Show>
@@ -150,7 +165,9 @@ export const Renderer = (props: AppConfig) => {
         </For>
         <Show when={empty()}>无数据</Show>
         <div class="version-layout">
-          <div class="version-text">{props.authorName}</div>
+          <div class="version-text">
+            {props.authorName || renderingObjects().versionText}
+          </div>
           <Show when={props.authorImageUrl}>
             {(url) => <img src={url()} class="logo" />}
           </Show>

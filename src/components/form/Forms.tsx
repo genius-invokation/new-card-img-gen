@@ -13,6 +13,12 @@ export const Forms = (props: FormsProps) => {
       console.log(data);
       props.onSubmit({ ...props.config, ...data });
     },
+    debounced: {
+      timeout: 300,
+      validate: async () => {
+        return void 0;
+      }
+    }
   });
   createEffect(
     on(
@@ -32,6 +38,11 @@ export const Forms = (props: FormsProps) => {
             Solo ID
           </label>
           <input class="input" name="solo" placeholder="Solo ID" />
+
+          <label class="fieldset-legend" for="version">
+            Version
+          </label>
+          <input class="input" name="version" placeholder="Version" />
 
           <label class="fieldset-legend" for="cardbackImage">
             Cardback Image

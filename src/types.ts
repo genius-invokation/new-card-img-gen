@@ -11,8 +11,10 @@ import type { Accessor } from "solid-js";
 type AllRawDataImpl = typeof import("@gi-tcg/static-data");
 export interface AllRawData extends AllRawDataImpl {}
 
+export type Language = "en" | "zh";
+
 export interface AppConfig {
-  language: "en" | "zh";
+  language: Language;
   authorName?: string;
   authorImageUrl?: string;
   data: AllRawData;
