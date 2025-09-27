@@ -98,7 +98,7 @@ export const App = () => {
       }}
     >
       <div
-        class="relative h-[100vh] w-[100vw] flex flex-col min-h-0 md:min-w-0 md:flex-row content-center items-center overflow-hidden"
+        class="relative h-[100vh] w-[100vw] flex flex-col min-h-0 md:min-w-0 md:flex-row content-center items-center md:overflow-hidden"
         bool:data-dev={import.meta.env.DEV}
       >
         <div class="md:h-full md:w-[50%] flex flex-col">
