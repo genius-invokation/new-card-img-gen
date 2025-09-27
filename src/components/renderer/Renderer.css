@@ -5,6 +5,7 @@
   --box-bg-color: #fefef4;
 
   font-family: "HYWH", sans-serif;
+  line-height: normal;
 
   padding: 9rem 4rem 2.5rem;
   overflow: hidden;
@@ -14,6 +15,10 @@
   gap: 2rem;
   background: top/contain no-repeat url("/assets/frame/header_decor.png"),
     rgb(var(--page-bg-color));
+}
+
+.layout img {
+  display: inline;
 }
 
 .layout.single-action-card {

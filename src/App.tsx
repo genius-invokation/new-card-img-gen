@@ -97,11 +97,11 @@ export const App = () => {
         displayId: () => !!config().displayId,
       }}
     >
-      <div class="app" bool:data-dev={import.meta.env.DEV}>
-        <div class="sidebar">
-          <header class="header">
-            <h1>卡图生成</h1>
-            <button onClick={exportImage}>导出图片</button>
+      <div class="relative h-[100vh] w-[100vw] flex flex-col min-h-0 md:min-w-0 md:flex-row content-center items-center overflow-hidden" bool:data-dev={import.meta.env.DEV}>
+        <div class="md:h-full md:w-[50%] flex flex-col">
+          <header class="flex flex-row prose items-center m-4 gap-4">
+            <h1 class="mb-0">卡图生成</h1>
+            <button class="btn btn-primary" onClick={exportImage}>导出图片</button>
           </header>
           <Forms config={config()} onSubmit={setConfig} />
         </div>

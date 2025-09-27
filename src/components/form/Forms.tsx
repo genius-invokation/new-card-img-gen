@@ -1,7 +1,6 @@
 import { createForm } from "@felte/solid";
 import type { AppConfig } from "../../types";
 import { createEffect, on } from "solid-js";
-import "./Forms.css";
 
 export interface FormsProps {
   config: AppConfig;
@@ -27,13 +26,34 @@ export const Forms = (props: FormsProps) => {
   void form;
   return (
     <div>
-      <form use:form class="temp-form">
-        <input name="solo" placeholder="Solo ID" />
-        <input name="cardbackImage" />
-        <input name="language" />
-        <input name="authorName" />
-        <input name="authorImageUrl" />
-        <button type="submit">
+      <form use:form class="p-4 flex flex-col gap-4">
+        <div class="grid grid-cols-[max-content_1fr] gap-2">
+          <label class="fieldset-legend" for="solo">
+            Solo ID
+          </label>
+          <input class="input" name="solo" placeholder="Solo ID" />
+
+          <label class="fieldset-legend" for="cardbackImage">
+            Cardback Image
+          </label>
+          <input class="input" name="cardbackImage" />
+
+          <label class="fieldset-legend" for="language">
+            Language
+          </label>
+          <input class="input" name="language" />
+
+          <label class="fieldset-legend" for="authorName">
+            Author Name
+          </label>
+          <input class="input" name="authorName" />
+
+          <label class="fieldset-legend" for="authorImageUrl">
+            Author Image URL
+          </label>
+          <input class="input" name="authorImageUrl" />
+        </div>
+        <button type="submit" class="btn btn-primary">
           Submit
         </button>
       </form>

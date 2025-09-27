@@ -11,18 +11,22 @@
   },
   "dependencies": {
     "@felte/solid": "^1.2.14",
+    "@tailwindcss/vite": "^4.1.13",
+    "daisyui": "^5.1.24",
     "modern-screenshot": "^4.6.6",
-    "solid-js": "^1.9.9"
+    "solid-js": "^1.9.9",
+    "tailwindcss": "^4.1.13"
   },
   "devDependencies": {
     "@gi-tcg/static-data": "^0.17.4",
-    "typescript": "~5.8.3",
-    "vite": "^7.1.6",
-    "vite-plugin-solid": "^2.11.8",
+    "@tailwindcss/typography": "^0.5.19",
     "@typescript-eslint/eslint-plugin": "^6.18.0",
     "@typescript-eslint/parser": "^6.18.0",
     "eslint": "^8.56.0",
     "eslint-plugin-only-warn": "^1.1.0",
-    "eslint-plugin-solid": "^0.13.1"
+    "eslint-plugin-solid": "^0.13.1",
+    "typescript": "~5.8.3",
+    "vite": "^7.1.6",
+    "vite-plugin-solid": "^2.11.8"
   }
 }
