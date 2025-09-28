@@ -1,15 +1,42 @@
 import { createForm } from "@felte/solid";
 import type { AppConfig } from "../../types";
-import { createEffect, on } from "solid-js";
+import { createEffect, createSignal, For, on, onMount } from "solid-js";
+import { GeneralConfigTab } from "./GenerialConfigTab";
+import { DataSourceTab } from "./DataSourceTab";
 
 export interface FormsProps {
   config: AppConfig;
   onSubmit: (data: AppConfig) => void;
 }
 
+const TAB_LISTS = [
+  {
+    title: "通用",
+    key: "general",
+    component: GeneralConfigTab,
+  },
+  {
+    title: "数据源",
+    key: "dataSource",
+    component: DataSourceTab,
+  },
+] as const;
+
+type TabKey = (typeof TAB_LISTS)[number]["key"];
+
 export const Forms = (props: FormsProps) => {
-  const { form, setData, setFields } = createForm<AppConfig>({
+  const {
+    form,
+    setData,
+    setFields,
+    isDirty,
+    setIsDirty,
+    isValid,
+    isSubmitting,
+    isValidating,
+  } = createForm<AppConfig>({
     onSubmit: (data) => {
+      setIsDirty(false);
       console.log(data);
       props.onSubmit({ ...props.config, ...data });
     },
@@ -30,63 +57,56 @@ export const Forms = (props: FormsProps) => {
     ),
   );
   void form;
+
+  onMount(() => {
+    setInterval(() => {
+      if (isValid() && isDirty()) {
+        submitBtn.click();
+      }
+    }, 1000);
+  });
+
+  let submitBtn!: HTMLButtonElement;
+
+  const [currentTab, setCurrentTab] = createSignal<TabKey>("general");
+
   return (
-    <div>
-      <form use:form class="p-4 flex flex-col gap-4">
-        <div class="grid grid-cols-[max-content_1fr] gap-2">
-          <label class="fieldset-legend" for="solo">
-            Solo ID
-          </label>
-          <input class="input" name="solo" placeholder="Solo ID" />
-
-          <label class="fieldset-legend" for="version">
-            Version
-          </label>
-          <input class="input" name="version" placeholder="Version" />
-
-          <label class="fieldset-legend" for="cardbackImage">
-            Cardback Image
-          </label>
-          <input class="input" name="cardbackImage" />
-
-          <span class="fieldset-legend">Language</span>
-          <div class="grid grid-cols-2 gap-2 items-center">
-            <div class="flex flex-row items-center gap-2">
-              <input
-                type="radio"
-                id="lang-en"
-                name="language"
-                value="en"
-                class="radio"
-              />
-              <label for="lang-en">English</label>
-            </div>
-            <div class="flex flex-row items-center gap-2">
-              <input
-                type="radio"
-                id="lang-zh"
-                name="language"
-                value="zh"
-                class="radio"
-              />
-              <label for="lang-zh">中文</label>
-            </div>
+    <form use:form class="flex-grow p-4 flex flex-col gap-4">
+      <div role="tablist" class="tabs tabs-border">
+        <For each={TAB_LISTS}>
+          {(tab) => (
+            <button
+              role="tab"
+              class="tab"
+              classList={{
+                "tab-active": currentTab() === tab.key,
+              }}
+              onClick={() => setCurrentTab(tab.key)}
+            >
+              {tab.title}
+            </button>
+          )}
+        </For>
+      </div>
+      <For each={TAB_LISTS}>
+        {(tab) => (
+          <div
+            role="tabpanel"
+            class="pt-4 flex-grow hidden data-[shown]:block"
+            bool:data-shown={currentTab() === tab.key}
+          >
+            <tab.component />
           </div>
-
-          <label class="fieldset-legend" for="authorName">
-            Author Name
-          </label>
-          <input class="input" name="authorName" />
-
-          <label class="fieldset-legend" for="authorImageUrl">
-            Author Image URL
-          </label>
-          <input class="input" name="authorImageUrl" />
-        </div>
-        <button type="submit" class="btn btn-primary">
-          Submit
-        </button>
-      </form>
-    </div>
+        )}
+      </For>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        ref={submitBtn}
+        disabled={!isValid()}
+      >
+        Submit
+      </button>
+    </form>
   );
 };

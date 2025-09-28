@@ -104,13 +104,14 @@ export const App = () => {
         <div class="md:h-full md:w-[50%] flex flex-col">
           <header class="flex flex-row prose items-center m-4 gap-4">
             <h1 class="mb-0">卡图生成</h1>
-            <button class="btn btn-primary" onClick={exportImage}>
-              导出图片
-            </button>
           </header>
           <Forms config={config()} onSubmit={setConfig} />
         </div>
-        <div class="preview-container" ref={previewContainer} />
+        <div class="preview-container" ref={previewContainer}>
+          <button class="absolute right-6 top-2 z-1 btn btn-soft btn-secondary" onClick={exportImage}>
+            导出图片
+          </button>
+        </div>
         <div class="capture-container" ref={captureContainer} />
         <div class="capturing-hint">生成图片中</div>
       </div>
