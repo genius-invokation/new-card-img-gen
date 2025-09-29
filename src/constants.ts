@@ -53,7 +53,9 @@ export const COST_READONLY_ENTITIES = [
   333022, 333023, 333024, 333025, 333026,
 ];
 
-export const correctId: Record<number, number> = { 12123: 12112 };
+export const correctId: Record<number, number> = {
+  12123: 12112, // Furina
+};
 
 export const CARD_BACK_FRAME = `${
   import.meta.env.BASE_URL

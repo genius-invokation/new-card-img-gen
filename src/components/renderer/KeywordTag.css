@@ -15,6 +15,7 @@
   line-height: 1;
   color: var(--fg-color);
   padding: 0.125rem 1.1rem 0;
+  white-space: nowrap;
 }
 
 .keyword-tag-image {
