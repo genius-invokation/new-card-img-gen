@@ -1,6 +1,7 @@
 import { createMemo } from "solid-js";
 import { useGlobalSettings } from "../../context";
 import { useFormContext } from "./Forms";
+import { ImageField } from "./ImageField";
 
 export const GeneralConfigTab = () => {
   const { allData } = useGlobalSettings();
@@ -146,13 +147,9 @@ export const GeneralConfigTab = () => {
       <input class="input" id="general.authorName" name="general.authorName" />
 
       <label class="fieldset-legend" for="general.authorImageUrl">
-        右下图片 URL
+        右下图片
       </label>
-      <input
-        class="input"
-        id="general.authorImageUrl"
-        name="general.authorImageUrl"
-      />
+      <ImageField name="general.authorImageUrl" />
 
       <label class="fieldset-legend" for="general.displayId">
         显示 ID

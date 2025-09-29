@@ -1,4 +1,5 @@
 import { createForm } from "@felte/solid";
+import type { FelteAccessor } from "../../../node_modules/@felte/solid/dist/esm/create-accessor";
 import type { Language } from "../../types";
 import {
   createContext,
@@ -7,7 +8,6 @@ import {
   type JSX,
   onMount,
   useContext,
-  type Accessor,
 } from "solid-js";
 import { GeneralConfigTab } from "./GenerialConfigTab";
 import { DataSourceTab } from "./DataSourceTab";
@@ -64,7 +64,7 @@ export interface FormValue {
 type TabKey = (typeof TAB_LISTS)[number]["key"];
 
 export interface FormContextValue {
-  formData: Accessor<FormValue>;
+  formData: FelteAccessor<FormValue>;
 }
 
 const FormContext = createContext<FormContextValue>();
