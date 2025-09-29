@@ -26,7 +26,7 @@ export const GeneralConfigTab = () => {
   );
 
   return (
-    <div class="grid grid-cols-[max-content_1fr] gap-2">
+    <div class="grid grid-cols-[6rem_1fr] gap-2">
       <span class="fieldset-legend">模式</span>
       <div class="tabs tabs-box w-fit">
         <label class="tab has-checked:tab-active">
@@ -105,7 +105,7 @@ export const GeneralConfigTab = () => {
         id="general.version"
         name="general.version"
         placeholder="v6.0.0"
-        pattern="v\d+\.\d+\.\d+(-beta)?"
+        // pattern="v\d+\.\d+\.\d+(-beta)?"
       />
 
       <label class="fieldset-legend" for="general.cardbackImage">
@@ -161,12 +161,17 @@ export const GeneralConfigTab = () => {
         name="general.displayId"
       />
 
-      <label class="fieldset-legend" for="general.displayStory">
+      <label
+        class="fieldset-legend"
+        classList={{ hidden: !isCharacterMode() }}
+        for="general.displayStory"
+      >
         显示角色故事
       </label>
       <input
         type="checkbox"
         class="toggle toggle-secondary self-center"
+        classList={{ hidden: !isCharacterMode() }}
         id="general.displayStory"
         name="general.displayStory"
       />
