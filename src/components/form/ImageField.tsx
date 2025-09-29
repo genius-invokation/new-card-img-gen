@@ -4,6 +4,7 @@ import {
   createMemo,
   createSignal,
   Show,
+  untrack,
   type JSX,
 } from "solid-js";
 import { useFormContext } from "./Forms";
@@ -32,7 +33,7 @@ export const ImageField = (props: ImageFieldProps) => {
   createEffect(() => {
     const next = formData(name);
     if (typeof next !== "string") return;
-    if (next !== value()) {
+    if (next !== untrack(value)) {
       if (!next.startsWith("data:")) {
         setValue(next);
       }
