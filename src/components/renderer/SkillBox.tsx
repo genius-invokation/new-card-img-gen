@@ -5,9 +5,9 @@ import { TYPE_TAG_TEXT_MAP } from "../../constants";
 import { Cost } from "./Cost";
 import { Children } from "./Children";
 import { Description } from "./Token";
-import { cardFaceUrl } from "../../utils";
 import { Text } from "./Text";
 import "./SkillBox.css";
+import { iconUrl } from "../../utils";
 
 export const SkillBox = (props: { skill: ParsedSkill }) => {
   const { displayId, language } = useGlobalSettings();
@@ -24,7 +24,7 @@ export const SkillBox = (props: { skill: ParsedSkill }) => {
         <div
           class="skill-icon"
           style={{
-            "mask-image": `url("${cardFaceUrl(skill().icon ?? "")}")`,
+            "mask-image": `url("${iconUrl(skill().id, skill().icon ?? "")}")`,
           }}
         />
         <div class="skill-title">

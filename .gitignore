@@ -25,3 +25,5 @@ dist-ssr
 
 ref/*
 !ref/client.tsx
+
+.env

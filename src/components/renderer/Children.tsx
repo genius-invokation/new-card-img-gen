@@ -56,7 +56,7 @@ export const Children = (props: { children: ParsedChild[] }) => {
                     style={{ "--image": `url("${KEYWORD_CARDBACK_REPEAT}")` }}
                   />
                   <img
-                    src={cardFaceUrl(child.cardFace || "")}
+                    src={cardFaceUrl(child.id, child.cardFace || "")}
                     class="keyword-card-face"
                   />
                   <img src={KEYWORD_CARD_FRAME} class="keyword-card-frame" />

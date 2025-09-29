@@ -12,7 +12,10 @@ export default defineConfig(({ mode }) => {
     base,
     plugins: [solid(), tailwindcss()],
     define: {
-      "import.meta.env.DATA_SOURCE": import.meta.env.DATA_SOURCE,
+      "import.meta.env.DATA_SOURCE": JSON.stringify(env.DATA_SOURCE || ""),
+      "import.meta.env.ASSETS_API_ENDPOINT": JSON.stringify(
+        env.ASSETS_API_ENDPOINT || "",
+      ),
     },
   };
 });

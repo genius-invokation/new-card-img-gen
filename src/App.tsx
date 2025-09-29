@@ -29,7 +29,7 @@ const INITIAL_FORM_VALUE: FormValue = {
     language: "zh",
     authorName: "Author",
     authorImageUrl: `${import.meta.env.BASE_URL}vite.svg`,
-    cardbackImage: "UI_Gcg_CardBack_Fonta_03",
+    cardbackImage: "UI_Gcg_CardBack_Championship_11",
     displayId: true,
     displayStory: true,
     mirroredLayout: false,

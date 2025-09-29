@@ -10,19 +10,18 @@ import "./CardFace.css";
 
 export const CardFace = (props: {
   class?: string; // Solid style
-  className?: string; // backward compatibility
+  id: number;
   isLegend?: boolean;
   cardFace: string;
   children?: JSX.Element;
 }) => {
   const { cardbackImage } = useGlobalSettings();
-  const mergedClass = () => props.class ?? props.className ?? "";
   return (
-    <div class={`card-face-component ${mergedClass()}`}>
+    <div class={`card-face-component ${props.class ?? ""}`}>
       <img src={`${import.meta.env.BASE_URL}assets/cardbacks/${cardbackImage()}.png`} class="card-back" />
       <img src={CARD_BACK_FRAME} class="card-frame-shadow" />
       <div class="card-face">
-        <img src={cardFaceUrl(props.cardFace)} class="card-face-image" />
+        <img src={cardFaceUrl(props.id, props.cardFace)} class="card-face-image" />
         <img
           src={props.isLegend ? CARD_LEGEND_FRAME : CARD_NORMAL_FRAME}
           class="card-frame"

@@ -23,6 +23,7 @@ export const Character = (props: { character: ParsedCharacter }) => {
       <div class="character-header">
         <CardFace
           class="character-image-container"
+          id={character().id}
           cardFace={character().cardFace}
         >
           <div class="avatar-card-hp">
