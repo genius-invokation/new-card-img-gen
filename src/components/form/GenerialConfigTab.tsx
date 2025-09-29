@@ -17,17 +17,7 @@ export const GeneralConfigTab = () => {
       <input class="input" name="general.cardbackImage" />
 
       <span class="fieldset-legend">语言</span>
-      <div class="grid grid-cols-2 gap-2 items-center">
-        <div class="flex flex-row items-center gap-2">
-          <input
-            type="radio"
-            id="lang-en"
-            name="general.language"
-            value="en"
-            class="radio"
-          />
-          <label for="lang-en">English</label>
-        </div>
+      <div class="flex flex-row gap-8 items-center">
         <div class="flex flex-row items-center gap-2">
           <input
             type="radio"
@@ -37,6 +27,16 @@ export const GeneralConfigTab = () => {
             class="radio"
           />
           <label for="lang-zh">中文</label>
+        </div>
+        <div class="flex flex-row items-center gap-2">
+          <input
+            type="radio"
+            id="lang-en"
+            name="general.language"
+            value="en"
+            class="radio"
+          />
+          <label for="lang-en">English</label>
         </div>
       </div>
 
@@ -49,6 +49,16 @@ export const GeneralConfigTab = () => {
         右下图片 URL
       </label>
       <input class="input" name="general.authorImageUrl" />
+
+      <label class="fieldset-legend" for="general.displayId">
+        显示 ID
+      </label>
+      <input type="checkbox" class="toggle toggle-secondary self-center" name="general.displayId" />
+
+      <label class="fieldset-legend" for="general.displayStory">
+        显示角色故事
+      </label>
+      <input type="checkbox" class="toggle toggle-secondary self-center" name="general.displayStory" />
     </div>
   );
 };

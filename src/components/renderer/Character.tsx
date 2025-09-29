@@ -13,7 +13,7 @@ import { Text } from "./Text";
 import "./Character.css";
 
 export const Character = (props: { character: ParsedCharacter }) => {
-  const ctx = useGlobalSettings();
+  const { displayId, displayStory } = useGlobalSettings();
   const character = () => props.character;
   const skillsMemo = createMemo(() => character().parsedSkills);
   const normalSkill = createMemo(() => skillsMemo()[0]);
@@ -57,6 +57,9 @@ export const Character = (props: { character: ParsedCharacter }) => {
           <div class="character-title-wrapper">
             <div class="character-title">
               <Text text={character().name} />
+              <Show when={displayId()}>
+                <span class="id-box">ID: {character().id}</span>
+              </Show>
             </div>
           </div>
           <div class="character-tags">
@@ -66,7 +69,7 @@ export const Character = (props: { character: ParsedCharacter }) => {
           </div>
           <hr class="info-divider" />
           <p class="info-story">
-            <Show when={ctx.displayStory}>
+            <Show when={displayStory()}>
               <Text text={character().storyText} />
             </Show>
           </p>

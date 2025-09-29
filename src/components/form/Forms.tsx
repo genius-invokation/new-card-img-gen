@@ -33,8 +33,8 @@ export interface FormValue {
     solo?: `${"C" | "A"}${number}`;
     mirroredLayout?: boolean;
     cardbackImage: string;
-    displayId?: boolean;
-    displayStory?: boolean;
+    displayId: boolean;
+    displayStory: boolean;
   }
 }
 

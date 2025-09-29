@@ -29,7 +29,7 @@ export const SkillBox = (props: { skill: ParsedSkill }) => {
         />
         <div class="skill-title">
           <Text text={skill().name} />
-          <Show when={displayId}>
+          <Show when={displayId()}>
             <span class="id-box">ID: {skill().id}</span>
           </Show>
         </div>

@@ -80,6 +80,10 @@
   background-position: 0 0rem;
 }
 
+.character-title .id-box {
+  margin-left: 1rem;
+}
+
 .character-tags {
   margin-top: -0.5rem;
   margin-left: 6rem;
