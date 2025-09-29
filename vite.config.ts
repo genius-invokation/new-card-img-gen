@@ -6,10 +6,13 @@ import solid from "vite-plugin-solid";
 // Locally (dev) it remains '/'. In the deploy workflow we inject VITE_APP_BASE=/new-card-img-gen/.
 export default defineConfig(({ mode }) => {
   // Use '.' as root to avoid depending on Node types for process.cwd()
-  const env = loadEnv(mode, '.', "");
+  const env = loadEnv(mode, ".", "");
   const base = env.VITE_APP_BASE || "/";
   return {
     base,
     plugins: [solid(), tailwindcss()],
+    define: {
+      "import.meta.env.DATA_SOURCE": import.meta.env.DATA_SOURCE,
+    },
   };
 });

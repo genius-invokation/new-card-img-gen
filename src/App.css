@@ -44,19 +44,28 @@
 }
 
 .preview-container {
-  /* display: none; */
+  display: none;
   position: relative;
   height: 0;
+  width: 0;
   overflow: visible;
-  
-  width: calc(100% - 1rem);
-  margin: 0 auto;
   container: layout-renderer / size;
+}
+
+input:checked ~ .preview-container {
+  display: block;
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  inset: 0;
+  overflow-x: clip;
+  overflow-y: scroll;
 }
 
 @media (width >= 48rem) {
 
-  .preview-container {
+  input:not(#fkCss) ~ .preview-container {
+    position: relative;
     display: block;
     height: 100vh;
     width: 50%;
@@ -65,8 +74,6 @@
 
     overflow-x: clip;
     overflow-y: scroll;
-
-    container: layout-renderer / size;
   }
 
 }
@@ -80,7 +87,7 @@
   container: layout-renderer / size;
 }
 
-:is(.preview-container, .capture-container) > div {
+:is(.preview-container, .capture-container) > div:has(.layout) {
   height: 100%;
   width: 100%;
   transform-origin: left top;

@@ -1,28 +1,28 @@
 export const GeneralConfigTab = () => {
   return (
     <div class="grid grid-cols-[max-content_1fr] gap-2">
-      <label class="fieldset-legend" for="solo">
-        Solo ID
+      <label class="fieldset-legend" for="general.solo">
+        ID
       </label>
-      <input class="input" name="solo" placeholder="Solo ID" />
+      <input class="input" name="general.solo" />
 
-      <label class="fieldset-legend" for="version">
-        Version
+      <label class="fieldset-legend" for="general.version">
+        版本
       </label>
-      <input class="input" name="version" placeholder="Version" />
+      <input class="input" name="general.version" />
 
-      <label class="fieldset-legend" for="cardbackImage">
-        Cardback Image
+      <label class="fieldset-legend" for="general.cardbackImage">
+        牌背
       </label>
-      <input class="input" name="cardbackImage" />
+      <input class="input" name="general.cardbackImage" />
 
-      <span class="fieldset-legend">Language</span>
+      <span class="fieldset-legend">语言</span>
       <div class="grid grid-cols-2 gap-2 items-center">
         <div class="flex flex-row items-center gap-2">
           <input
             type="radio"
             id="lang-en"
-            name="language"
+            name="general.language"
             value="en"
             class="radio"
           />
@@ -32,7 +32,7 @@ export const GeneralConfigTab = () => {
           <input
             type="radio"
             id="lang-zh"
-            name="language"
+            name="general.language"
             value="zh"
             class="radio"
           />
@@ -40,15 +40,15 @@ export const GeneralConfigTab = () => {
         </div>
       </div>
 
-      <label class="fieldset-legend" for="authorName">
-        Author Name
+      <label class="fieldset-legend" for="general.authorName">
+        左下附注
       </label>
-      <input class="input" name="authorName" />
+      <input class="input" name="general.authorName" />
 
-      <label class="fieldset-legend" for="authorImageUrl">
-        Author Image URL
+      <label class="fieldset-legend" for="general.authorImageUrl">
+        右下图片 URL
       </label>
-      <input class="input" name="authorImageUrl" />
+      <input class="input" name="general.authorImageUrl" />
     </div>
   );
 };

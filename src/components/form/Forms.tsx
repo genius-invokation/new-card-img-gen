@@ -1,12 +1,12 @@
 import { createForm } from "@felte/solid";
-import type { AppConfig } from "../../types";
+import type { AppConfig, Language } from "../../types";
 import { createEffect, createSignal, For, on, onMount } from "solid-js";
 import { GeneralConfigTab } from "./GenerialConfigTab";
 import { DataSourceTab } from "./DataSourceTab";
 
 export interface FormsProps {
-  config: AppConfig;
-  onSubmit: (data: AppConfig) => void;
+  initialValue: FormValue;
+  onSubmit: (data: FormValue) => void;
 }
 
 const TAB_LISTS = [
@@ -22,45 +22,50 @@ const TAB_LISTS = [
   },
 ] as const;
 
+export interface FormValue {
+  dataSource: string;
+  general: {
+    mode: "character" | "singleActionCard" | "versionedActionCards";
+    language: Language;
+    authorName?: string;
+    authorImageUrl?: string;
+    version?: `v${number}.${number}.${number}${"" | `-beta`}`;
+    solo?: `${"C" | "A"}${number}`;
+    mirroredLayout?: boolean;
+    cardbackImage: string;
+    displayId?: boolean;
+    displayStory?: boolean;
+  }
+}
+
 type TabKey = (typeof TAB_LISTS)[number]["key"];
 
 export const Forms = (props: FormsProps) => {
   const {
     form,
-    setData,
-    setFields,
     isDirty,
     setIsDirty,
     isValid,
-    isSubmitting,
-    isValidating,
-  } = createForm<AppConfig>({
+  } = createForm<FormValue>({
+    initialValues: props.initialValue,
     onSubmit: (data) => {
       setIsDirty(false);
-      console.log(data);
-      props.onSubmit({ ...props.config, ...data });
+      props.onSubmit(data);
     },
-    debounced: {
-      timeout: 300,
-      validate: async () => {
-        return void 0;
-      },
-    },
+    // debounced: {
+    //   timeout: 300,
+    //   validate: async () => {
+    //     return void 0;
+    //   },
+    // },
   });
-  createEffect(
-    on(
-      () => props.config,
-      (config) => {
-        setData(config);
-        setFields("solo", config.solo);
-      },
-    ),
-  );
   void form;
+
+  const notMobile = () => window.matchMedia("(width >= 48rem)").matches;
 
   onMount(() => {
     setInterval(() => {
-      if (isValid() && isDirty()) {
+      if (notMobile() && isValid() && isDirty()) {
         submitBtn.click();
       }
     }, 1000);
@@ -71,11 +76,12 @@ export const Forms = (props: FormsProps) => {
   const [currentTab, setCurrentTab] = createSignal<TabKey>("general");
 
   return (
-    <form use:form class="flex-grow p-4 flex flex-col gap-4">
+    <form use:form class="w-full flex-grow p-4 flex flex-col gap-4">
       <div role="tablist" class="tabs tabs-border">
         <For each={TAB_LISTS}>
           {(tab) => (
             <button
+              type="button"
               role="tab"
               class="tab"
               classList={{
@@ -105,7 +111,7 @@ export const Forms = (props: FormsProps) => {
         ref={submitBtn}
         disabled={!isValid()}
       >
-        Submit
+        生成
       </button>
     </form>
   );
