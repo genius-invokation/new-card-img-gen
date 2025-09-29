@@ -25,7 +25,9 @@ const INITIAL_FORM_VALUE: FormValue = {
   dataSource: DATA_SOURCE,
   general: {
     mode: "character",
-    solo: "A1503",
+    characterId: 1503,
+    actionCardId: 332005,
+    version: "v6.0.0",
     language: "zh",
     authorName: "Author",
     authorImageUrl: `${import.meta.env.BASE_URL}vite.svg`,
@@ -70,6 +72,20 @@ export const App = () => {
     }
   });
 
+  const filename = () => {
+    const c = config();
+    if (c?.mode === "character") {
+      return `A${c.characterId}`;
+    }
+    if (c?.mode === "singleActionCard") {
+      return `C${c.actionCardId}`;
+    }
+    if (c?.mode === "versionedActionCards") {
+      return c.version || "vX.Y.Z";
+    }
+    return "card";
+  };
+
   const exportImage = async () => {
     let objectUrl: string | null = null;
     try {
@@ -87,7 +103,7 @@ export const App = () => {
       }
       objectUrl = URL.createObjectURL(blob);
       const link = document.createElement("a");
-      link.download = `card-${Date.now()}.png`;
+      link.download = `${filename()}.png`;
       link.href = objectUrl;
       link.click();
       link.remove();
@@ -116,6 +132,7 @@ export const App = () => {
   return (
     <GlobalSettings.Provider
       value={{
+        allData: () => config()?.data || EMPTY_DATA,
         language: () => config()?.language || "zh",
         cardbackImage: () =>
           config()?.cardbackImage || INITIAL_FORM_VALUE.general.cardbackImage,

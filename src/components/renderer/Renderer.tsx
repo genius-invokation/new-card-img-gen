@@ -18,7 +18,7 @@ import { PageTitle } from "./PageTitle";
 
 export const Renderer = (props: AppConfig) => {
   const renderingObjects = createMemo<RenderingObjects>(() => {
-    const data = props.data;
+    const { mode, data, version } = props;
     const keywords = data.keywords;
     const skills = [...data.characters, ...data.entities].flatMap(
       (e) => e.skills as SkillRawData[],
@@ -63,34 +63,27 @@ export const Renderer = (props: AppConfig) => {
       prepareSkillToEntityMap,
     };
 
-    let mode: RenderingObjects["mode"] | null = null;
     let character: ParsedCharacter | null = null;
     const actionCards: ParsedActionCard[] = [];
-    if (props.solo) {
-      const type = props.solo[0];
-      const id = Number(props.solo.slice(1));
-      if (type === "A") {
-        mode = "character";
-        const collected = data.characters.find((c) => c.id === id);
-        if (collected) {
-          character = parseCharacter(renderContext, collected);
-          const talent = data.actionCards.find(
-            (ac) => ac.relatedCharacterId === collected.id,
-          );
-          if (talent) {
-            actionCards.push(parseActionCard(renderContext, talent));
-          }
-        }
-      } else if (type === "C") {
-        mode = "singleActionCard";
-        const actionCard = data.actionCards.find((c) => c.id === id);
-        if (actionCard) {
-          actionCards.push(parseActionCard(renderContext, actionCard));
+    if (mode === "character") {
+      const collected = data.characters.find((c) => c.id === props.characterId);
+      if (collected) {
+        character = parseCharacter(renderContext, collected);
+        const talent = data.actionCards.find(
+          (ac) => ac.relatedCharacterId === collected.id,
+        );
+        if (talent) {
+          actionCards.push(parseActionCard(renderContext, talent));
         }
       }
-    } else if (props.version) {
-      mode = "versionedActionCards";
-      const version = props.version;
+    } else if (mode === "singleActionCard") {
+      const actionCard = data.actionCards.find(
+        (c) => c.id === props.actionCardId,
+      );
+      if (actionCard) {
+        actionCards.push(parseActionCard(renderContext, actionCard));
+      }
+    } else if (mode === "versionedActionCards") {
       const collected = data.actionCards.filter(
         (ac) =>
           ac.sinceVersion === version &&
@@ -121,7 +114,7 @@ export const Renderer = (props: AppConfig) => {
       versionText = isBeta
         ? ` Beta ${mainVersionText} v${Number(patch) - 49}`
         : mainVersionText;
-      if (mode === "versionedActionCards") {
+      if (props.mode === "versionedActionCards") {
         title = {
           zh: `${mainVersionText}版本新增行动牌`,
           en: `Action Cards added in ${mainVersionText}`,
@@ -132,7 +125,6 @@ export const Renderer = (props: AppConfig) => {
   });
 
   interface RenderingObjects {
-    mode: "character" | "singleActionCard" | "versionedActionCards" | null;
     title: string | null;
     character: ParsedCharacter | null;
     actionCards: ParsedActionCard[];
@@ -150,7 +142,7 @@ export const Renderer = (props: AppConfig) => {
       <div
         class="layout"
         classList={{
-          "single-action-card": renderingObjects().mode === "singleActionCard",
+          "single-action-card": props.mode === "singleActionCard",
           empty: empty(),
         }}
       >

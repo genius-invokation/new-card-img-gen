@@ -14,12 +14,14 @@ export interface AllRawData extends AllRawDataImpl {}
 export type Language = "en" | "zh";
 
 export interface AppConfig {
+  mode: "character" | "singleActionCard" | "versionedActionCards";
+  characterId?: number;
+  actionCardId?: number;
+  version?: `v${number}.${number}.${number}${"" | `-beta`}`;
   language: Language;
   authorName?: string;
   authorImageUrl?: string;
   data: AllRawData;
-  version?: `v${number}.${number}.${number}${"" | `-beta`}`;
-  solo?: `${"C" | "A"}${number}`;
   mirroredLayout?: boolean;
   cardbackImage: string;
   displayId?: boolean;
@@ -72,6 +74,7 @@ export type DescriptionToken =
 export type ParsedDescription = DescriptionToken[];
 
 export interface GlobalSettingsValue {
+  allData: Accessor<AllRawData>;
   language: Accessor<"en" | "zh">;
   cardbackImage: Accessor<string>;
   displayId: Accessor<boolean>;
