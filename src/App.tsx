@@ -85,10 +85,6 @@ export const App = () => {
     }
   };
 
-  onMount(() => {
-    onSubmitForm(INITIAL_FORM_VALUE);
-  });
-
   const filename = () => {
     const c = config();
     if (c?.mode === "character") {
