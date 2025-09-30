@@ -94,18 +94,16 @@ export const GeneralConfigTab = () => {
 
       <label
         class="fieldset-legend"
-        classList={{ hidden: !isVersionedActionCardsMode() }}
         for="general.version"
       >
         版本
       </label>
       <input
         class="input"
-        classList={{ hidden: !isVersionedActionCardsMode() }}
         id="general.version"
         name="general.version"
         placeholder="v6.0.0"
-        // pattern="v\d+\.\d+\.\d+(-beta)?"
+        pattern="v\d+\.\d+\.\d+(-beta)?"
       />
 
       <label class="fieldset-legend" for="general.cardbackImage">

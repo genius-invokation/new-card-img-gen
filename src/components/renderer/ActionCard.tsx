@@ -29,7 +29,7 @@ export const ActionCard = (props: { card: ParsedActionCard }) => {
         </div>
         <div class="dashed-line" />
         <div
-          class={`action-card-description action-card-description-${language()}`}
+          class={`action-card-description`}
         >
           <Description description={card().parsedDescription} />
         </div>

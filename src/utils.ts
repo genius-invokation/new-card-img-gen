@@ -1,7 +1,5 @@
 import type { Accessor } from "solid-js";
-import { TYPE_TAG_IMG_NAME_MAP } from "./constants";
-
-export const ASSETS_API_ENDPOINT = import.meta.env.ASSETS_API_ENDPOINT || "https://assets.gi-tcg.guyutongxue.site/api/v3";
+import { ASSETS_API_ENDPOINT, TYPE_TAG_IMG_NAME_MAP } from "./constants";
 
 export const tagImageUrl = (tag: string) =>
   tag.startsWith("GCG_TAG_ELEMENT_")
@@ -12,9 +10,9 @@ export const tagImageUrl = (tag: string) =>
         TYPE_TAG_IMG_NAME_MAP[tag]
       }.png`;
 export const cardFaceUrl = (id: number, cardFace: string) =>
-  `${ASSETS_API_ENDPOINT}/images/${id}?type=cardface`;
+  `${ASSETS_API_ENDPOINT}/image/${id}?type=cardFace`;
 export const iconUrl = (id: number, icon: string) =>
-  `${ASSETS_API_ENDPOINT}/images/${id}?type=icon`;
+  `${ASSETS_API_ENDPOINT}/image/${id}?type=icon`;
 
 export const nar = <A, B extends A>(
   accessor: Accessor<A>,

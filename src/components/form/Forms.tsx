@@ -6,11 +6,11 @@ import {
   createSignal,
   For,
   type JSX,
+  onCleanup,
   onMount,
   useContext,
 } from "solid-js";
 import { GeneralConfigTab } from "./GenerialConfigTab";
-import { DataSourceTab } from "./DataSourceTab";
 import { NewItemsTab } from "./NewItemTab";
 import { OverrideTab } from "./OverrideTab";
 import importSvg from "./import.svg";
@@ -37,20 +37,14 @@ const TAB_LISTS = [
     key: "override",
     component: OverrideTab,
   },
-  {
-    title: "数据源",
-    key: "dataSource",
-    component: DataSourceTab,
-  },
 ] as const;
 
 export interface FormValue {
-  dataSource: string;
   general: {
     mode: "character" | "singleActionCard" | "versionedActionCards";
     characterId?: number;
     actionCardId?: number;
-    version?: `v${number}.${number}.${number}${"" | `-beta`}`;
+    version: `v${number}.${number}.${number}${"" | `-beta`}`;
     language: Language;
     authorName?: string;
     authorImageUrl?: string;
@@ -80,6 +74,11 @@ export const Forms = (props: FormsProps) => {
         setIsDirty(false);
         props.onSubmit(data);
       },
+      validate: (data) => {
+        if (!/v\d+\.\d+\.\d+(-beta)?/.test(data.general.version || "")) {
+          return { general: { version: "版本格式错误" } };
+        }
+      },
       // debounced: {
       //   timeout: 300,
       //   validate: async () => {
@@ -93,12 +92,18 @@ export const Forms = (props: FormsProps) => {
 
   const notMobile = () => window.matchMedia("(width >= 48rem)").matches;
 
+  let submitInterval: number;
   onMount(() => {
-    setInterval(() => {
+    submitInterval = setInterval(() => {
       if (notMobile() && isValid() && isDirty()) {
         formEl.requestSubmit();
       }
     }, 1000);
+  });
+  onCleanup(() => {
+    if (submitInterval) {
+      clearInterval(submitInterval);
+    }
   });
 
   let formEl!: HTMLFormElement;
@@ -135,7 +140,7 @@ export const Forms = (props: FormsProps) => {
       const json = JSON.parse(text);
       setData(json);
       // seems bug?
-      setFields("dataSource", json.dataSource);
+      setFields("general.version", json.general.version);
       if (notMobile() && isValid()) {
         formEl.requestSubmit();
       }

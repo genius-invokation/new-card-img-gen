@@ -1,5 +1,7 @@
 import type { Language } from "./types";
 
+export const ASSETS_API_ENDPOINT = `https://assets-gi-tcg-cf.guyutongxue.site/api/v4`;
+
 export const CHILDREN_CONFIG: Record<number, string> = {
   11142: "$[C111141],$[C111142],$[C111143]", // 茜特菈莉 E 有个不知道哪来的错误夜魂加持
   12082: "$[C112081],$[C112082]", // 妮露 E
@@ -110,8 +112,8 @@ export const COST_TYPE_IMG_NAME_MAP: Record<string, string> = {
   GCG_COST_SPECIAL_ENERGY: "Energy_Mavuika",
 };
 
-export const TYPE_TAG_TEXT_MAP: Record<string, Record<string, string>> = {
-  zh: {
+export const TYPE_TAG_TEXT_MAP: Record<Language, Record<string, string>> = {
+  CHS: {
     GCG_RULE_EXPLANATION: "规则解释",
     GCG_SKILL_TAG_A: "普通攻击",
     GCG_SKILL_TAG_E: "元素战技",
@@ -173,7 +175,7 @@ export const TYPE_TAG_TEXT_MAP: Record<string, Record<string, string>> = {
     GCG_TAG_NATION_SIMULANKA: "希穆兰卡",
     GCG_TAG_ADVENTURE_PLACE: "冒险地点",
   },
-  en: {
+  EN: {
     GCG_RULE_EXPLANATION: "Detailed Rules",
     GCG_SKILL_TAG_A: "Normal Attack",
     GCG_SKILL_TAG_E: "Elemental Skill",
@@ -463,19 +465,19 @@ export const BOLD_COLOR = "#FFFFFFFF";
 
 export const VERSION_REPLACE_STRS: Record<string, Record<Language, string>> = {
   "6.0": {
-    zh: "「月之一」",
-    en: "Luna I",
+    CHS: "「月之一」",
+    EN: "Luna I",
   },
   "6.1": {
-    zh: "「月之二」",
-    en: "Luna II",
+    CHS: "「月之二」",
+    EN: "Luna II",
   },
   "6.2": {
-    zh: "「月之三」",
-    en: "Luna III",
+    CHS: "「月之三」",
+    EN: "Luna III",
   },
   "6.3": {
-    zh: "「月之四」",
-    en: "Luna IV",
+    CHS: "「月之四」",
+    EN: "Luna IV",
   },
 };

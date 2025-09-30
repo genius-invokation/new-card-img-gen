@@ -7,6 +7,7 @@ import { Forms, type FormValue } from "./components/form/Forms";
 import { createEffect } from "solid-js";
 import { Portal } from "solid-js/web";
 import { domToBlob } from "modern-screenshot";
+import { ASSETS_API_ENDPOINT } from "./constants";
 
 // NOTE: 绝大多数逻辑直接从 ref/client.tsx 迁移，保证渲染/解析逻辑不被删改，仅适配 Solid API。
 
@@ -17,18 +18,13 @@ const EMPTY_DATA: AllRawData = {
   entities: [],
 };
 
-const DATA_SOURCE =
-  import.meta.env.DATA_SOURCE ||
-  "return fetch(`https://raw.githubusercontent.com/genius-invokation/genius-invokation/refs/heads/main/packages/static-data/src/data/${name}.json`).then((r) => r.json())";
-
 const INITIAL_FORM_VALUE: FormValue = {
-  dataSource: DATA_SOURCE,
   general: {
     mode: "character",
     characterId: 1503,
     actionCardId: 332005,
     version: "v6.0.0",
-    language: "zh",
+    language: "CHS",
     authorName: "Author",
     authorImageUrl: `${import.meta.env.BASE_URL}vite.svg`,
     cardbackImage: "UI_Gcg_CardBack_Championship_11",
@@ -38,38 +34,59 @@ const INITIAL_FORM_VALUE: FormValue = {
   },
 };
 
-const AsyncFunction = (async () => {}).constructor as FunctionConstructor;
-const getData = async (name: string) => {
-  const factory = new AsyncFunction("name", DATA_SOURCE);
-  return factory(name);
+const getData = async (version: string, language: Language) => {
+  const data: Partial<AllRawData> = {};
+  await Promise.all(
+    (["characters", "action_cards", "entities", "keywords"] as const).map(
+      async (category) => {
+        const key = category === "action_cards" ? "actionCards" : category;
+        data[key] = await fetch(
+          `${ASSETS_API_ENDPOINT}/data/${version}/${language}/${category}`,
+        ).then(async (r) =>
+          r.ok
+            ? (
+                await r.json()
+              ).data
+            : Promise.reject(new Error(await r.text())),
+        );
+      },
+    ),
+  );
+  return data as AllRawData;
 };
 
 export const App = () => {
-  const [data] = createResource(async () => {
-    const [characters, actionCards, entities, keywords] = await Promise.all([
-      getData("characters"),
-      getData("action_cards"),
-      getData("entities"),
-      getData("keywords"),
-    ]);
-    return { characters, actionCards, entities, keywords } as AllRawData;
-  });
-
   const [config, setConfig] = createSignal<AppConfig>();
-  const [formValue, setFormValue] = createSignal<FormValue>(INITIAL_FORM_VALUE);
+  const [loading, setLoading] = createSignal(true);
+  let prevFormValue: FormValue = INITIAL_FORM_VALUE;
 
-  const onSubmitForm = (value: FormValue) => {
-    setFormValue(value);
-    setMobilePreviewing(true);
+  const onSubmitForm = async (newFormValue: FormValue) => {
+    const oldConfig = config();
+    const prevVersion = prevFormValue.general.version;
+    const newVersion = newFormValue.general.version;
+    const prevLanguage = prevFormValue.general.language;
+    const newLanguage = newFormValue.general.language;
+    const shouldUpdateData = !(
+      prevVersion === newVersion && prevLanguage === newLanguage
+    );
+    try {
+      let data = oldConfig?.data;
+      if (shouldUpdateData || !data) {
+        data = await getData(newVersion, newLanguage);
+      }
+      setConfig({
+        data,
+        ...newFormValue.general,
+      });
+      prevFormValue = newFormValue;
+      setMobilePreviewing(true);
+    } catch (e) {
+      alert((e as Error).message || "加载数据失败");
+    }
   };
 
-  createEffect(() => {
-    if (data.state === "ready") {
-      setConfig({
-        data: data(),
-        ...formValue().general,
-      });
-    }
+  onMount(() => {
+    onSubmitForm(INITIAL_FORM_VALUE);
   });
 
   const filename = () => {
@@ -133,7 +150,7 @@ export const App = () => {
     <GlobalSettings.Provider
       value={{
         allData: () => config()?.data || EMPTY_DATA,
-        language: () => config()?.language || "zh",
+        language: () => config()?.language || "CHS",
         cardbackImage: () =>
           config()?.cardbackImage || INITIAL_FORM_VALUE.general.cardbackImage,
         displayStory: () => !!config()?.displayStory,
@@ -171,7 +188,7 @@ export const App = () => {
         <Show
           when={config()}
           fallback={
-            <div class="layout empty" classList={{ loading: data.loading }}>
+            <div class="layout empty" classList={{ loading: loading() }}>
               Loading data...
             </div>
           }

@@ -18,8 +18,10 @@ import { PageTitle } from "./PageTitle";
 
 export const Renderer = (props: AppConfig) => {
   const renderingObjects = createMemo<RenderingObjects>(() => {
-    const { mode, data, version } = props;
-    const keywords = data.keywords;
+    const mode = props.mode;
+    const data = props.data;
+    const version = props.version;
+    const keywords = data.keywords.map((k) => ({ ...k, id: -k.id }));
     const skills = [...data.characters, ...data.entities].flatMap(
       (e) => e.skills as SkillRawData[],
     );
@@ -116,8 +118,8 @@ export const Renderer = (props: AppConfig) => {
         : mainVersionText;
       if (props.mode === "versionedActionCards") {
         title = {
-          zh: `${mainVersionText}版本新增行动牌`,
-          en: `Action Cards added in ${mainVersionText}`,
+          CHS: `${mainVersionText}版本新增行动牌`,
+          EN: `Action Cards added in ${mainVersionText}`,
         }[props.language];
       }
     }
@@ -145,6 +147,7 @@ export const Renderer = (props: AppConfig) => {
           "single-action-card": props.mode === "singleActionCard",
           empty: empty(),
         }}
+        data-language={props.language}
       >
         <Show when={renderingObjects().title}>
           {(title) => <PageTitle text={title()} />}

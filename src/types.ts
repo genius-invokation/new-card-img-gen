@@ -11,7 +11,7 @@ import type { Accessor } from "solid-js";
 type AllRawDataImpl = typeof import("@gi-tcg/static-data");
 export interface AllRawData extends AllRawDataImpl {}
 
-export type Language = "en" | "zh";
+export type Language = "EN" | "CHS";
 
 export interface AppConfig {
   mode: "character" | "singleActionCard" | "versionedActionCards";
@@ -75,7 +75,7 @@ export type ParsedDescription = DescriptionToken[];
 
 export interface GlobalSettingsValue {
   allData: Accessor<AllRawData>;
-  language: Accessor<"en" | "zh">;
+  language: Accessor<Language>;
   cardbackImage: Accessor<string>;
   displayId: Accessor<boolean>;
   displayStory: Accessor<boolean>;

@@ -108,7 +108,7 @@ export const Children = (props: { children: ParsedChild[] }) => {
                   />
                 </Show>
                 <div
-                  class={`keyword-description keyword-description-${language()}`}
+                  class={`keyword-description`}
                 >
                   <Description
                     description={
