@@ -122,7 +122,7 @@ export const GeneralConfigTab = () => {
             type="radio"
             id="general.language.zh"
             name="general.language"
-            value="zh"
+            value="CHS"
             class="radio"
           />
           <label for="general.language.zh">中文</label>
@@ -132,7 +132,7 @@ export const GeneralConfigTab = () => {
             type="radio"
             id="general.language.en"
             name="general.language"
-            value="en"
+            value="EN"
             class="radio"
           />
           <label for="general.language.en">English</label>
