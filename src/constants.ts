@@ -1,6 +1,6 @@
 import type { Language } from "./types";
 
-export const ASSETS_API_ENDPOINT = `https://assets-gi-tcg-cf.guyutongxue.site/api/v4`;
+export const ASSETS_API_ENDPOINT = `https://gi-tcg-assets-api-hf.guyutongxue.site/api/v4`;
 
 export const CHILDREN_CONFIG: Record<number, string> = {
   11142: "$[C111141],$[C111142],$[C111143]", // 茜特菈莉 E 有个不知道哪来的错误夜魂加持
