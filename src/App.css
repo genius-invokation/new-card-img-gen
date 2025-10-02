@@ -50,6 +50,7 @@
   width: 0;
   overflow: visible;
   container: layout-renderer / size;
+  background: #333333a0;
 }
 
 input:checked ~ .preview-container {
@@ -59,7 +60,7 @@ input:checked ~ .preview-container {
   width: 100vw;
   inset: 0;
   overflow-x: clip;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 @media (width >= 48rem) {
@@ -74,6 +75,7 @@ input:checked ~ .preview-container {
 
     overflow-x: clip;
     overflow-y: scroll;
+    background-color: unset;
   }
 
 }

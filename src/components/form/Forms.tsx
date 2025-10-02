@@ -1,7 +1,8 @@
 import { createForm } from "@felte/solid";
 import type { FelteAccessor } from "../../../node_modules/@felte/solid/dist/esm/create-accessor";
-import type { Language } from "../../types";
+import type { Language, PlayCost } from "../../types";
 import {
+  type Accessor,
   createContext,
   createSignal,
   For,
@@ -18,6 +19,7 @@ import exportSvg from "./export.svg";
 
 export interface FormsProps {
   initialValue: FormValue;
+  versionList: string[];
   onSubmit: (data: FormValue) => void;
 }
 
@@ -39,12 +41,58 @@ const TAB_LISTS = [
   },
 ] as const;
 
+export interface NewCharacterData {
+  id: number;
+  name: string;
+  hp: number;
+  maxEnergy: number;
+  tags: string[]; // TODO: better typing
+  storyText?: string;
+  skills: NewSkillData[];
+  cardFaceUrl: string;
+}
+
+export interface NewSkillData {
+  id: number;
+  type: string; // TODO: better typing
+  name: string;
+  rawDescription: string;
+  playCost: PlayCost[];
+  iconUrl: string;
+}
+
+export interface NewActionCardData {
+  id: number;
+  name: string;
+  tags: string[]; // TODO: better typing
+  relatedCharacterId: number | null;
+  rawDescription: string;
+  playCost: PlayCost[];
+  cardFaceUrl: string;
+}
+
+export interface NewEntityData {
+  id: number;
+  type: string; // TODO: better typing
+  name: string;
+  tags: string[]; // TODO: better typing
+  rawDescription: string;
+  iconUrl?: string;
+  cardFaceUrl?: string;
+}
+
+export interface NewKeywordData {
+  id: number;
+  name: string;
+  rawDescription: string;
+}
+
 export interface FormValue {
   general: {
     mode: "character" | "singleActionCard" | "versionedActionCards";
     characterId?: number;
     actionCardId?: number;
-    version: `v${number}.${number}.${number}${"" | `-beta`}`;
+    version?: `v${number}.${number}.${number}${"" | `-beta`}`;
     language: Language;
     authorName?: string;
     authorImageUrl?: string;
@@ -53,12 +101,19 @@ export interface FormValue {
     displayId: boolean;
     displayStory: boolean;
   };
+  newItems: {
+    characters: NewCharacterData[];
+    actionCards: NewActionCardData[];
+    entities: NewEntityData[];
+    keywords: NewKeywordData[];
+  }
 }
 
 type TabKey = (typeof TAB_LISTS)[number]["key"];
 
 export interface FormContextValue {
   formData: FelteAccessor<FormValue>;
+  versionList: Accessor<string[]>;
 }
 
 const FormContext = createContext<FormContextValue>();
@@ -74,11 +129,15 @@ export const Forms = (props: FormsProps) => {
         setIsDirty(false);
         props.onSubmit(data);
       },
-      validate: (data) => {
-        if (!/v\d+\.\d+\.\d+(-beta)?/.test(data.general.version || "")) {
-          return { general: { version: "版本格式错误" } };
-        }
-      },
+      // validate: (data) => {
+      //   console.log(data);
+      //   if (
+      //     data.general.version &&
+      //     !/v\d+\.\d+\.\d+(-beta)?/.test(data.general.version)
+      //   ) {
+      //     return { general: { version: "版本格式错误" } };
+      //   }
+      // },
       // debounced: {
       //   timeout: 300,
       //   validate: async () => {
@@ -90,15 +149,17 @@ export const Forms = (props: FormsProps) => {
     });
   void form;
 
-  const notMobile = () => window.matchMedia("(width >= 48rem)").matches;
+  const previewVisible = () =>
+    !!document.querySelector(".preview-container")?.scrollHeight;
 
   let submitInterval: number;
   onMount(() => {
     submitInterval = setInterval(() => {
-      if (notMobile() && isValid() && isDirty()) {
+      if (previewVisible() && isValid() && isDirty()) {
         formEl.requestSubmit();
       }
     }, 1000);
+    setIsDirty(true);
   });
   onCleanup(() => {
     if (submitInterval) {
@@ -141,7 +202,7 @@ export const Forms = (props: FormsProps) => {
       setData(json);
       // seems bug?
       setFields("general.version", json.general.version);
-      if (notMobile() && isValid()) {
+      if (previewVisible() && isValid()) {
         formEl.requestSubmit();
       }
     } catch {
@@ -152,7 +213,9 @@ export const Forms = (props: FormsProps) => {
   };
 
   return (
-    <FormContext.Provider value={{ formData: data }}>
+    <FormContext.Provider
+      value={{ versionList: () => props.versionList, formData: data }}
+    >
       <form use:form class="w-full flex-grow p-4 flex flex-col" ref={formEl}>
         <div class="overflow-x-auto max-w-full">
           <div role="tablist" class="tabs tabs-border  min-w-max">

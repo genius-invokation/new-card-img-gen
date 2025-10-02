@@ -320,7 +320,7 @@ export const appendChildren = (
       const keywordData = ctx.keywords.find((e) => e.id === child.id);
       if (keywordData) {
         result.push({
-          ...(keywordData as unknown as ParsedChild),
+          ...keywordData,
           type: "GCG_RULE_EXPLANATION",
           parsedDescription: parseDescription(ctx, keywordData.rawDescription),
         });

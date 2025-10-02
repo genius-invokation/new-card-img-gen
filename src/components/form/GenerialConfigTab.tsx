@@ -1,11 +1,11 @@
-import { createMemo } from "solid-js";
+import { createMemo, For } from "solid-js";
 import { useGlobalSettings } from "../../context";
 import { useFormContext } from "./Forms";
 import { ImageField } from "./ImageField";
 
 export const GeneralConfigTab = () => {
   const { allData } = useGlobalSettings();
-  const { formData } = useFormContext();
+  const { formData, versionList } = useFormContext();
 
   const names = createMemo(() => {
     const data = allData();
@@ -27,6 +27,21 @@ export const GeneralConfigTab = () => {
 
   return (
     <div class="grid grid-cols-[6rem_1fr] gap-2">
+      <label class="fieldset-legend" for="general.version">
+        版本
+      </label>
+      <select
+        class="select"
+        id="general.version"
+        name="general.version"
+        disabled={versionList().length === 0}
+      >
+        <option value="">最新</option>
+        <For each={versionList()}>
+          {(version) => <option value={version}>{version}</option>}
+        </For>
+      </select>
+
       <span class="fieldset-legend">模式</span>
       <div class="tabs tabs-box w-fit">
         <label class="tab has-checked:tab-active">
@@ -91,20 +106,6 @@ export const GeneralConfigTab = () => {
           {names().get(formData().general.actionCardId ?? 0)}
         </span>
       </label>
-
-      <label
-        class="fieldset-legend"
-        for="general.version"
-      >
-        版本
-      </label>
-      <input
-        class="input"
-        id="general.version"
-        name="general.version"
-        placeholder="v6.0.0"
-        pattern="v\d+\.\d+\.\d+(-beta)?"
-      />
 
       <label class="fieldset-legend" for="general.cardbackImage">
         牌背

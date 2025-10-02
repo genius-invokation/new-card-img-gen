@@ -1,5 +1,7 @@
 import type { Accessor } from "solid-js";
 import { ASSETS_API_ENDPOINT, TYPE_TAG_IMG_NAME_MAP } from "./constants";
+import type { AllUnionFields } from "type-fest";
+import type { ParsedChild } from "./types";
 
 export const tagImageUrl = (tag: string) =>
   tag.startsWith("GCG_TAG_ELEMENT_")
@@ -9,10 +11,21 @@ export const tagImageUrl = (tag: string) =>
     : `${import.meta.env.BASE_URL}assets/tags/UI_Gcg_Tag_${
         TYPE_TAG_IMG_NAME_MAP[tag]
       }.png`;
-export const cardFaceUrl = (id: number, cardFace: string) =>
+export const cardFaceUrl = (id: number) =>
   `${ASSETS_API_ENDPOINT}/image/${id}?type=cardFace`;
-export const iconUrl = (id: number, icon: string) =>
+export const iconUrl = (id: number) =>
   `${ASSETS_API_ENDPOINT}/image/${id}?type=icon`;
+
+export type AnyChild = AllUnionFields<ParsedChild>;
+export const entityIconUrl = (item: AnyChild) => {
+  return (
+    item.buffIconUrl ||
+    item.iconUrl ||
+    (["GCG_RULE_EXPLANATION", "GCG_CARD_EVENT"].includes(item.type)
+      ? tagImageUrl(item.type)
+      : iconUrl(item.id))
+  );
+};
 
 export const nar = <A, B extends A>(
   accessor: Accessor<A>,

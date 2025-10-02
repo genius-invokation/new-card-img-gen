@@ -9,4 +9,25 @@ declare module "solid-js" {
   }
 }
 
+declare module "@gi-tcg/static-data" {
+  interface CharacterRawData {
+    cardFaceUrl?: string;
+    iconUrl?: string;
+  }
+
+  interface SkillRawData {
+    iconUrl?: string;
+  }
+  
+  interface EntityRawData {
+    cardFaceUrl?: string;
+    buffIconUrl?: string;
+  }
+  
+  interface ActionCardRawData {
+    cardFaceUrl?: string;
+  }
+  
+}
+
 export {};

@@ -77,13 +77,13 @@ export const ImageField = (props: ImageFieldProps) => {
   };
 
   return (
-    <div use:field class="flex flex-row">
+    <div use:field class="flex flex-row items-center gap-2">
       <div class="w-16 h-20 flex items-center justify-center overflow-clip">
         <Show when={formData(name)}>
           <img src={formData(name) as string} />
         </Show>
       </div>
-      <div class="flex flex-col ml-2">
+      <div class="flex flex-row items-center gap-2">
         <Show
           when={isDataUri()}
           fallback={
@@ -98,13 +98,14 @@ export const ImageField = (props: ImageFieldProps) => {
         >
           <button
             type="button"
-            class="btn btn-sm btn-outline"
+            class="btn btn-outline"
             onClick={clearField}
           >
             清除上传
           </button>
         </Show>
-        <label class="btn btn-sm btn-outline">
+        或
+        <label class="btn btn-outline">
           <span>上传图片</span>
           <input
             type="file"

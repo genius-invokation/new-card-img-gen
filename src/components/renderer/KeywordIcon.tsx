@@ -1,46 +1,47 @@
-import { Show, Switch, Match } from "solid-js";
+import { Show, Switch, Match, createMemo } from "solid-js";
 import { useRenderContext } from "../../context";
-import { cardFaceUrl, iconUrl, tagImageUrl } from "../../utils";
+import {
+  cardFaceUrl,
+  entityIconUrl,
+  iconUrl,
+  tagImageUrl,
+  type AnyChild,
+} from "../../utils";
 import "./KeywordIcon.css";
 
 interface KeywordIconProps {
-  id: number;
-  tag: string;
-  image?: string;
-  class?: string; // prefer class prop
+  item: AnyChild;
+  class?: string;
 }
 
 export const KeywordIcon = (props: KeywordIconProps) => {
   const renderContext = useRenderContext();
 
-  const chooseImage = (id: number, image?: string) =>
-    image ? iconUrl(id, image) : tagImageUrl("GCG_CARD_EVENT");
-
   const prepareEntity = () =>
-    renderContext().prepareSkillToEntityMap.get(props.id);
-  const vehicleEntity = () =>
-    props.tag === "GCG_SKILL_TAG_VEHICLE"
-      ? renderContext().genericEntities.find(
-          (e) => e.id === Number(props.id.toString().slice(0, -1)),
-        )
-      : undefined;
+    renderContext().prepareSkillToEntityMap.get(props.item.id);
 
-  const getBuffIcon = (e: { id: number } | undefined, fallback?: string) => {
-    // Some entity records may expose buffIcon dynamically; treat as optional string property
-    return (e && (e as { buffIcon?: string }).buffIcon) || fallback;
-  };
+  // TODO: use a pre-calculated map
+  const vehicleEntity = createMemo(() =>
+    props.item.type === "GCG_SKILL_TAG_VEHICLE"
+      ? renderContext().genericEntities.find(
+          (et) =>
+            "skills" in et && et.skills.find((sk) => sk.id === props.item.id),
+        )
+      : void 0,
+  );
+
   const isSkillMask = () =>
     ["GCG_SKILL_TAG_A", "GCG_SKILL_TAG_E", "GCG_SKILL_TAG_Q"].includes(
-      props.tag,
+      props.item.type,
     );
 
   return (
-    <Show when={props.tag !== "GCG_RULE_EXPLANATION"}>
+    <Show when={props.item.type !== "GCG_RULE_EXPLANATION"}>
       <Switch
         fallback={
           <img
             class={`buff-icon ${props.class || ""}`}
-            src={chooseImage(props.id, props.image)}
+            src={entityIconUrl(props.item)}
           />
         }
       >
@@ -48,7 +49,7 @@ export const KeywordIcon = (props: KeywordIconProps) => {
           {(ent) => (
             <img
               class={`buff-icon ${props.class || ""}`}
-              src={chooseImage(ent().id, getBuffIcon(ent()))}
+              src={entityIconUrl(ent() as AnyChild)}
             />
           )}
         </Match>
@@ -56,7 +57,7 @@ export const KeywordIcon = (props: KeywordIconProps) => {
           {(veh) => (
             <img
               class={`buff-icon ${props.class || ""}`}
-              src={chooseImage(veh().id, getBuffIcon(veh(), props.image))}
+              src={entityIconUrl(veh() as AnyChild)}
             />
           )}
         </Match>
@@ -64,7 +65,7 @@ export const KeywordIcon = (props: KeywordIconProps) => {
           <div
             class={`buff-mask ${props.class || ""}`}
             style={{
-              "mask-image": `url("${chooseImage(props.id, props.image)}")`,
+              "mask-image": `url("${entityIconUrl(props.item)}")`,
             }}
           />
         </Match>

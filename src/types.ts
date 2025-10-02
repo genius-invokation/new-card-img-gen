@@ -30,6 +30,7 @@ export interface AppConfig {
 
 export interface ParsedCharacter extends CharacterRawData {
   parsedSkills: ParsedSkill[];
+  iconUrl?: string;
 }
 export interface ParsedSkill extends SkillRawData {
   parsedDescription: ParsedDescription;
@@ -43,6 +44,7 @@ export interface ParsedActionCard extends ActionCardRawData {
   children: ParsedChild[];
 }
 export interface ParsedKeyword extends KeywordRawData {
+  type: "GCG_RULE_EXPLANATION";
   parsedDescription: ParsedDescription;
 }
 export type ParsedChild =

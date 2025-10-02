@@ -23,7 +23,6 @@ const INITIAL_FORM_VALUE: FormValue = {
     mode: "character",
     characterId: 1503,
     actionCardId: 332005,
-    version: "v6.0.0",
     language: "CHS",
     authorName: "Author",
     authorImageUrl: `${import.meta.env.BASE_URL}vite.svg`,
@@ -32,6 +31,12 @@ const INITIAL_FORM_VALUE: FormValue = {
     displayStory: true,
     mirroredLayout: false,
   },
+  newItems: {
+    characters: [],
+    actionCards: [],
+    entities: [],
+    keywords: [],
+  }
 };
 
 const getData = async (version: string, language: Language) => {
@@ -57,13 +62,25 @@ const getData = async (version: string, language: Language) => {
 
 export const App = () => {
   const [config, setConfig] = createSignal<AppConfig>();
+  const [versionList] = createResource<string[]>(
+    () => {
+      return fetch(`${ASSETS_API_ENDPOINT}/metadata`).then(async (r) =>
+        r.ok
+          ? (await r.json()).availableVersions
+          : Promise.reject(new Error(await r.text())),
+      );
+    },
+    {
+      initialValue: [],
+    },
+  );
   const [loading, setLoading] = createSignal(true);
   let prevFormValue: FormValue = INITIAL_FORM_VALUE;
 
   const onSubmitForm = async (newFormValue: FormValue) => {
     const oldConfig = config();
-    const prevVersion = prevFormValue.general.version;
-    const newVersion = newFormValue.general.version;
+    const prevVersion = prevFormValue.general.version || "latest";
+    const newVersion = newFormValue.general.version || "latest";
     const prevLanguage = prevFormValue.general.language;
     const newLanguage = newFormValue.general.language;
     const shouldUpdateData = !(
@@ -72,6 +89,7 @@ export const App = () => {
     try {
       let data = oldConfig?.data;
       if (shouldUpdateData || !data) {
+        setLoading(true);
         data = await getData(newVersion, newLanguage);
       }
       setConfig({
@@ -82,6 +100,8 @@ export const App = () => {
       setMobilePreviewing(true);
     } catch (e) {
       alert((e as Error).message || "加载数据失败");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -161,7 +181,11 @@ export const App = () => {
           <header class="flex flex-row prose items-center m-4 gap-4">
             <h1 class="mb-0">卡图生成</h1>
           </header>
-          <Forms initialValue={INITIAL_FORM_VALUE} onSubmit={onSubmitForm} />
+          <Forms
+            initialValue={INITIAL_FORM_VALUE}
+            versionList={versionList.state === "ready" ? versionList() : []}
+            onSubmit={onSubmitForm}
+          />
         </div>
         <input type="checkbox" checked={mobilePreviewing()} hidden />
         <div class="preview-container" ref={previewContainer}>

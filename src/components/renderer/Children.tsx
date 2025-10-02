@@ -16,22 +16,12 @@ import {
   KEYWORD_CARD_FRAME,
   COST_READONLY_ENTITIES,
 } from "../../constants";
-import { cardFaceUrl } from "../../utils";
+import { cardFaceUrl, type AnyChild } from "../../utils";
 import { Text } from "./Text";
 import "./Children.css";
 
-type AnyChild = ParsedChild & {
-  cardFace?: string;
-  playCost?: { type: string; count: number }[];
-  tags?: string[];
-  type?: string; // entity/action/keyword category
-  name?: string;
-  icon?: string;
-  buffIcon?: string;
-};
-
 export const Children = (props: { children: ParsedChild[] }) => {
-  const { displayId, language } = useGlobalSettings();
+  const { displayId } = useGlobalSettings();
   const renderContext = useRenderContext();
 
   return (
@@ -55,21 +45,14 @@ export const Children = (props: { children: ParsedChild[] }) => {
                     class="keyword-card-back-repeat"
                     style={{ "--image": `url("${KEYWORD_CARDBACK_REPEAT}")` }}
                   />
-                  <img
-                    src={cardFaceUrl(child.id, child.cardFace || "")}
-                    class="keyword-card-face"
-                  />
+                  <img src={cardFaceUrl(child.id)} class="keyword-card-face" />
                   <img src={KEYWORD_CARD_FRAME} class="keyword-card-frame" />
                 </div>
               </Show>
               <div class="keyword-box">
                 <div class="keyword-buff-box">
                   <Show when={!child.cardFace}>
-                    <KeywordIcon
-                      id={child.id}
-                      tag={child.type || "GCG_RULE_EXPLANATION"}
-                      image={child.buffIcon || child.icon}
-                    />
+                    <KeywordIcon item={child} />
                   </Show>
                   <div class="keyword-title-box">
                     <div class="keyword-title">
@@ -107,9 +90,7 @@ export const Children = (props: { children: ParsedChild[] }) => {
                     }
                   />
                 </Show>
-                <div
-                  class={`keyword-description`}
-                >
+                <div class={`keyword-description`}>
                   <Description
                     description={
                       (child as ParsedActionCard | ParsedEntity | ParsedKeyword)
