@@ -10,7 +10,6 @@ import { GlobalSettings } from "./context";
 import "./App.css";
 import { Renderer } from "./components/renderer/Renderer";
 import { Forms, type FormValue } from "./components/form/Forms";
-import { createEffect } from "solid-js";
 import { Portal } from "solid-js/web";
 import { domToBlob } from "modern-screenshot";
 import { ASSETS_API_ENDPOINT } from "./constants";
@@ -24,8 +23,9 @@ const EMPTY_DATA: AllRawData = {
   entities: [],
 };
 
-let versionFromUrl =
-  new URLSearchParams(window.location.search).get("version") || "latest";
+const search = new URLSearchParams(window.location.search);
+
+let versionFromUrl = search.get("version") || "latest";
 if (versionFromUrl && !VERSION_REGEX.test(versionFromUrl)) {
   alert("URL 中的 version 参数格式错误，应为 vX.Y.Z 或 latest");
   versionFromUrl = "latest";
@@ -34,11 +34,11 @@ if (versionFromUrl && !VERSION_REGEX.test(versionFromUrl)) {
 const INITIAL_FORM_VALUE: FormValue = {
   general: {
     mode: "character",
-    characterId: 1503,
-    actionCardId: 332005,
+    characterId: Number(search.get("character_id") || Number.NaN) || 1503,
+    actionCardId: Number(search.get("action_card_id") || Number.NaN) || 332005,
     language: "CHS",
     version: versionFromUrl as Version,
-    authorName: "Author",
+    authorName: search.get("author_name") || void 0,
     authorImageUrl: `${import.meta.env.BASE_URL}vite.svg`,
     cardbackImage: "UI_Gcg_CardBack_Championship_11",
     displayId: true,
