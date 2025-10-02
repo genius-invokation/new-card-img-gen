@@ -94,7 +94,7 @@ export const App = () => {
       initialValue: [],
     },
   );
-  const [loading, setLoading] = createSignal(true);
+  const [loading, setLoading] = createSignal(false);
   const remoteFetched = {
     version: INITIAL_FORM_VALUE.general.version,
     language: INITIAL_FORM_VALUE.general.language,
@@ -111,6 +111,9 @@ export const App = () => {
     try {
       if (shouldUpdateData || !remoteFetched.data) {
         setLoading(true);
+        remoteFetched.version = newVersion;
+        remoteFetched.language = newLanguage;
+        // fetch new data
         remoteFetched.data = await getData(newVersion, newLanguage);
       }
       const data = structuredClone(remoteFetched.data);
@@ -221,8 +224,21 @@ export const App = () => {
   const [renderMount, setRenderMount] = createSignal<HTMLElement>();
   const [mobilePreviewing, setMobilePreviewing] = createSignal(false);
 
-  onMount(() => {
+  onMount(async () => {
     setRenderMount(previewContainer);
+    if (!loading()) {
+      try {
+        setLoading(true);
+        remoteFetched.data = await getData(
+          remoteFetched.version,
+          remoteFetched.language,
+        );
+      } catch (e) {
+        alert((e as Error).message || "加载数据失败");
+      } finally {
+        setLoading(false);
+      }
+    }
   });
 
   return (
@@ -247,6 +263,7 @@ export const App = () => {
           <Forms
             initialValue={INITIAL_FORM_VALUE}
             versionList={versionList.state === "ready" ? versionList() : []}
+            loading={loading()}
             onSubmit={onSubmitForm}
           />
         </div>

@@ -26,6 +26,7 @@ import exportSvg from "./export.svg";
 export interface FormsProps {
   initialValue: FormValue;
   versionList: string[];
+  loading?: boolean;
   onSubmit: (data: FormValue) => void;
 }
 
@@ -298,8 +299,12 @@ export const Forms = (props: FormsProps) => {
             </div>
           )}
         </For>
-        <button type="submit" class="btn btn-primary" disabled={!isValid()}>
-          生成
+        <button
+          type="submit"
+          class="btn btn-primary"
+          disabled={!isValid() || props.loading}
+        >
+          {props.loading ? "生成中" : "生成"}
         </button>
       </form>
     </FormContext.Provider>
