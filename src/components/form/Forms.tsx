@@ -1,9 +1,10 @@
 import { createForm } from "@felte/solid";
-import type { FelteAccessor } from "../../../node_modules/@felte/solid/dist/esm/create-accessor";
-import type { Language, PlayCost } from "../../types";
+import type { Paths, Traverse } from "@felte/core";
+import { VERSION_REGEX, type Language, type PlayCost, type Version } from "../../types";
 import {
   type Accessor,
   createContext,
+  createEffect,
   createSignal,
   For,
   type JSX,
@@ -92,7 +93,7 @@ export interface FormValue {
     mode: "character" | "singleActionCard" | "versionedActionCards";
     characterId?: number;
     actionCardId?: number;
-    version?: `v${number}.${number}.${number}${"" | `-beta`}`;
+    version: Version;
     language: Language;
     authorName?: string;
     authorImageUrl?: string;
@@ -106,10 +107,19 @@ export interface FormValue {
     actionCards: NewActionCardData[];
     entities: NewEntityData[];
     keywords: NewKeywordData[];
-  }
+  };
 }
 
 type TabKey = (typeof TAB_LISTS)[number]["key"];
+
+type FelteAccessor<T extends object> = (<R>(
+  selector: (storeValue: T) => R,
+) => R) &
+  (<P extends Paths<T> = Paths<T>, V extends Traverse<T, P> = Traverse<T, P>>(
+    path: P,
+  ) => V) &
+  ((path: string) => any) &
+  (() => T);
 
 export interface FormContextValue {
   formData: FelteAccessor<FormValue>;
@@ -130,10 +140,9 @@ export const Forms = (props: FormsProps) => {
         props.onSubmit(data);
       },
       // validate: (data) => {
-      //   console.log(data);
       //   if (
       //     data.general.version &&
-      //     !/v\d+\.\d+\.\d+(-beta)?/.test(data.general.version)
+      //     !VERSION_REGEX.test(data.general.version)
       //   ) {
       //     return { general: { version: "版本格式错误" } };
       //   }
@@ -185,6 +194,12 @@ export const Forms = (props: FormsProps) => {
       alert("导出失败");
     }
   };
+
+  createEffect(() => {
+    if (import.meta.env.DEV) {
+      console.log(data());
+    }
+  });
 
   const handleImportClick = () => {
     importInputEl.click();

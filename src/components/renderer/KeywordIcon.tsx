@@ -1,12 +1,6 @@
 import { Show, Switch, Match, createMemo } from "solid-js";
 import { useRenderContext } from "../../context";
-import {
-  cardFaceUrl,
-  entityIconUrl,
-  iconUrl,
-  tagImageUrl,
-  type AnyChild,
-} from "../../utils";
+import { entityIconUrl, type AnyChild } from "../../utils";
 import "./KeywordIcon.css";
 
 interface KeywordIconProps {

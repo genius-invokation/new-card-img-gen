@@ -12,12 +12,15 @@ type AllRawDataImpl = typeof import("@gi-tcg/static-data");
 export interface AllRawData extends AllRawDataImpl {}
 
 export type Language = "EN" | "CHS";
+export type Version = `v${number}.${number}.${number}${"" | `-beta`}` | "latest";
+
+export const VERSION_REGEX = /^(v\d+\.\d+\.\d+(?:-beta)?|latest)$/;
 
 export interface AppConfig {
   mode: "character" | "singleActionCard" | "versionedActionCards";
   characterId?: number;
   actionCardId?: number;
-  version?: `v${number}.${number}.${number}${"" | `-beta`}`;
+  version: Version;
   language: Language;
   authorName?: string;
   authorImageUrl?: string;
@@ -91,7 +94,7 @@ export interface RenderContext {
   /** suppressed IDs */
   supIds: number[];
   names: Map<number, string>;
-  keywordToEntityMap: Map<number, EntityRawData>;
+  keywordToEntityMap: Map<number, SkillRawData | EntityRawData>;
   prepareSkillToEntityMap: Map<number, EntityRawData>;
 }
 

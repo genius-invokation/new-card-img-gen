@@ -1,4 +1,4 @@
-import { createMemo, For } from "solid-js";
+import { createEffect, createMemo, For, Match, Show, Switch } from "solid-js";
 import { useGlobalSettings } from "../../context";
 import { useFormContext } from "./Forms";
 import { ImageField } from "./ImageField";
@@ -9,11 +9,17 @@ export const GeneralConfigTab = () => {
 
   const names = createMemo(() => {
     const data = allData();
-    console.log("Computed");
     return new Map(
       [...data.characters, ...data.actionCards].map((v) => [v.id, v.name]),
     );
   });
+
+  const currentVersion = createMemo(() => formData().general.version);
+  const readonlyVersion = createMemo(
+    () =>
+      currentVersion() !== "latest" &&
+      !versionList().includes(currentVersion()),
+  );
 
   const isCharacterMode = createMemo(
     () => formData().general.mode === "character",
@@ -27,19 +33,30 @@ export const GeneralConfigTab = () => {
 
   return (
     <div class="grid grid-cols-[6rem_1fr] gap-2">
-      <label class="fieldset-legend" for="general.version">
+      <label
+        class="fieldset-legend"
+        for="general.version"
+        title="在地址栏中使用 ?version= 指定更多版本"
+      >
         版本
       </label>
       <select
         class="select"
         id="general.version"
         name="general.version"
-        disabled={versionList().length === 0}
+        disabled={readonlyVersion()}
       >
-        <option value="">最新</option>
+        <option value="latest">最新</option>
         <For each={versionList()}>
-          {(version) => <option value={version}>{version}</option>}
+          {(version) => (
+            <option value={version} selected={currentVersion() === version}>
+              {version}
+            </option>
+          )}
         </For>
+        <Show when={readonlyVersion()}>
+          <option value={currentVersion()}>{currentVersion()}</option>
+        </Show>
       </select>
 
       <span class="fieldset-legend">模式</span>

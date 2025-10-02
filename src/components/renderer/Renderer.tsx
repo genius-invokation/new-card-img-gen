@@ -31,15 +31,14 @@ export const Renderer = (props: AppConfig) => {
         (e) => [e.id, e.name] as const,
       ),
     );
+    // 官方的 Entity 引用其它 Entity 时会使用 K 而非 C/S，这里记录它们的关系以映射
     const keywordToEntityMap = new Map(
       keywords
         .filter((k) => k.name && k.id > 1000)
         .map((k) => {
-          const match = data.entities.find(
-            (e) =>
-              e.name === k.name &&
-              e.id > 110000 &&
-              !(e.tags as string[]).includes("GCG_TAG_PREPARE_SKILL"),
+          const match = [...skills, ...data.entities].find(
+            (e) => e.name === k.name,
+            // && !(e.tags as string[]).includes("GCG_TAG_PREPARE_SKILL"),
           );
           return match ? ([k.id, match] as const) : null;
         })
@@ -64,6 +63,7 @@ export const Renderer = (props: AppConfig) => {
       keywordToEntityMap,
       prepareSkillToEntityMap,
     };
+    console.log(keywordToEntityMap);
 
     let character: ParsedCharacter | null = null;
     const actionCards: ParsedActionCard[] = [];
@@ -86,22 +86,23 @@ export const Renderer = (props: AppConfig) => {
         actionCards.push(parseActionCard(renderContext, actionCard));
       }
     } else if (mode === "versionedActionCards") {
-      const collected = data.actionCards.filter(
-        (ac) =>
-          ac.sinceVersion === version &&
-          ac.obtainable &&
-          !ac.tags.includes("GCG_TAG_TALENT"),
-      );
-      actionCards.push(
-        ...collected.map((c) => parseActionCard(renderContext, c)),
-      );
+      if (version.startsWith("v")) {
+        const collected = data.actionCards.filter(
+          (ac) =>
+            ac.sinceVersion === version &&
+            ac.obtainable &&
+            !ac.tags.includes("GCG_TAG_TALENT"),
+        );
+        actionCards.push(
+          ...collected.map((c) => parseActionCard(renderContext, c)),
+        );
+      }
     }
 
-    const v = props.version;
     let title: string | null = null;
     let versionText: string | null = null;
-    if (v) {
-      let rawVersion: string = v.startsWith("v") ? v.slice(1) : v;
+    if (version.startsWith("v")) {
+      let rawVersion = version.slice(1);
       if (rawVersion.endsWith("-beta")) rawVersion = rawVersion.slice(0, -5);
       const [major, minor, patch] = rawVersion.split(".");
       const isBeta = Number(patch) >= 50;

@@ -154,12 +154,13 @@ export const parseDescription = (
         let id = Number(ref.substring(1));
         let manualColor: string | undefined = undefined;
         if (refType === "K") {
-          const mappedC = keywordToEntityMap.get(id);
-          if (mappedC) {
+          const mappedObject = keywordToEntityMap.get(id);
+          if (mappedObject) {
+            const isEntity = "skills" in mappedObject;
             result.push({
               type: "reference",
-              refType: "C",
-              id: mappedC.id,
+              refType: isEntity ? "C" : "S",
+              id: mappedObject.id,
               manualColor,
               ...styles,
             });

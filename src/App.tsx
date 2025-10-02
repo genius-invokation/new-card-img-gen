@@ -1,5 +1,11 @@
 import { createSignal, createResource, Show, onMount } from "solid-js";
-import type { AppConfig, AllRawData, Language } from "./types";
+import {
+  type AppConfig,
+  type AllRawData,
+  type Language,
+  type Version,
+  VERSION_REGEX,
+} from "./types";
 import { GlobalSettings } from "./context";
 import "./App.css";
 import { Renderer } from "./components/renderer/Renderer";
@@ -18,12 +24,20 @@ const EMPTY_DATA: AllRawData = {
   entities: [],
 };
 
+let versionFromUrl =
+  new URLSearchParams(window.location.search).get("version") || "latest";
+if (versionFromUrl && !VERSION_REGEX.test(versionFromUrl)) {
+  alert("URL 中的 version 参数格式错误，应为 vX.Y.Z 或 latest");
+  versionFromUrl = "latest";
+}
+
 const INITIAL_FORM_VALUE: FormValue = {
   general: {
     mode: "character",
     characterId: 1503,
     actionCardId: 332005,
     language: "CHS",
+    version: versionFromUrl as Version,
     authorName: "Author",
     authorImageUrl: `${import.meta.env.BASE_URL}vite.svg`,
     cardbackImage: "UI_Gcg_CardBack_Championship_11",
@@ -36,7 +50,7 @@ const INITIAL_FORM_VALUE: FormValue = {
     actionCards: [],
     entities: [],
     keywords: [],
-  }
+  },
 };
 
 const getData = async (version: string, language: Language) => {
@@ -62,7 +76,7 @@ const getData = async (version: string, language: Language) => {
 
 export const App = () => {
   const [config, setConfig] = createSignal<AppConfig>();
-  const [versionList] = createResource<string[]>(
+  const [versionList] = createResource<Version[]>(
     () => {
       return fetch(`${ASSETS_API_ENDPOINT}/metadata`).then(async (r) =>
         r.ok
