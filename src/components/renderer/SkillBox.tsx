@@ -24,7 +24,7 @@ export const SkillBox = (props: { skill: ParsedSkill }) => {
         <div
           class="skill-icon"
           style={{
-            "mask-image": `url("${iconUrl(skill().id)}")`,
+            "mask-image": `url("${iconUrl(skill())}")`,
           }}
         />
         <div class="skill-title">

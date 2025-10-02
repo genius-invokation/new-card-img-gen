@@ -1,6 +1,11 @@
 import { createForm } from "@felte/solid";
 import type { Paths, Traverse } from "@felte/core";
-import { VERSION_REGEX, type Language, type PlayCost, type Version } from "../../types";
+import {
+  VERSION_REGEX,
+  type Language,
+  type PlayCost,
+  type Version,
+} from "../../types";
 import {
   type Accessor,
   createContext,
@@ -59,10 +64,12 @@ export interface NewSkillData {
   name: string;
   rawDescription: string;
   playCost: PlayCost[];
-  iconUrl: string;
+  icon?: string;
+  iconUrl?: string;
 }
 
 export interface NewActionCardData {
+  type: string; // TODO: better typing
   id: number;
   name: string;
   tags: string[]; // TODO: better typing
@@ -77,8 +84,10 @@ export interface NewEntityData {
   type: string; // TODO: better typing
   name: string;
   tags: string[]; // TODO: better typing
+  skills: []; // TODO: how to handle techniques?
   rawDescription: string;
-  iconUrl?: string;
+  buffIcon?: string;
+  buffIconUrl?: string;
   cardFaceUrl?: string;
 }
 
@@ -229,7 +238,10 @@ export const Forms = (props: FormsProps) => {
 
   return (
     <FormContext.Provider
-      value={{ versionList: () => props.versionList, formData: data }}
+      value={{
+        versionList: () => props.versionList,
+        formData: data as unknown as FelteAccessor<FormValue>,
+      }}
     >
       <form use:form class="w-full flex-grow p-4 flex flex-col" ref={formEl}>
         <div class="overflow-x-auto max-w-full">

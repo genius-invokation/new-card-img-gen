@@ -7,12 +7,12 @@ import {
 } from "../../constants";
 import { cardFaceUrl } from "../../utils";
 import "./CardFace.css";
+import type { ParsedActionCard, ParsedCharacter } from "../../types";
 
 export const CardFace = (props: {
-  class?: string; // Solid style
-  id: number;
+  class?: string;
+  item: ParsedActionCard | ParsedCharacter;
   isLegend?: boolean;
-  cardFace: string;
   children?: JSX.Element;
 }) => {
   const { cardbackImage } = useGlobalSettings();
@@ -21,7 +21,7 @@ export const CardFace = (props: {
       <img src={`${import.meta.env.BASE_URL}assets/cardbacks/${cardbackImage()}.png`} class="card-back" />
       <img src={CARD_BACK_FRAME} class="card-frame-shadow" />
       <div class="card-face">
-        <img src={cardFaceUrl(props.id)} class="card-face-image" />
+        <img src={cardFaceUrl(props.item)} class="card-face-image" />
         <img
           src={props.isLegend ? CARD_LEGEND_FRAME : CARD_NORMAL_FRAME}
           class="card-frame"

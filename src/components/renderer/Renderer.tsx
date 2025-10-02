@@ -63,7 +63,6 @@ export const Renderer = (props: AppConfig) => {
       keywordToEntityMap,
       prepareSkillToEntityMap,
     };
-    console.log(keywordToEntityMap);
 
     let character: ParsedCharacter | null = null;
     const actionCards: ParsedActionCard[] = [];

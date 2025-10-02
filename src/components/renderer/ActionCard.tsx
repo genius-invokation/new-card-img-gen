@@ -38,10 +38,9 @@ export const ActionCard = (props: { card: ParsedActionCard }) => {
         </Show>
       </div>
       <CardFace
-        id={card().id}
+        item={card()}
         isLegend={card().tags.includes("GCG_TAG_LEGEND")}
         class="action-card-image-container"
-        cardFace={card().cardFace}
       >
         <Cost
           type="actionCard"

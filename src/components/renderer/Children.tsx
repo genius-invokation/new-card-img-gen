@@ -35,7 +35,7 @@ export const Children = (props: { children: ParsedChild[] }) => {
           return (
             <div class="keyword-box-wrapper">
               <div class="keyword-line" />
-              <Show when={child.cardFace}>
+              <Show when={child.cardFaceUrl || child.cardFace}>
                 <div class="keyword-card">
                   <img
                     src={KEYWORD_CARDBACK_BOTTOM}
@@ -45,13 +45,13 @@ export const Children = (props: { children: ParsedChild[] }) => {
                     class="keyword-card-back-repeat"
                     style={{ "--image": `url("${KEYWORD_CARDBACK_REPEAT}")` }}
                   />
-                  <img src={cardFaceUrl(child.id)} class="keyword-card-face" />
+                  <img src={cardFaceUrl(child)} class="keyword-card-face" />
                   <img src={KEYWORD_CARD_FRAME} class="keyword-card-frame" />
                 </div>
               </Show>
               <div class="keyword-box">
                 <div class="keyword-buff-box">
-                  <Show when={!child.cardFace}>
+                  <Show when={!(child.cardFaceUrl || child.cardFace)}>
                     <KeywordIcon item={child} />
                   </Show>
                   <div class="keyword-title-box">

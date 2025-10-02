@@ -28,10 +28,14 @@ export const ImageField = (props: ImageFieldProps) => {
   const { formData } = useFormContext();
   const [value, setValue] = createSignal("");
 
-  const isDataUri = createMemo(() => formData(name)?.startsWith("data:"));
+  const outerFormDataValue = createMemo(() => formData(name));
+  const isDataUri = createMemo(() => {
+    const value = outerFormDataValue();
+    return typeof value === "string" && value.startsWith("data:");
+  });
 
   createEffect(() => {
-    const next = formData(name);
+    const next = outerFormDataValue();
     if (typeof next !== "string") return;
     if (next !== untrack(value)) {
       if (!next.startsWith("data:")) {

@@ -5,14 +5,20 @@ import {
   type Language,
   type Version,
   VERSION_REGEX,
+  type SkillRawData,
 } from "./types";
 import { GlobalSettings } from "./context";
 import "./App.css";
 import { Renderer } from "./components/renderer/Renderer";
-import { Forms, type FormValue } from "./components/form/Forms";
+import {
+  Forms,
+  type FormValue,
+  type NewSkillData,
+} from "./components/form/Forms";
 import { Portal } from "solid-js/web";
 import { domToBlob } from "modern-screenshot";
 import { ASSETS_API_ENDPOINT } from "./constants";
+import { MOCK_NEW_CHARACTERS, MOCK_NEW_ENTITIES } from "./mock_data";
 
 // NOTE: 绝大多数逻辑直接从 ref/client.tsx 迁移，保证渲染/解析逻辑不被删改，仅适配 Solid API。
 
@@ -46,9 +52,9 @@ const INITIAL_FORM_VALUE: FormValue = {
     mirroredLayout: false,
   },
   newItems: {
-    characters: [],
+    characters: MOCK_NEW_CHARACTERS,
     actionCards: [],
-    entities: [],
+    entities: MOCK_NEW_ENTITIES,
     keywords: [],
   },
 };
@@ -105,6 +111,48 @@ export const App = () => {
       if (shouldUpdateData || !data) {
         setLoading(true);
         data = await getData(newVersion, newLanguage);
+      }
+      const skillMapper = (newSkill: NewSkillData): SkillRawData => ({
+        ...newSkill,
+        hidden: false,
+        // we wont use these
+        englishName: "",
+        description: "",
+        targetList: [],
+      });
+      for (const newCh of newFormValue.newItems.characters) {
+        data.characters.push({
+          ...newCh,
+          skills: newCh.skills.map(skillMapper),
+          // we wont use these
+          obtainable: false,
+          englishName: "",
+          cardFace: "",
+          icon: "",
+        });
+      }
+      for (const newEt of newFormValue.newItems.entities) {
+        data.entities.push({
+          ...newEt,
+          skills: newEt.skills.map(skillMapper),
+          // we wont use these
+          description: "",
+          englishName: "",
+          hidden: false,
+          remainAfterDie: false,
+        });
+      }
+      for (const newAc of newFormValue.newItems.actionCards) {
+        data.actionCards.push({
+          ...newAc,
+          // we wont use these
+          obtainable: false,
+          englishName: "",
+          description: "",
+          cardFace: "",
+          targetList: [],
+          relatedCharacterTags: [],
+        });
       }
       setConfig({
         data,

@@ -1,6 +1,6 @@
 import { Show, Switch, Match, createMemo } from "solid-js";
 import { useRenderContext } from "../../context";
-import { entityIconUrl, type AnyChild } from "../../utils";
+import { iconUrl, type AnyChild } from "../../utils";
 import "./KeywordIcon.css";
 
 interface KeywordIconProps {
@@ -35,7 +35,7 @@ export const KeywordIcon = (props: KeywordIconProps) => {
         fallback={
           <img
             class={`buff-icon ${props.class || ""}`}
-            src={entityIconUrl(props.item)}
+            src={iconUrl(props.item)}
           />
         }
       >
@@ -43,7 +43,7 @@ export const KeywordIcon = (props: KeywordIconProps) => {
           {(ent) => (
             <img
               class={`buff-icon ${props.class || ""}`}
-              src={entityIconUrl(ent() as AnyChild)}
+              src={iconUrl(ent() as AnyChild)}
             />
           )}
         </Match>
@@ -51,7 +51,7 @@ export const KeywordIcon = (props: KeywordIconProps) => {
           {(veh) => (
             <img
               class={`buff-icon ${props.class || ""}`}
-              src={entityIconUrl(veh() as AnyChild)}
+              src={iconUrl(veh() as AnyChild)}
             />
           )}
         </Match>
@@ -59,7 +59,7 @@ export const KeywordIcon = (props: KeywordIconProps) => {
           <div
             class={`buff-mask ${props.class || ""}`}
             style={{
-              "mask-image": `url("${entityIconUrl(props.item)}")`,
+              "mask-image": `url("${iconUrl(props.item)}")`,
             }}
           />
         </Match>
