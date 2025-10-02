@@ -95,23 +95,25 @@ export const App = () => {
     },
   );
   const [loading, setLoading] = createSignal(true);
-  let prevFormValue: FormValue = INITIAL_FORM_VALUE;
-
+  const remoteFetched = {
+    version: INITIAL_FORM_VALUE.general.version,
+    language: INITIAL_FORM_VALUE.general.language,
+    data: null as AllRawData | null,
+  };
   const onSubmitForm = async (newFormValue: FormValue) => {
-    const oldConfig = config();
-    const prevVersion = prevFormValue.general.version || "latest";
-    const newVersion = newFormValue.general.version || "latest";
-    const prevLanguage = prevFormValue.general.language;
+    const prevVersion = remoteFetched.version;
+    const newVersion = newFormValue.general.version;
+    const prevLanguage = remoteFetched.language;
     const newLanguage = newFormValue.general.language;
     const shouldUpdateData = !(
       prevVersion === newVersion && prevLanguage === newLanguage
     );
     try {
-      let data = oldConfig?.data;
-      if (shouldUpdateData || !data) {
+      if (shouldUpdateData || !remoteFetched.data) {
         setLoading(true);
-        data = await getData(newVersion, newLanguage);
+        remoteFetched.data = await getData(newVersion, newLanguage);
       }
+      const data = structuredClone(remoteFetched.data);
       const skillMapper = (newSkill: NewSkillData): SkillRawData => ({
         ...newSkill,
         hidden: false,
@@ -158,7 +160,6 @@ export const App = () => {
         data,
         ...newFormValue.general,
       });
-      prevFormValue = newFormValue;
       setMobilePreviewing(true);
     } catch (e) {
       alert((e as Error).message || "加载数据失败");
