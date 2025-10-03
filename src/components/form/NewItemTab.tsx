@@ -73,7 +73,7 @@ export const NewItemsTab = () => {
         >
           &gt;
         </label>
-        <ul class="hidden absolute h-full @md:block peer-checked:block @md:relative menu bg-base-200 rounded-box min-w-20 flex-shrink-0 flex-nowrap min-h-0 overflow-auto">
+        <ul class="hidden absolute h-full @md:flex peer-checked:flex @md:relative menu bg-base-200 rounded-box min-w-20 flex-shrink-0 flex-nowrap min-h-0 overflow-auto">
           <li class="@md:hidden">
             <label for={menuMobileVisible}>&lt;</label>
           </li>
@@ -126,6 +126,7 @@ export const NewItemsTab = () => {
             )}
           </Index>
           <li class="flex-grow invisible" />
+          <li class="menu-title"><hr /></li>
           <li>
             <button
               type="button"

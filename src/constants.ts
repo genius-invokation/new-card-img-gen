@@ -48,6 +48,8 @@ export const CHILDREN_CONFIG: Record<number, string> = {
 export const SHOWN_KEYWORDS = [
   1012, // 汲取对应元素的力量
   1013, // 「焚尽的炽炎魔女」
+  7, // 距离我方出战角色最近的角色
+  66, // 冒险
 ];
 
 export const COST_READONLY_ENTITIES = [

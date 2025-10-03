@@ -101,7 +101,7 @@ export const Renderer = (props: AppConfig) => {
         const collected = data.actionCards.filter(
           (ac) =>
             ac.sinceVersion === version &&
-            ac.obtainable &&
+            (ac.obtainable || ac.tags.includes("GCG_TAG_ADVENTURE_PLACE")) &&
             !ac.tags.includes("GCG_TAG_TALENT"),
         );
         actionCards.push(

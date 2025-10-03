@@ -1,4 +1,5 @@
 .card-face-component {
+  flex: 0 0 auto;
   position: relative;
   --card-width: calc(0.55 * var(--card-container-height));
 }
@@ -20,8 +21,7 @@
 .card-frame-shadow {
   height: var(--card-container-height);
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
 }
 
 .card-face {
@@ -29,8 +29,8 @@
   top: 0;
   left: 0;
   width: var(--card-width);
-  --front-card-translate-x: calc(0.0647 * var(--card-container-height));
-  --front-card-translate-y: calc(0.0225 * var(--card-container-height));
+  --front-card-translate-x: calc(0.0627 * var(--card-container-height));
+  --front-card-translate-y: calc(0.0281 * var(--card-container-height));
   transform: translate(
       var(--front-card-translate-x),
       var(--front-card-translate-y)
@@ -40,6 +40,8 @@
 }
 
 .card-face-image {
+  background-color: #cbc0a6;
+  border-radius: 1.5rem;
   width: 100%;
 }
 
