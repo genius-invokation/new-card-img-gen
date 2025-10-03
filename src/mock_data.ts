@@ -1,11 +1,16 @@
-import type { NewCharacterData, NewEntityData } from "./components/form/Forms";
+import type {
+  NewCharacterData,
+  NewEntityData,
+  NewActionCardData,
+} from "./components/form/Forms";
 
 export const MOCK_NEW_CHARACTERS: NewCharacterData[] = [
   {
     id: 9501,
     name: "雨酱",
     storyText: "你查这个干什么？",
-    cardFaceUrl: "http://106.52.187.96:8013/images/custom/UI_Gcg_CardFace_Char_Avatar_Guyutongxue.png",
+    cardFaceUrl:
+      "http://106.52.187.96:8013/images/custom/UI_Gcg_CardFace_Char_Avatar_Guyutongxue.png",
     hp: 10,
     maxEnergy: 3,
     skills: [
@@ -67,6 +72,20 @@ export const MOCK_NEW_CHARACTERS: NewCharacterData[] = [
   },
 ];
 
+export const MOCK_NEW_ACTION_CARDS: NewActionCardData[] = [
+  {
+    id: 295011,
+    type: "GCG_CARD_MODIFY",
+    name: "软软！",
+    tags: ["GCG_TAG_TALENT"],
+    cardFaceUrl: "https://picsum.photos/id/56/420/720",
+    playCost: [],
+    rawDescription:
+      "$[K2]：装备给我方的<color=#FFFFFFFF>$[A9501]</color>。装备有此牌的$[A9501]释放$[S95013]时会播放后搬腿动画。\\n（牌组中包含$[A9501]，才能加入牌组）\n",
+    relatedCharacterId: 9501,
+  },
+];
+
 export const MOCK_NEW_ENTITIES: NewEntityData[] = [
   {
     id: 195011,
@@ -86,6 +105,7 @@ export const MOCK_NEW_ENTITIES: NewEntityData[] = [
     skills: [],
     rawDescription:
       "<color=#FFFFFFFF>结束阶段：</color>造成2点$[K105]，随机交换1张双方原本元素骰费用最多的手牌。\\n<color=#FFFFFFFF>$[K3]：2</color>\\n\\n<color=#FFFFFFFF>我方角色或召唤物引发扩散反应后：</color>转换此牌的元素类型，改为造成被扩散的元素类型的伤害。（离场前仅限一次）",
-    cardFaceUrl: "http://106.52.187.96:8013/images/custom/UI_Gcg_CardFace_Summon_Guyutongxue.png",
+    cardFaceUrl:
+      "http://106.52.187.96:8013/images/custom/UI_Gcg_CardFace_Summon_Guyutongxue.png",
   },
 ];

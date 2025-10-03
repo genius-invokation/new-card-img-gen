@@ -18,9 +18,7 @@ import {
 import { Portal } from "solid-js/web";
 import { domToBlob } from "modern-screenshot";
 import { ASSETS_API_ENDPOINT } from "./constants";
-import { MOCK_NEW_CHARACTERS, MOCK_NEW_ENTITIES } from "./mock_data";
-
-// NOTE: 绝大多数逻辑直接从 ref/client.tsx 迁移，保证渲染/解析逻辑不被删改，仅适配 Solid API。
+import { MOCK_NEW_ACTION_CARDS, MOCK_NEW_CHARACTERS, MOCK_NEW_ENTITIES } from "./mock_data";
 
 const EMPTY_DATA: AllRawData = {
   keywords: [],
@@ -44,7 +42,7 @@ const INITIAL_FORM_VALUE: FormValue = {
     actionCardId: Number(search.get("action_card_id") || Number.NaN) || 332005,
     language: "CHS",
     version: versionFromUrl as Version,
-    authorName: search.get("author_name") || void 0,
+    authorName: search.get("author_name") || "❤︎ From「雨酱牌」",
     authorImageUrl: `${import.meta.env.BASE_URL}vite.svg`,
     cardbackImage: "UI_Gcg_CardBack_Championship_11",
     displayId: true,
@@ -53,7 +51,7 @@ const INITIAL_FORM_VALUE: FormValue = {
   },
   newItems: {
     characters: MOCK_NEW_CHARACTERS,
-    actionCards: [],
+    actionCards: MOCK_NEW_ACTION_CARDS,
     entities: MOCK_NEW_ENTITIES,
     keywords: [],
   },

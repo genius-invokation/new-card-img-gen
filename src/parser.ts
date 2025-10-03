@@ -61,7 +61,7 @@ export const parseDescription = (
   keyMap: Record<string, string> = {},
   ignoreParentheses = false,
 ): ParsedDescription => {
-  const { names, keywordToEntityMap } = ctx;
+  const { names, characterToElementKeywordIdMap, keywordToEntityMap } = ctx;
   const segments = rawDescription
     .replace(/<color=#FFFFFFFF>(\$\[[ACSK]\d+\])<\/color>/g, "$1")
     .replace(/<color=#([0-9A-F]{8})>/g, "###COLOR#$1###")
@@ -169,11 +169,9 @@ export const parseDescription = (
           }
         } else if (names.get(id) || id in correctId) {
           id = names.get(id) ? id : correctId[id];
-          if (refType === "A") {
-            manualColor = KEYWORD_COLORS[100 + (Math.floor(id / 100) % 10)];
-          } else if (refType === "S" && id.toString().length === 5) {
-            manualColor =
-              KEYWORD_COLORS[100 + Number(id.toString().slice(-4, -3))];
+          const hasKeywordId = characterToElementKeywordIdMap.get(id);
+          if (hasKeywordId) {
+            manualColor = KEYWORD_COLORS[hasKeywordId];
           }
           result.push({
             type: "reference",

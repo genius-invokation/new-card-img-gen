@@ -14,22 +14,18 @@ export const GeneralConfigTab = () => {
     );
   });
 
-  const currentVersion = createMemo(() => formData().general.version);
+  const currentVersion = () => formData().general.version;
   const readonlyVersion = createMemo(
     () =>
       currentVersion() !== "latest" &&
       !versionList().includes(currentVersion()),
   );
 
-  const isCharacterMode = createMemo(
-    () => formData().general.mode === "character",
-  );
-  const isSingleActionCardMode = createMemo(
-    () => formData().general.mode === "singleActionCard",
-  );
-  const isVersionedActionCardsMode = createMemo(
-    () => formData().general.mode === "versionedActionCards",
-  );
+  const isCharacterMode = () => formData().general.mode === "character";
+  const isSingleActionCardMode = () =>
+    formData().general.mode === "singleActionCard";
+  const isVersionedActionCardsMode = () =>
+    formData().general.mode === "versionedActionCards";
 
   return (
     <div class="grid grid-cols-[6rem_1fr] gap-2">

@@ -244,8 +244,8 @@ export const Forms = (props: FormsProps) => {
         formData: data as unknown as FelteAccessor<FormValue>,
       }}
     >
-      <form use:form class="w-full flex-grow p-4 flex flex-col" ref={formEl}>
-        <div class="overflow-x-auto max-w-full">
+      <form use:form class="w-full flex-grow min-h-0 p-4 flex flex-col" ref={formEl}>
+        <div class="overflow-x-auto max-w-full flex-shrink-0">
           <div role="tablist" class="tabs tabs-border  min-w-max">
             <For each={TAB_LISTS}>
               {(tab) => (
@@ -292,7 +292,7 @@ export const Forms = (props: FormsProps) => {
           {(tab) => (
             <div
               role="tabpanel"
-              class="pt-4 flex-grow hidden data-[shown]:block"
+              class="pt-4 pb-2 flex-grow min-h-0 overflow-auto hidden data-[shown]:block"
               bool:data-shown={currentTab() === tab.key}
             >
               <tab.component />
@@ -301,7 +301,7 @@ export const Forms = (props: FormsProps) => {
         </For>
         <button
           type="submit"
-          class="btn btn-primary"
+          class="flex-shrink-0 btn btn-primary"
           disabled={!isValid() || props.loading}
         >
           {props.loading ? "生成中" : "生成"}

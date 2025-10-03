@@ -288,6 +288,16 @@ export const TYPE_TAG_IMG_NAME_MAP: Record<string, string> = {
   GCG_TAG_ADVENTURE_PLACE: "Card_Adventure",
 };
 
+export const ELEMENT_TAG_TO_KEYWORD_ID: Record<string, number> = {
+  GCG_TAG_ELEMENT_CRYO: 301,
+  GCG_TAG_ELEMENT_HYDRO: 302,
+  GCG_TAG_ELEMENT_PYRO: 303,
+  GCG_TAG_ELEMENT_ELECTRO: 304,
+  GCG_TAG_ELEMENT_ANEMO: 305,
+  GCG_TAG_ELEMENT_GEO: 306,
+  GCG_TAG_ELEMENT_DENDRO: 307,
+};
+
 export const DESCRIPTION_ICON_IMAGES = {
   4007: {
     imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Shield.png`,

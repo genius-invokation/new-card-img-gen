@@ -87,14 +87,16 @@ export interface GlobalSettingsValue {
 }
 
 export interface RenderContext {
-  // characters: CharacterRawData[];
   skills: SkillRawData[];
   keywords: KeywordRawData[];
   genericEntities: (EntityRawData | ActionCardRawData)[];
   /** suppressed IDs */
   supIds: number[];
   names: Map<number, string>;
+  characterToElementKeywordIdMap: Map<number, number>;
+  /** Kxxx 的同名 Cxxx 或 Sxxx 条目 */
   keywordToEntityMap: Map<number, SkillRawData | EntityRawData>;
+  /** 准备技能的触发角色状态 */
   prepareSkillToEntityMap: Map<number, EntityRawData>;
 }
 

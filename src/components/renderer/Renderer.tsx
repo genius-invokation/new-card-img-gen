@@ -6,14 +6,16 @@ import {
   type RenderContext,
   type ParsedCharacter,
   type ParsedActionCard,
-  type Language,
 } from "../../types";
 import { parseCharacter, parseActionCard } from "../../parser";
-import { GlobalSettings, RenderContextProvider } from "../../context";
+import { RenderContextProvider } from "../../context";
 import { Character } from "./Character";
 import { ActionCard } from "./ActionCard";
 import "./Renderer.css";
-import { VERSION_REPLACE_STRS } from "../../constants";
+import {
+  ELEMENT_TAG_TO_KEYWORD_ID,
+  VERSION_REPLACE_STRS,
+} from "../../constants";
 import { PageTitle } from "./PageTitle";
 
 export const Renderer = (props: AppConfig) => {
@@ -29,6 +31,15 @@ export const Renderer = (props: AppConfig) => {
     const names = new Map<number, string>(
       [...genericEntities, ...data.characters, ...skills].map(
         (e) => [e.id, e.name] as const,
+      ),
+    );
+    const characterToElementKeywordIdMap = new Map(
+      data.characters.flatMap((ch) =>
+        [ch.id, ...ch.skills.map((sk) => sk.id)].map((id) => [
+          id,
+          ch.tags.map((t) => ELEMENT_TAG_TO_KEYWORD_ID[t]).find((kId) => kId) ??
+            310,
+        ]),
       ),
     );
     // 官方的 Entity 引用其它 Entity 时会使用 K 而非 C/S，这里记录它们的关系以映射
@@ -60,6 +71,7 @@ export const Renderer = (props: AppConfig) => {
       keywords,
       names,
       supIds: [],
+      characterToElementKeywordIdMap,
       keywordToEntityMap,
       prepareSkillToEntityMap,
     };
