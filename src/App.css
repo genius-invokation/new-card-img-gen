@@ -107,7 +107,8 @@ input:checked ~ .preview-container {
   justify-content: center;
   align-items: center;
 
-  position: absolute;
+  position: fixed;
+  z-index: 10;
   inset: 0;
   width: 100vw;
   height: 100vh;
