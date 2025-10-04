@@ -3,11 +3,13 @@ import {
   createEffect,
   createMemo,
   createSignal,
+  on,
   Show,
   untrack,
   type JSX,
 } from "solid-js";
-import { useFormContext } from "./Forms";
+import { useMainFormContext } from "./Forms";
+import { useFelteContext } from "./FelteFormWrapper";
 
 export interface ImageFieldProps {
   name: string;
@@ -22,20 +24,29 @@ export const ImageField = (props: ImageFieldProps) => {
   // eslint-disable-next-line solid/reactivity
   const name = props.name;
 
-  const { field, onInput, onBlur } = createField(name);
-  void field;
-
-  const { formData } = useFormContext();
+  const { data, setFields } = useFelteContext();
   const [value, setValue] = createSignal("");
 
-  const outerFormDataValue = createMemo(() => formData(name));
+  const outerDataValue = createMemo(() => data(name) as string);
   const isDataUri = createMemo(() => {
-    const value = outerFormDataValue();
+    const value = outerDataValue();
     return typeof value === "string" && value.startsWith("data:");
   });
 
+  createEffect(
+    on(
+      value,
+      (v) => {
+        if (v === outerDataValue()) return;
+        setFields(name, v, true);
+      },
+      {
+        defer: true,
+      },
+    ),
+  );
   createEffect(() => {
-    const next = outerFormDataValue();
+    const next = outerDataValue();
     if (typeof next !== "string") return;
     if (next !== untrack(value)) {
       if (!next.startsWith("data:")) {
@@ -49,11 +60,6 @@ export const ImageField = (props: ImageFieldProps) => {
   ) => {
     const next = event.currentTarget.value;
     setValue(next);
-    onInput(next);
-  };
-
-  const handleUrlBlur = () => {
-    onBlur();
   };
 
   const handleFileChange: JSX.ChangeEventHandler<HTMLInputElement, Event> = (
@@ -67,8 +73,6 @@ export const ImageField = (props: ImageFieldProps) => {
       const result = typeof reader.result === "string" ? reader.result : "";
       if (!result) return;
       setValue(result);
-      onInput(result);
-      onBlur();
       fileInputEl.value = "";
     };
     reader.readAsDataURL(file);
@@ -76,16 +80,12 @@ export const ImageField = (props: ImageFieldProps) => {
 
   const clearField = () => {
     setValue("");
-    onInput("");
-    onBlur();
   };
 
   return (
-    <div use:field class="flex flex-row items-center gap-2">
+    <div class="flex flex-row items-center gap-2">
       <div class="w-16 h-20 flex items-center justify-center overflow-clip">
-        <Show when={formData(name)}>
-          <img src={formData(name) as string} />
-        </Show>
+        <Show when={outerDataValue()}>{(url) => <img src={url()} />}</Show>
       </div>
       <div class="flex flex-row items-center gap-2">
         <Show
@@ -95,16 +95,11 @@ export const ImageField = (props: ImageFieldProps) => {
               class="input"
               value={value()}
               onInput={handleUrlInput}
-              onBlur={handleUrlBlur}
               placeholder="URL"
             />
           }
         >
-          <button
-            type="button"
-            class="btn btn-outline"
-            onClick={clearField}
-          >
+          <button type="button" class="btn btn-outline" onClick={clearField}>
             清除上传
           </button>
         </Show>
@@ -116,7 +111,6 @@ export const ImageField = (props: ImageFieldProps) => {
             accept="image/*"
             class="hidden"
             onChange={handleFileChange}
-            onBlur={onBlur}
           />
         </label>
       </div>

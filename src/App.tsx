@@ -18,7 +18,11 @@ import {
 import { Portal } from "solid-js/web";
 import { domToBlob } from "modern-screenshot";
 import { ASSETS_API_ENDPOINT } from "./constants";
-import { MOCK_NEW_ACTION_CARDS, MOCK_NEW_CHARACTERS, MOCK_NEW_ENTITIES } from "./mock_data";
+import {
+  MOCK_NEW_ACTION_CARDS,
+  MOCK_NEW_CHARACTERS,
+  MOCK_NEW_ENTITIES,
+} from "./mock_data";
 
 const EMPTY_DATA: AllRawData = {
   keywords: [],
@@ -99,6 +103,9 @@ export const App = () => {
     data: null as AllRawData | null,
   };
   const onSubmitForm = async (newFormValue: FormValue) => {
+    if (import.meta.env.DEV) {
+      console.log(newFormValue);
+    }
     const prevVersion = remoteFetched.version;
     const newVersion = newFormValue.general.version;
     const prevLanguage = remoteFetched.language;
@@ -126,6 +133,7 @@ export const App = () => {
       for (const newCh of newFormValue.newItems.characters) {
         data.characters.push({
           ...newCh,
+          tags: [newCh.elementTag, newCh.weaponTag, ...newCh.tags],
           skills: newCh.skills.map(skillMapper),
           // we wont use these
           obtainable: false,

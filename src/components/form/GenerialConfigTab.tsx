@@ -1,11 +1,13 @@
 import { createEffect, createMemo, For, Match, Show, Switch } from "solid-js";
 import { useGlobalSettings } from "../../context";
-import { useFormContext } from "./Forms";
+import { useMainFormContext } from "./Forms";
 import { ImageField } from "./ImageField";
+import { useFelteContext } from "./FelteFormWrapper";
 
 export const GeneralConfigTab = () => {
   const { allData } = useGlobalSettings();
-  const { formData, versionList } = useFormContext();
+  const { data: formData } = useFelteContext();
+  const { versionList } = useMainFormContext();
 
   const names = createMemo(() => {
     const data = allData();

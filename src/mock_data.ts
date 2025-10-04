@@ -64,11 +64,9 @@ export const MOCK_NEW_CHARACTERS: NewCharacterData[] = [
         icon: "MonsterSkill_S_EffigyElectric_04",
       },
     ],
-    tags: [
-      "GCG_TAG_ELEMENT_ANEMO",
-      "GCG_TAG_WEAPON_BOW",
-      "GCG_TAG_NATION_LIYUE",
-    ],
+    elementTag: "GCG_TAG_ELEMENT_ANEMO",
+    weaponTag: "GCG_TAG_WEAPON_BOW",
+    tags: ["GCG_TAG_NATION_LIYUE"],
   },
 ];
 

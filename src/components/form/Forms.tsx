@@ -1,11 +1,4 @@
-import { createForm } from "@felte/solid";
-import type { Paths, Traverse } from "@felte/core";
-import {
-  VERSION_REGEX,
-  type Language,
-  type PlayCost,
-  type Version,
-} from "../../types";
+import { type Language, type PlayCost, type Version } from "../../types";
 import {
   type Accessor,
   createContext,
@@ -13,8 +6,8 @@ import {
   createSignal,
   For,
   type JSX,
-  onCleanup,
-  onMount,
+  on,
+  untrack,
   useContext,
 } from "solid-js";
 import { GeneralConfigTab } from "./GenerialConfigTab";
@@ -22,6 +15,8 @@ import { NewItemsTab } from "./NewItemTab";
 import { OverrideTab } from "./OverrideTab";
 import importSvg from "./import.svg";
 import exportSvg from "./export.svg";
+import { createForm } from "./FelteFormWrapper";
+import * as R from "remeda";
 
 export interface FormsProps {
   initialValue: FormValue;
@@ -53,7 +48,9 @@ export interface NewCharacterData {
   name: string;
   hp: number;
   maxEnergy: number;
-  tags: string[]; // TODO: better typing
+  elementTag: string;
+  weaponTag: string;
+  tags: string[];
   storyText?: string;
   skills: NewSkillData[];
   cardFaceUrl: string;
@@ -122,69 +119,50 @@ export interface FormValue {
 
 type TabKey = (typeof TAB_LISTS)[number]["key"];
 
-type FelteAccessor<T extends object> = (<R>(
-  selector: (storeValue: T) => R,
-) => R) &
-  (<P extends Paths<T> = Paths<T>, V extends Traverse<T, P> = Traverse<T, P>>(
-    path: P,
-  ) => V) &
-  ((path: string) => any) &
-  (() => T);
-
-export interface FormContextValue {
-  formData: FelteAccessor<FormValue>;
+export interface MainFormContextValue {
   versionList: Accessor<string[]>;
 }
 
-const FormContext = createContext<FormContextValue>();
-export const useFormContext = () => {
-  return useContext(FormContext)!;
+const MainFormContext = createContext<MainFormContextValue>();
+export const useMainFormContext = () => {
+  return useContext(MainFormContext)!;
 };
 
 export const Forms = (props: FormsProps) => {
-  const { form, data, isDirty, setIsDirty, isValid, setData, setFields } =
-    createForm<FormValue>({
-      initialValues: props.initialValue,
-      onSubmit: (data) => {
-        setIsDirty(false);
-        props.onSubmit(data);
-      },
-      // validate: (data) => {
-      //   if (
-      //     data.general.version &&
-      //     !VERSION_REGEX.test(data.general.version)
-      //   ) {
-      //     return { general: { version: "版本格式错误" } };
-      //   }
-      // },
-      // debounced: {
-      //   timeout: 300,
-      //   validate: async () => {
-      //     if (!formEl.checkValidity()) {
-      //       return {}
-      //     }
-      //   },
-      // },
-    });
-  void form;
+  const [Form, { data, isValid, setData, setFields }] = createForm<FormValue>({
+    initialValues: props.initialValue,
+    onSubmit: (data) => {
+      props.onSubmit(data);
+    },
+    // validate: (data) => {
+    //   if (
+    //     data.general.version &&
+    //     !VERSION_REGEX.test(data.general.version)
+    //   ) {
+    //     return { general: { version: "版本格式错误" } };
+    //   }
+    // },
+    // debounced: {
+    //   timeout: 300,
+    //   validate: async () => {
+    //     if (!formEl.checkValidity()) {
+    //       return {}
+    //     }
+    //   },
+    // },
+  });
 
   const previewVisible = () =>
     !!document.querySelector(".preview-container")?.scrollHeight;
 
-  let submitInterval: number;
-  onMount(() => {
-    submitInterval = setInterval(() => {
-      if (previewVisible() && isValid() && isDirty()) {
-        formEl.requestSubmit();
+  const submitOp = R.funnel<[FormValue], FormValue>(
+    (data: FormValue) => {
+      if (previewVisible() && isValid()) {
+        untrack(() => props.onSubmit)(data);
       }
-    }, 1000);
-    setIsDirty(true);
-  });
-  onCleanup(() => {
-    if (submitInterval) {
-      clearInterval(submitInterval);
-    }
-  });
+    },
+    { minQuietPeriodMs: 500, triggerAt: "both", reducer: (prev, data) => data },
+  );
 
   let formEl!: HTMLFormElement;
   let importInputEl!: HTMLInputElement;
@@ -205,11 +183,11 @@ export const Forms = (props: FormsProps) => {
     }
   };
 
-  createEffect(() => {
-    if (import.meta.env.DEV) {
-      console.log(data());
-    }
-  });
+  createEffect(
+    on(data, (data) => {
+      submitOp.call(data);
+    }),
+  );
 
   const handleImportClick = () => {
     importInputEl.click();
@@ -238,13 +216,12 @@ export const Forms = (props: FormsProps) => {
   };
 
   return (
-    <FormContext.Provider
+    <MainFormContext.Provider
       value={{
         versionList: () => props.versionList,
-        formData: data as unknown as FelteAccessor<FormValue>,
       }}
     >
-      <form use:form class="w-full flex-grow min-h-0 p-4 flex flex-col" ref={formEl}>
+      <Form class="w-full flex-grow min-h-0 p-4 flex flex-col" ref={formEl}>
         <div class="overflow-x-auto max-w-full flex-shrink-0">
           <div role="tablist" class="tabs tabs-border  min-w-max">
             <For each={TAB_LISTS}>
@@ -306,7 +283,7 @@ export const Forms = (props: FormsProps) => {
         >
           {props.loading ? "生成中" : "生成"}
         </button>
-      </form>
-    </FormContext.Provider>
+      </Form>
+    </MainFormContext.Provider>
   );
 };

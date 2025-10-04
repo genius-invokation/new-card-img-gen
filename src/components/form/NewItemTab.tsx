@@ -1,9 +1,20 @@
 import { createMemo, createSignal, createUniqueId, For, Index } from "solid-js";
-import { useFormContext } from "./Forms";
+import { type FormValue, useMainFormContext } from "./Forms";
+import { TagsField } from "./TagsField";
+import { TYPE_TAG_TEXT_MAP } from "../../constants";
+import type { Language } from "../../types";
+import { useFelteContext } from "./FelteFormWrapper";
 
 export const CharacterBasicFields = <T extends string>(props: {
   namePrefix: T;
+  language: Language;
 }) => {
+  const tags = createMemo(() =>
+    Object.entries(TYPE_TAG_TEXT_MAP[props.language])
+      .filter(([value]) => /^GCG_TAG_(:?NATION|CAMP|ARKHE)_/.test(value))
+      .map(([value, label]) => ({ value, label })),
+  );
+
   return (
     <>
       <label class="fieldset-legend" for={`${props.namePrefix}id`}>
@@ -49,14 +60,17 @@ export const CharacterBasicFields = <T extends string>(props: {
         placeholder="3"
         class="input"
       />
+
+      <label class="fieldset-legend">标签</label>
+      <TagsField name={`${props.namePrefix}tags`} options={tags()} allowsArbitrary />
     </>
   );
 };
 
 export const NewItemsTab = () => {
-  const { formData } = useFormContext();
-  const newCharacters = () => formData("newItems.characters");
-  const newActionCards = () => formData("newItems.actionCards");
+  const { data } = useFelteContext<FormValue>();
+  const newCharacters = () => data("newItems.characters");
+  const newActionCards = () => data("newItems.actionCards");
 
   const [viewingTab, setViewingTab] = createSignal<number | "extra" | null>(
     null,
@@ -87,16 +101,13 @@ export const NewItemsTab = () => {
                   type="button"
                   classList={{
                     "menu-active":
-                      viewingTab() ===
-                      formData(`newItems.characters.${idx}.id`),
+                      viewingTab() === data(`newItems.characters.${idx}.id`),
                   }}
                   onClick={() =>
-                    setViewingTab(
-                      formData(`newItems.characters.${idx}.id`) ?? null,
-                    )
+                    setViewingTab(data(`newItems.characters.${idx}.id`) ?? null)
                   }
                 >
-                  {formData(`newItems.characters.${idx}.name`)}
+                  {data(`newItems.characters.${idx}.name`)}
                 </button>
               </li>
             )}
@@ -111,22 +122,23 @@ export const NewItemsTab = () => {
                   type="button"
                   classList={{
                     "menu-active":
-                      viewingTab() ===
-                      formData(`newItems.actionCards.${idx}.id`),
+                      viewingTab() === data(`newItems.actionCards.${idx}.id`),
                   }}
                   onClick={() =>
                     setViewingTab(
-                      formData(`newItems.actionCards.${idx}.id`) ?? null,
+                      data(`newItems.actionCards.${idx}.id`) ?? null,
                     )
                   }
                 >
-                  {formData(`newItems.actionCards.${idx}.name`)}
+                  {data(`newItems.actionCards.${idx}.name`)}
                 </button>
               </li>
             )}
           </Index>
           <li class="flex-grow invisible" />
-          <li class="menu-title"><hr /></li>
+          <li class="menu-title">
+            <hr />
+          </li>
           <li>
             <button
               type="button"
@@ -145,15 +157,16 @@ export const NewItemsTab = () => {
               <div
                 class="data-[shown]:flex flex-col hidden"
                 bool:data-shown={
-                  viewingTab() === formData(`newItems.characters.${idx}.id`)
+                  viewingTab() === data(`newItems.characters.${idx}.id`)
                 }
               >
                 <div class="prose mb-3">
-                  <h3>{formData(`newItems.characters.${idx}.name`)}</h3>
+                  <h3>{data(`newItems.characters.${idx}.name`)}</h3>
                 </div>
                 <div class="grid grid-cols-[6rem_1fr] gap-2">
                   <CharacterBasicFields
                     namePrefix={`newItems.characters.${idx}.`}
+                    language={data("general.language")}
                   />
                 </div>
               </div>
