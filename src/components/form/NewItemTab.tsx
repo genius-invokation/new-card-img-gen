@@ -4,6 +4,8 @@ import { TagsField } from "./TagsField";
 import { TYPE_TAG_TEXT_MAP } from "../../constants";
 import type { Language } from "../../types";
 import { useFelteContext } from "./FelteFormWrapper";
+import { PlayCostField } from "./PlayCostField";
+import { RawDescriptionFieldProps } from "./RawDescriptionField";
 
 export const CharacterBasicFields = <T extends string>(props: {
   namePrefix: T;
@@ -62,7 +64,72 @@ export const CharacterBasicFields = <T extends string>(props: {
       />
 
       <label class="fieldset-legend">标签</label>
-      <TagsField name={`${props.namePrefix}tags`} options={tags()} allowsArbitrary />
+      <TagsField
+        name={`${props.namePrefix}tags`}
+        options={tags()}
+        allowsArbitrary
+      />
+    </>
+  );
+};
+
+export const CharacterSkillFields = (props: {
+  namePrefix: string;
+  language: Language;
+}) => {
+  const skillTypes = createMemo(() =>
+    Object.entries(TYPE_TAG_TEXT_MAP[props.language])
+      .filter(([value]) => /^GCG_SKILL_TAG_(:?A|E|Q|PASSIVE)$/.test(value))
+      .map(([value, label]) => ({ value, label })),
+  );
+  const { data } = useFelteContext<FormValue>();
+  return (
+    <>
+      <div class="col-span-full flex flex-row gap-2 items-center">
+        <span class="fieldset-legend">
+          角色技能：{data(`${props.namePrefix}.name`)}
+        </span>
+        <hr class="mt-0.5 flex-grow text-neutral-400" />
+      </div>
+      <label class="fieldset-legend" for={`${props.namePrefix}id`}>
+        ID
+      </label>
+      <input
+        name={`${props.namePrefix}id`}
+        id={`${props.namePrefix}id`}
+        type="number"
+        disabled
+        class="input"
+      />
+
+      <div class="col-span-full flex flex-row justify-stretch gap-2">
+        <div class="flex flex-col">
+          <label class="label">类型</label>
+          <select class="select" name={`${props.namePrefix}type`}>
+            <For each={skillTypes()}>
+              {(type) => <option value={type.value}>{type.label}</option>}
+            </For>
+          </select>
+        </div>
+        <div class="flex flex-col">
+          <label class="label">名称</label>
+          <input class="input" name={`${props.namePrefix}name`} type="text" />
+        </div>
+      </div>
+
+      <label class="fieldset-legend self-start">所需骰子</label>
+      <PlayCostField name={`${props.namePrefix}playCost`} />
+
+      <label
+        class="fieldset-legend self-start"
+        for={`${props.namePrefix}rawDescription`}
+      >
+        描述
+      </label>
+      <RawDescriptionFieldProps
+        name={`${props.namePrefix}rawDescription`}
+        id={`${props.namePrefix}rawDescription`}
+      />
     </>
   );
 };
@@ -151,7 +218,7 @@ export const NewItemsTab = () => {
             </button>
           </li>
         </ul>
-        <div class="flex-grow">
+        <div class="flex-grow overflow-auto">
           <Index each={newCharacters()}>
             {(_, idx) => (
               <div
@@ -168,6 +235,14 @@ export const NewItemsTab = () => {
                     namePrefix={`newItems.characters.${idx}.`}
                     language={data("general.language")}
                   />
+                  <Index each={data(`newItems.characters.${idx}.skills`)}>
+                    {(__, skillIdx) => (
+                      <CharacterSkillFields
+                        namePrefix={`newItems.characters.${idx}.skills.${skillIdx}.`}
+                        language={data("general.language")}
+                      />
+                    )}
+                  </Index>
                 </div>
               </div>
             )}

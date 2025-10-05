@@ -26,9 +26,6 @@ export const TagsField = (props: TagsFieldProps) => {
   // eslint-disable-next-line solid/reactivity
   const name = props.name;
 
-  const { data, setFields } = useFelteContext();
-  const outerDataValue = createMemo(() => data(name) as string[]);
-
   const [tags, setTags] = createSignal<string[]>([]);
 
   const [inputValue, setInputValue] = createSignal("");
