@@ -9,7 +9,7 @@ import {
   type JSX,
 } from "solid-js";
 import { useMainFormContext } from "./Forms";
-import { useFelteContext } from "./FelteFormWrapper";
+import { createFieldBindings, useFelteContext } from "./FelteFormWrapper";
 
 export interface ImageFieldProps {
   name: string;
@@ -24,7 +24,7 @@ export const ImageField = (props: ImageFieldProps) => {
   // eslint-disable-next-line solid/reactivity
   const name = props.name;
 
-  const { data, setFields } = useFelteContext();
+  const { data } = useFelteContext();
   const [value, setValue] = createSignal("");
 
   const outerDataValue = createMemo(() => data(name) as string);
@@ -33,25 +33,9 @@ export const ImageField = (props: ImageFieldProps) => {
     return typeof value === "string" && value.startsWith("data:");
   });
 
-  createEffect(
-    on(
-      value,
-      (v) => {
-        if (v === outerDataValue()) return;
-        setFields(name, v, true);
-      },
-      {
-        defer: true,
-      },
-    ),
-  );
-  createEffect(() => {
-    const next = outerDataValue();
-    if (typeof next !== "string") return;
-    if (next !== untrack(value)) {
-      if (!next.startsWith("data:")) {
-        setValue(next);
-      }
+  createFieldBindings<string>(name, value, (v) => {
+    if (!v.startsWith("data:")) {
+      setValue(v);
     }
   });
 

@@ -7,7 +7,7 @@ import {
   on,
   untrack,
 } from "solid-js";
-import { useFelteContext } from "./FelteFormWrapper";
+import { createFieldBindings, useFelteContext } from "./FelteFormWrapper";
 import * as R from "remeda";
 
 interface TagOption {
@@ -64,26 +64,8 @@ export const TagsField = (props: TagsFieldProps) => {
     }),
   );
 
-  // 2way bindings to form
-  createEffect(
-    on(
-      tags,
-      (tags) => {
-        const current = outerDataValue();
-        if (!R.isShallowEqual(current, tags)) {
-          setFields(name, tags, true);
-        }
-      },
-      {
-        defer: true,
-      },
-    ),
-  );
-  createEffect(() => {
-    const current = outerDataValue();
-    if (Array.isArray(current) && !R.isShallowEqual(untrack(tags), current)) {
-      setTags(current.filter((v) => typeof v === "string") as string[]);
-    }
+  createFieldBindings(name, tags, setTags, {
+    equal: R.isShallowEqual,
   });
 
   return (

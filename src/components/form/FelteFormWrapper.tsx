@@ -11,9 +11,15 @@ import type { KnownStores } from "../../../node_modules/@felte/solid/dist/esm/cr
 import { createForm as createFormFelte } from "@felte/solid";
 import {
   createContext,
+  createEffect,
+  createMemo,
+  on,
+  untrack,
   useContext,
+  type Accessor,
   type Component,
   type ComponentProps,
+  type Setter,
 } from "solid-js";
 
 type FelteAccessor<T extends Record<string, any>> = (<R>(
@@ -66,4 +72,62 @@ export const createForm = <Data extends Record<string, any>>(
     ),
     rest as unknown as FelteContextValue<Data>,
   ];
+};
+
+export interface FieldBindingsOption<T> {
+  equal?: (a: T, b: T) => boolean;
+  setterGuard?: (value: unknown) => value is T;
+}
+
+/**
+ * Creates a two way binding from Custom field's value signal to Felte's form data.
+ * 
+ * ## Example
+ * ```ts
+ * // eslint-disable-next-line solid/reactivity
+ * const name = props.name;
+ * const [value, setValue] = createSignal<string>("");
+ * createFieldBindings<string>(name, value, setValue);
+ * ```
+ * 
+ * @param name The name of this field
+ * @param getter A signal getter that will be tracked to update formData
+ * @param setter A setter function will be called when formData changes
+ * @param option.equal A function to compare whether two values are equal. Default to `===`. 
+ */
+export const createFieldBindings = <FieldType,>(
+  name: string,
+  getter: Accessor<FieldType>,
+  setter: (formValue: FieldType) => void,
+  option?: FieldBindingsOption<FieldType>,
+) => {
+  const { setFields, data } = useFelteContext<any>();
+  const equal = option?.equal ?? ((a, b) => a === b);
+  const formValue = createMemo(() => data(name));
+  const setterGuard =
+    option?.setterGuard ?? ((value): value is FieldType => true);
+  // field value -> form
+  createEffect(
+    on(
+      getter,
+      (value) => {
+        const currentValue = formValue();
+        if (!equal(value, currentValue)) {
+          setFields(name, value);
+        }
+      },
+      {
+        // Do not 'propagate' initial field value to form
+        defer: true,
+      },
+    ),
+  );
+  // form -> field value
+  createEffect(() => {
+    const value = untrack(getter);
+    const currentValue = formValue();
+    if (!equal(value, currentValue) && setterGuard(value)) {
+      setter(currentValue);
+    }
+  });
 };
