@@ -19,7 +19,7 @@ export const CharacterBasicSubForm = (props: CharacterBasicSubFormProps) => {
   const form = getSubForm(subForm);
 
   const tags = createMemo(() =>
-    Object.entries(TYPE_TAG_TEXT_MAP[props.language])
+    Object.entries(TYPE_TAG_TEXT_MAP.CHS)
       .filter(([value]) => /^GCG_TAG_(:?NATION|CAMP|ARKHE)_/.test(value))
       .map(([value, label]) => ({ value, label })),
   );

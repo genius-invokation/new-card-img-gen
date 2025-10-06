@@ -43,7 +43,7 @@ export const MOCK_NEW_CHARACTERS: NewCharacterData[] = [
             count: 3,
           },
         ],
-        icon: "Skill_E_Diona_01_HD",
+        iconUrl: "https://static-data.7shengzhaohuan.online/api/v4/image/raw/Skill_E_Diona_01_HD",
       },
       {
         id: 95013,
@@ -61,7 +61,7 @@ export const MOCK_NEW_CHARACTERS: NewCharacterData[] = [
             count: 3,
           },
         ],
-        icon: "MonsterSkill_S_EffigyElectric_04",
+        iconUrl: "https://static-data.7shengzhaohuan.online/api/v4/image/raw/MonsterSkill_S_EffigyElectric_04",
       },
     ],
     elementTag: "GCG_TAG_ELEMENT_ANEMO",

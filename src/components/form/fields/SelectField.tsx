@@ -14,12 +14,12 @@ export interface SelectFieldProps<T extends string>
 export default function SelectField<T extends string = string>(
   props: SelectFieldProps<T>,
 ) {
-  const [local, rest] = splitProps(props, ["options"]);
+  const [local, rest] = splitProps(props, ["class", "options"]);
   const field = useFieldContext<T>();
   return (
     <select
       {...rest}
-      class="select"
+      class={`select ${local.class ?? ""}`}
       onInput={(e) => field().handleChange(e.currentTarget.value as T)}
       onBlur={() => field().handleBlur()}
       value={field().state.value}

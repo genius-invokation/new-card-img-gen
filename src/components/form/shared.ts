@@ -30,6 +30,7 @@ export const { useAppForm, withForm } = createFormHook({
     IdField: lazy(() => import("./fields/IdField")),
     TagsField: lazy(() => import("./fields/TagsField")),
     RawDescriptionField: lazy(() => import("./fields/RawDescriptionField")),
+    IconSelectField: lazy(() => import("./fields/IconSelectField")),
   },
   formComponents: {},
 });
@@ -159,12 +160,11 @@ export function getSubForm<T extends SubForm<any, string>>(subForm: T) {
   >;
 }
 
-
 /**
  * Make internal '@tanstack/solid-form' typed.
- * @param state 
- * @param key 
- * @returns 
+ * @param state
+ * @param key
+ * @returns
  */
 export function getBy<
   T extends NonNullable<unknown>,

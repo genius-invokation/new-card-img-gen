@@ -75,7 +75,7 @@ export default function TagsField(props: TagsFieldProps) {
                 onClick={() => setTags((prev) => prev.filter((t) => t !== tag))}
                 class="cursor-pointer select-none"
               >
-                &cross;
+                &times;
               </button>
             </div>
           </div>

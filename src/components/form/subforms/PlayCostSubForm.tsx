@@ -82,7 +82,7 @@ export const PlayCostSubForm = (props: CostFieldProps) => {
                       {(subField) => (
                         <subField.SelectField
                           options={typeSelectOptions()}
-                          class="flex-grow"
+                          class="flex-grow appearance-none"
                         />
                       )}
                     </form.AppField>
@@ -100,7 +100,7 @@ export const PlayCostSubForm = (props: CostFieldProps) => {
                       class="btn btn-square btn-error btn-dash"
                       onClick={() => field().removeValue(idx)}
                     >
-                      &cross;
+                      &times;
                     </button>
                   </>
                 );

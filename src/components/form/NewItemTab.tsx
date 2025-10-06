@@ -1,7 +1,8 @@
-import { createSignal, createUniqueId, Index } from "solid-js";
+import { createSignal, createUniqueId, Index, Show } from "solid-js";
 import { pseudoMainFormOption, withForm } from "./shared";
 import { CharacterSkillSubForm } from "./subforms/CharacterSkillSubForm";
 import { CharacterBasicSubForm } from "./subforms/CharacterBasicSubForm";
+import { ActionCardSubForm } from "./subforms/ActionCardSubForm";
 
 export const NewItemsTab = withForm({
   ...pseudoMainFormOption,
@@ -64,7 +65,7 @@ export const NewItemsTab = withForm({
             <li>
               <h2 class="menu-title">新行动卡</h2>
             </li>
-            <Index each={newCharacters()}>
+            <Index each={newActionCards()}>
               {(_, idx) => (
                 <li>
                   <button
@@ -156,15 +157,70 @@ export const NewItemsTab = withForm({
                         {(field) => (
                           <>
                             <Index each={skills()}>
-                              {(__, skillIdx) => (
-                                <CharacterSkillSubForm
-                                  subForm={{
-                                    form,
-                                    prefix: `newItems.characters[${idx}].skills[${skillIdx}]`,
-                                  }}
-                                  language={language()}
-                                />
-                              )}
+                              {(__, skillIdx) => {
+                                const skillName = form.useStore(
+                                  (state) =>
+                                    state.values.newItems.characters[idx]
+                                      .skills[skillIdx].name,
+                                );
+                                return (
+                                  <>
+                                    <div class="col-span-full flex flex-row gap-2 items-center">
+                                      <span class="fieldset-legend">
+                                        角色技能：{skillName()}
+                                      </span>
+                                      <hr class="h-[0.5em] mt-[0.5em] flex-grow text-neutral-400" />
+                                      {/* 第一项（普通攻击）不可删除，有特殊排版 */}
+                                      <Show when={skillIdx !== 0}>
+                                        <button
+                                          type="button"
+                                          class="btn btn-sm btn-square btn-soft"
+                                          disabled={skillIdx < 2}
+                                          onClick={() => {
+                                            field().swapValues(
+                                              skillIdx,
+                                              skillIdx - 1,
+                                            );
+                                          }}
+                                        >
+                                          &UpArrow;
+                                        </button>
+                                        <button
+                                          type="button"
+                                          class="btn btn-sm btn-square btn-soft"
+                                          disabled={
+                                            skillIdx === skills().length - 1
+                                          }
+                                          onClick={() => {
+                                            field().swapValues(
+                                              skillIdx,
+                                              skillIdx + 1,
+                                            );
+                                          }}
+                                        >
+                                          &DownArrow;
+                                        </button>
+                                        <button
+                                          type="button"
+                                          class="btn btn-sm btn-square btn-soft btn-error"
+                                          onClick={() => {
+                                            field().removeValue(skillIdx);
+                                          }}
+                                        >
+                                          &times;
+                                        </button>
+                                      </Show>
+                                    </div>
+                                    <CharacterSkillSubForm
+                                      subForm={{
+                                        form,
+                                        prefix: `newItems.characters[${idx}].skills[${skillIdx}]`,
+                                      }}
+                                      language={language()}
+                                    />
+                                  </>
+                                );
+                              }}
                             </Index>
                             <hr class="col-span-full h-[0.5em] mt-[0.5em] flex-grow text-neutral-400" />
                             <button
@@ -185,6 +241,36 @@ export const NewItemsTab = withForm({
                           </>
                         )}
                       </form.Field>
+                    </div>
+                  </div>
+                );
+              }}
+            </Index>
+
+            <Index each={newActionCards()}>
+              {(_, idx) => {
+                const id = form.useStore(
+                  (state) => state.values.newItems.actionCards[idx].id,
+                );
+                const name = form.useStore(
+                  (state) => state.values.newItems.actionCards[idx].name,
+                );
+                return (
+                  <div
+                    class="data-[shown]:flex flex-col hidden"
+                    bool:data-shown={viewingTab() === id()}
+                  >
+                    <div class="prose mb-3">
+                      <h3>{name()}</h3>
+                    </div>
+                    <div class="grid grid-cols-[6rem_1fr] gap-2">
+                      <ActionCardSubForm
+                        subForm={{
+                          form,
+                          prefix: `newItems.actionCards[${idx}]`,
+                        }}
+                        language={language()}
+                      />
                     </div>
                   </div>
                 );

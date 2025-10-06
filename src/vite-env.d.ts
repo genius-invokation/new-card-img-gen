@@ -18,16 +18,22 @@ declare module "@gi-tcg/static-data" {
   interface SkillRawData {
     iconUrl?: string;
   }
-  
+
   interface EntityRawData {
     cardFaceUrl?: string;
     buffIconUrl?: string;
   }
-  
+
   interface ActionCardRawData {
     cardFaceUrl?: string;
   }
-  
+}
+
+declare module "csstype" {
+  interface StandardPropertiesHyphen {
+    "anchor-name"?: string;
+    "position-anchor"?: string;
+  }
 }
 
 export {};

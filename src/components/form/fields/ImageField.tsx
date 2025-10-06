@@ -11,7 +11,7 @@ export interface ImageFieldProps {
  * - or a data URI, uploaded by user from their local PC.
  */
 export default function ImageField(props: ImageFieldProps) {
-  const field = useFieldContext<string>();
+  const field = useFieldContext<string | undefined>();
 
   const value = () => field().state.value;
   const setValue = (v: string) => field().handleChange(v);
@@ -53,7 +53,7 @@ export default function ImageField(props: ImageFieldProps) {
 
   return (
     <div class="flex flex-row items-center gap-2">
-      <div class="w-16 h-20 flex items-center justify-center overflow-clip">
+      <div class="w-16 h-20 bg-base-200 rounded-sm flex items-center justify-center overflow-clip">
         <Show when={value()}>{(url) => <img src={url()} />}</Show>
       </div>
       <div class="flex flex-row items-center gap-2">
@@ -63,7 +63,7 @@ export default function ImageField(props: ImageFieldProps) {
             <input
               class="input"
               id={props.id}
-              value={value()}
+              value={value() || ""}
               onInput={handleUrlInput}
               onBlur={handleBlur}
               placeholder="URL"

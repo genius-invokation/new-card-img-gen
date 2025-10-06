@@ -280,7 +280,7 @@ export const App = () => {
               class="btn btn-soft btn-accent md:hidden"
               onClick={() => setMobilePreviewing(false)}
             >
-              &cross;
+              &times;
             </button>
             <button class="btn btn-soft btn-secondary" onClick={exportImage}>
               导出图片
