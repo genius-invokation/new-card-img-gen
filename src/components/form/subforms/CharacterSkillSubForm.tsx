@@ -34,7 +34,7 @@ export const CharacterSkillSubForm = (props: CharacterSkillSubFormProps) => {
     <>
       <div class="col-span-full flex flex-row gap-2 items-center">
         <span class="fieldset-legend">角色技能：{skillName()}</span>
-        <hr class="mt-0.5 flex-grow text-neutral-400" />
+        <hr class="h-[0.5em] mt-[0.5em] flex-grow text-neutral-400" />
       </div>
       <label class="fieldset-legend">ID</label>
       <input type="number" readOnly class="input" value={skillId()} />

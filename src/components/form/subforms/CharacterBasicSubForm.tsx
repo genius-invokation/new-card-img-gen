@@ -42,6 +42,15 @@ export const CharacterBasicSubForm = (props: CharacterBasicSubFormProps) => {
         )}
       </form.AppField>
 
+      <label class="fieldset-legend" for={`${prefix}.cardFaceUrl`}>
+        卡面
+      </label>
+      <form.AppField name={`${prefix}.cardFaceUrl`}>
+        {(field) => (
+          <field.ImageField id={`${prefix}.cardFaceUrl`} />
+        )}
+      </form.AppField>
+
       <label class="fieldset-legend" for={`${prefix}.hp`}>
         最大生命值
       </label>

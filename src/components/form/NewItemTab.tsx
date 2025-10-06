@@ -130,17 +130,61 @@ export const NewItemsTab = withForm({
                         }}
                         language={language()}
                       />
-                      <Index each={skills()}>
-                        {(__, skillIdx) => (
-                          <CharacterSkillSubForm
-                            subForm={{
-                              form,
-                              prefix: `newItems.characters[${idx}].skills[${skillIdx}]`,
-                            }}
-                            language={language()}
+
+                      <label
+                        class="fieldset-legend items-start"
+                        for={`newItems.characters[${idx}].storyText`}
+                      >
+                        角色故事
+                      </label>
+                      <form.AppField
+                        name={`newItems.characters[${idx}].storyText`}
+                      >
+                        {(field) => (
+                          <field.TextAreaField
+                            id={`newItems.characters[${idx}].storyText`}
+                            placeholder="角色故事"
+                            class="h-16"
                           />
                         )}
-                      </Index>
+                      </form.AppField>
+
+                      <form.Field
+                        name={`newItems.characters[${idx}].skills`}
+                        mode="array"
+                      >
+                        {(field) => (
+                          <>
+                            <Index each={skills()}>
+                              {(__, skillIdx) => (
+                                <CharacterSkillSubForm
+                                  subForm={{
+                                    form,
+                                    prefix: `newItems.characters[${idx}].skills[${skillIdx}]`,
+                                  }}
+                                  language={language()}
+                                />
+                              )}
+                            </Index>
+                            <hr class="col-span-full h-[0.5em] mt-[0.5em] flex-grow text-neutral-400" />
+                            <button
+                              class="col-span-full place-self-start btn btn-success btn-soft"
+                              type="button"
+                              onClick={() => {
+                                field().pushValue({
+                                  id: Date.now(), // TODO
+                                  type: "GCG_SKILL_TAG_A",
+                                  name: "",
+                                  playCost: [],
+                                  rawDescription: "",
+                                });
+                              }}
+                            >
+                              添加技能
+                            </button>
+                          </>
+                        )}
+                      </form.Field>
                     </div>
                   </div>
                 );

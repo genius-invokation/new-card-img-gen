@@ -108,7 +108,7 @@ export const PlayCostSubForm = (props: CostFieldProps) => {
             </Index>
             <button
               type="button"
-              class="col-span-full btn btn-success btn-soft"
+              class="col-span-full place-self-start btn btn-square btn-success btn-soft"
               onClick={() =>
                 field().pushValue({ type: selectableTypes()[0], count: 1 })
               }
