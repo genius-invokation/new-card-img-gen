@@ -1,18 +1,8 @@
-import { createField } from "@felte/solid";
-import {
-  createEffect,
-  createMemo,
-  createSignal,
-  on,
-  Show,
-  untrack,
-  type JSX,
-} from "solid-js";
-import { useMainFormContext } from "./Forms";
-import { createFieldBindings, useFelteContext } from "./FelteFormWrapper";
+import { Show, type JSX } from "solid-js";
+import { useFieldContext } from "../shared";
 
 export interface ImageFieldProps {
-  name: string;
+  id?: string;
 }
 
 /**
@@ -20,24 +10,17 @@ export interface ImageFieldProps {
  * - An URL points to a image;
  * - or a data URI, uploaded by user from their local PC.
  */
-export const ImageField = (props: ImageFieldProps) => {
-  // eslint-disable-next-line solid/reactivity
-  const name = props.name;
+export default function ImageField(props: ImageFieldProps) {
+  const field = useFieldContext<string>();
 
-  const { data } = useFelteContext();
-  const [value, setValue] = createSignal("");
+  const value = () => field().state.value;
+  const setValue = (v: string) => field().handleChange(v);
+  const handleBlur = () => field().handleBlur();
 
-  const outerDataValue = createMemo(() => data(name) as string);
-  const isDataUri = createMemo(() => {
-    const value = outerDataValue();
-    return typeof value === "string" && value.startsWith("data:");
-  });
-
-  createFieldBindings<string>(name, value, (v) => {
-    if (!v.startsWith("data:")) {
-      setValue(v);
-    }
-  });
+  const isDataUri = () => {
+    const v = value();
+    return typeof v === "string" && v.startsWith("data:");
+  };
 
   const handleUrlInput: JSX.InputEventHandler<HTMLInputElement, InputEvent> = (
     event,
@@ -57,6 +40,7 @@ export const ImageField = (props: ImageFieldProps) => {
       const result = typeof reader.result === "string" ? reader.result : "";
       if (!result) return;
       setValue(result);
+      handleBlur();
       fileInputEl.value = "";
     };
     reader.readAsDataURL(file);
@@ -64,12 +48,13 @@ export const ImageField = (props: ImageFieldProps) => {
 
   const clearField = () => {
     setValue("");
+    handleBlur();
   };
 
   return (
     <div class="flex flex-row items-center gap-2">
       <div class="w-16 h-20 flex items-center justify-center overflow-clip">
-        <Show when={outerDataValue()}>{(url) => <img src={url()} />}</Show>
+        <Show when={value()}>{(url) => <img src={url()} />}</Show>
       </div>
       <div class="flex flex-row items-center gap-2">
         <Show
@@ -77,8 +62,10 @@ export const ImageField = (props: ImageFieldProps) => {
           fallback={
             <input
               class="input"
+              id={props.id}
               value={value()}
               onInput={handleUrlInput}
+              onBlur={handleBlur}
               placeholder="URL"
             />
           }
@@ -100,4 +87,4 @@ export const ImageField = (props: ImageFieldProps) => {
       </div>
     </div>
   );
-};
+}

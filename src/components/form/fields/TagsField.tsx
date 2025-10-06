@@ -5,28 +5,23 @@ import {
   createUniqueId,
   For,
   on,
-  untrack,
 } from "solid-js";
-import { createFieldBindings, useFelteContext } from "./FelteFormWrapper";
-import * as R from "remeda";
-
-interface TagOption {
-  value: string;
-  label: string;
-}
+import type { SelectOption } from "./SelectField";
+import { useFieldContext } from "../shared";
 
 interface TagsFieldProps {
   class?: string;
-  name: string;
-  options: TagOption[];
+  options: SelectOption[];
   allowsArbitrary?: boolean;
 }
 
-export const TagsField = (props: TagsFieldProps) => {
-  // eslint-disable-next-line solid/reactivity
-  const name = props.name;
+export default function TagsField(props: TagsFieldProps) {
+  const field = useFieldContext<string[]>();
 
-  const [tags, setTags] = createSignal<string[]>([]);
+  const tags = () => field().state.value;
+  const setTags = (updater: (prev: string[]) => string[]) => {
+    field().handleChange(updater);
+  };
 
   const [inputValue, setInputValue] = createSignal("");
 
@@ -47,7 +42,7 @@ export const TagsField = (props: TagsFieldProps) => {
       const allowsArbitrary = props.allowsArbitrary;
       if (parts.length > 1) {
         const lastPart = parts.pop()!;
-        let newTags = parts
+        const newTags = parts
           .map(
             (part) =>
               labelToValueMap().get(part) ?? (allowsArbitrary ? part : null),
@@ -60,10 +55,6 @@ export const TagsField = (props: TagsFieldProps) => {
       }
     }),
   );
-
-  createFieldBindings(name, tags, setTags, {
-    equal: R.isShallowEqual,
-  });
 
   return (
     <div

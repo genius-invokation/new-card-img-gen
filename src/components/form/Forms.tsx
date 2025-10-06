@@ -1,6 +1,7 @@
 import { type Language, type PlayCost, type Version } from "../../types";
 import {
   type Accessor,
+  type Component,
   createContext,
   createEffect,
   createSignal,
@@ -11,12 +12,14 @@ import {
   useContext,
 } from "solid-js";
 import { GeneralConfigTab } from "./GenerialConfigTab";
-import { NewItemsTab } from "./NewItemTab";
-import { OverrideTab } from "./OverrideTab";
+// import { NewItemsTab } from "./NewItemTab";
+// import { OverrideTab } from "./OverrideTab";
 import importSvg from "./import.svg";
 import exportSvg from "./export.svg";
-import { createForm } from "./FelteFormWrapper";
 import * as R from "remeda";
+import { useAppForm } from "./shared";
+import { OverrideTab } from "./OverrideTab";
+import { NewItemsTab } from "./NewItemTab";
 
 export interface FormsProps {
   initialValue: FormValue;
@@ -41,7 +44,11 @@ const TAB_LISTS = [
     key: "override",
     component: OverrideTab,
   },
-] as const;
+] as const satisfies {
+  title: string;
+  key: string;
+  component: Component<{ form: any }>;
+}[];
 
 export interface NewCharacterData {
   id: number;
@@ -95,9 +102,14 @@ export interface NewKeywordData {
   rawDescription: string;
 }
 
+export type GenerationMode =
+  | "character"
+  | "singleActionCard"
+  | "versionedActionCards";
+
 export interface FormValue {
   general: {
-    mode: "character" | "singleActionCard" | "versionedActionCards";
+    mode: GenerationMode;
     characterId?: number;
     actionCardId?: number;
     version: Version;
@@ -122,42 +134,25 @@ type TabKey = (typeof TAB_LISTS)[number]["key"];
 export interface MainFormContextValue {
   versionList: Accessor<string[]>;
 }
-
 const MainFormContext = createContext<MainFormContextValue>();
 export const useMainFormContext = () => {
   return useContext(MainFormContext)!;
 };
 
 export const Forms = (props: FormsProps) => {
-  const [Form, { data, isValid, setData, setFields }] = createForm<FormValue>({
-    initialValues: props.initialValue,
-    onSubmit: (data) => {
-      props.onSubmit(data);
+  const form = useAppForm(() => ({
+    defaultValues: props.initialValue,
+    onSubmit: ({ value }) => {
+      props.onSubmit(value);
     },
-    // validate: (data) => {
-    //   if (
-    //     data.general.version &&
-    //     !VERSION_REGEX.test(data.general.version)
-    //   ) {
-    //     return { general: { version: "版本格式错误" } };
-    //   }
-    // },
-    // debounced: {
-    //   timeout: 300,
-    //   validate: async () => {
-    //     if (!formEl.checkValidity()) {
-    //       return {}
-    //     }
-    //   },
-    // },
-  });
+  }));
 
   const previewVisible = () =>
     !!document.querySelector(".preview-container")?.scrollHeight;
 
   const submitOp = R.funnel<[FormValue], FormValue>(
     (data: FormValue) => {
-      if (previewVisible() && isValid()) {
+      if (previewVisible() && form.state.canSubmit) {
         untrack(() => props.onSubmit)(data);
       }
     },
@@ -170,7 +165,7 @@ export const Forms = (props: FormsProps) => {
   const [currentTab, setCurrentTab] = createSignal<TabKey>("general");
   const handleExport = () => {
     try {
-      const blob = new Blob([JSON.stringify(data(), null, 2)], {
+      const blob = new Blob([JSON.stringify(form.state.values, null, 2)], {
         type: "application/json",
       });
       const a = document.createElement("a");
@@ -184,8 +179,10 @@ export const Forms = (props: FormsProps) => {
   };
 
   createEffect(
-    on(data, (data) => {
-      submitOp.call(data);
+    on(form.useStore(), ({ values }, prev) => {
+      if (!R.isDeepEqual(prev?.values, values)) {
+        submitOp.call(values);
+      }
     }),
   );
 
@@ -202,10 +199,8 @@ export const Forms = (props: FormsProps) => {
     try {
       const text = await file.text();
       const json = JSON.parse(text);
-      setData(json);
-      // seems bug?
-      setFields("general.version", json.general.version);
-      if (previewVisible() && isValid()) {
+      form.reset(json);
+      if (previewVisible() && form.state.canSubmit) {
         formEl.requestSubmit();
       }
     } catch {
@@ -221,7 +216,15 @@ export const Forms = (props: FormsProps) => {
         versionList: () => props.versionList,
       }}
     >
-      <Form class="w-full flex-grow min-h-0 p-4 flex flex-col" ref={formEl}>
+      <form
+        class="w-full flex-grow min-h-0 p-4 flex flex-col"
+        ref={formEl}
+        onSubmit={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          form.handleSubmit();
+        }}
+      >
         <div class="overflow-x-auto max-w-full flex-shrink-0">
           <div role="tablist" class="tabs tabs-border  min-w-max">
             <For each={TAB_LISTS}>
@@ -272,18 +275,22 @@ export const Forms = (props: FormsProps) => {
               class="pt-4 pb-2 flex-grow min-h-0 overflow-auto hidden data-[shown]:block"
               bool:data-shown={currentTab() === tab.key}
             >
-              <tab.component />
+              <tab.component form={form} />
             </div>
           )}
         </For>
-        <button
-          type="submit"
-          class="flex-shrink-0 btn btn-primary"
-          disabled={!isValid() || props.loading}
-        >
-          {props.loading ? "生成中" : "生成"}
-        </button>
-      </Form>
+        <form.Subscribe selector={(state) => ({ canSubmit: state.canSubmit })}>
+          {(state) => (
+            <button
+              type="submit"
+              class="flex-shrink-0 btn btn-primary"
+              disabled={!state().canSubmit || props.loading}
+            >
+              {props.loading ? "生成中" : "生成"}
+            </button>
+          )}
+        </form.Subscribe>
+      </form>
     </MainFormContext.Provider>
   );
 };

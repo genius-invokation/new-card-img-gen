@@ -10,8 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@felte/solid": "^1.2.14",
     "@tailwindcss/vite": "^4.1.13",
+    "@tanstack/solid-form": "^1.23.5",
     "daisyui": "^5.1.24",
     "modern-screenshot": "^4.6.6",
     "remeda": "^2.32.0",
