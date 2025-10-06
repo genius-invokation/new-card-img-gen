@@ -1,143 +1,7 @@
-import { createMemo, createSignal, createUniqueId, For, Index } from "solid-js";
-import { TYPE_TAG_TEXT_MAP } from "../../constants";
-import type { Language } from "../../types";
-import { PlayCostSubForm } from "./subforms/PlayCostSubForm";
-import {
-  getSubForm,
-  pseudoMainFormOption,
-  withForm,
-  type SubForm,
-  getBy,
-} from "./shared";
-
-interface CharacterBasicFieldsProps {
-  language: Language;
-  subForm: SubForm<
-    typeof pseudoMainFormOption,
-    `newItems.characters[${number}]`
-  >;
-}
-
-export const CharacterBasicFields = (props: CharacterBasicFieldsProps) => {
-  // eslint-disable-next-line solid/reactivity
-  const subForm = props.subForm;
-
-  const prefix = subForm.prefix;
-  const form = getSubForm(subForm);
-
-  const tags = createMemo(() =>
-    Object.entries(TYPE_TAG_TEXT_MAP[props.language])
-      .filter(([value]) => /^GCG_TAG_(:?NATION|CAMP|ARKHE)_/.test(value))
-      .map(([value, label]) => ({ value, label })),
-  );
-
-  const characterId = form.useStore((state) =>
-    getBy(state.values, `${prefix}.id`),
-  );
-
-  return (
-    <>
-      <label class="fieldset-legend">ID</label>
-      <input type="number" readOnly class="input" value={characterId()} />
-
-      <label class="fieldset-legend" for={`${prefix}.name`}>
-        名称
-      </label>
-      <form.AppField name={`${prefix}.name`}>
-        {(field) => (
-          <field.TextField id={`${prefix}.name`} placeholder="雨酱" />
-        )}
-      </form.AppField>
-
-      <label class="fieldset-legend" for={`${prefix}.hp`}>
-        最大生命值
-      </label>
-      <form.AppField name={`${prefix}.hp`}>
-        {(field) => <field.NumberField id={`${prefix}.hp`} placeholder="10" />}
-      </form.AppField>
-
-      <label class="fieldset-legend" for={`${prefix}.maxEnergy`}>
-        最大能量值
-      </label>
-      <form.AppField name={`${prefix}.maxEnergy`}>
-        {(field) => (
-          <field.NumberField id={`${prefix}.maxEnergy`} placeholder="3" />
-        )}
-      </form.AppField>
-
-      <label class="fieldset-legend">标签</label>
-      <form.AppField name={`${prefix}.tags`}>
-        {(field) => <field.TagsField options={tags()} allowsArbitrary />}
-      </form.AppField>
-    </>
-  );
-};
-
-interface CharacterSkillFieldsProps {
-  language: Language;
-  subForm: SubForm<
-    typeof pseudoMainFormOption,
-    `newItems.characters[${number}].skills[${number}]`
-  >;
-}
-
-export const CharacterSkillFields = (props: CharacterSkillFieldsProps) => {
-  // eslint-disable-next-line solid/reactivity
-  const subForm = props.subForm;
-
-  const prefix = subForm.prefix;
-  const form = getSubForm(subForm);
-
-  const skillTypes = createMemo(() =>
-    Object.entries(TYPE_TAG_TEXT_MAP[props.language])
-      .filter(([value]) => /^GCG_SKILL_TAG_(:?A|E|Q|PASSIVE)$/.test(value))
-      .map(([value, label]) => ({ value, label })),
-  );
-
-  const skillId = form.useStore((state) => getBy(state.values, `${prefix}.id`));
-  const skillName = form.useStore((state) =>
-    getBy(state.values, `${prefix}.name`),
-  );
-
-  return (
-    <>
-      <div class="col-span-full flex flex-row gap-2 items-center">
-        <span class="fieldset-legend">角色技能：{skillName()}</span>
-        <hr class="mt-0.5 flex-grow text-neutral-400" />
-      </div>
-      <label class="fieldset-legend">ID</label>
-      <input type="number" readOnly class="input" value={skillId()} />
-
-      <div class="col-span-full flex flex-row justify-stretch gap-2">
-        <div class="flex flex-col">
-          <label class="label">类型</label>
-          <form.AppField name={`${prefix}.type`}>
-            {(field) => <field.SelectField options={skillTypes()} />}
-          </form.AppField>
-        </div>
-        <div class="flex flex-col">
-          <label class="label">名称</label>
-          <form.AppField name={`${prefix}.name`}>
-            {(field) => <field.TextField placeholder="技能名称" />}
-          </form.AppField>
-        </div>
-      </div>
-
-      <label class="fieldset-legend self-start">所需骰子</label>
-      <PlayCostSubForm subForm={{ form, prefix: `${prefix}.playCost` }} />
-
-      <label
-        class="fieldset-legend self-start"
-        for={`${prefix}.rawDescription`}
-      >
-        描述
-      </label>
-      <form.AppField name={`${prefix}.rawDescription`}>
-        {(field) => <field.RawDescriptionField />}
-      </form.AppField>
-    </>
-  );
-};
+import { createSignal, createUniqueId, Index } from "solid-js";
+import { pseudoMainFormOption, withForm } from "./shared";
+import { CharacterSkillSubForm } from "./subforms/CharacterSkillSubForm";
+import { CharacterBasicSubForm } from "./subforms/CharacterBasicSubForm";
 
 export const NewItemsTab = withForm({
   ...pseudoMainFormOption,
@@ -259,7 +123,7 @@ export const NewItemsTab = withForm({
                       <h3>{name()}</h3>
                     </div>
                     <div class="grid grid-cols-[6rem_1fr] gap-2">
-                      <CharacterBasicFields
+                      <CharacterBasicSubForm
                         subForm={{
                           form,
                           prefix: `newItems.characters[${idx}]`,
@@ -268,7 +132,7 @@ export const NewItemsTab = withForm({
                       />
                       <Index each={skills()}>
                         {(__, skillIdx) => (
-                          <CharacterSkillFields
+                          <CharacterSkillSubForm
                             subForm={{
                               form,
                               prefix: `newItems.characters[${idx}].skills[${skillIdx}]`,
