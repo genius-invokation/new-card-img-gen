@@ -120,8 +120,18 @@ export const NewItemsTab = withForm({
                     class="data-[shown]:flex flex-col hidden"
                     bool:data-shown={viewingTab() === id()}
                   >
-                    <div class="prose mb-3">
+                    <div class="prose mb-3 flex flex-row gap-2 align-baseline">
                       <h3>{name()}</h3>
+                      <button
+                        type="button"
+                        class="hidden md:inline btn btn-sm btn-link"
+                        onClick={() => {
+                          form.setFieldValue("general.mode", "character");
+                          form.setFieldValue("general.characterId", id());
+                        }}
+                      >
+                        显示此角色
+                      </button>
                     </div>
                     <div class="grid grid-cols-[6rem_1fr] gap-2">
                       <CharacterBasicSubForm
@@ -260,8 +270,18 @@ export const NewItemsTab = withForm({
                     class="data-[shown]:flex flex-col hidden"
                     bool:data-shown={viewingTab() === id()}
                   >
-                    <div class="prose mb-3">
+                    <div class="prose mb-3 flex flex-row gap-2 align-baseline">
                       <h3>{name()}</h3>
+                      <button
+                        type="button"
+                        class="hidden md:inline btn btn-sm btn-link"
+                        onClick={() => {
+                          form.setFieldValue("general.mode", "singleActionCard");
+                          form.setFieldValue("general.actionCardId", id());
+                        }}
+                      >
+                        显示此牌
+                      </button>
                     </div>
                     <div class="grid grid-cols-[6rem_1fr] gap-2">
                       <ActionCardSubForm

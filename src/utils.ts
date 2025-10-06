@@ -31,29 +31,25 @@ type AnyRawChild =
   | KeywordRawData;
 export const iconUrl = (itemArg: AnyRawChild | AllUnionFields<AnyRawChild>) => {
   const item = itemArg as AllUnionFields<AnyRawChild>;
-  return (
-    item.buffIconUrl ||
-    item.iconUrl ||
-    (item.buffIcon
-      ? assetsImageUrl(item.buffIcon)
-      : item.icon
-      ? assetsImageUrl(item.icon)
-      : item.type
-      ? tagImageUrl(item.type)
-      : `https://placehold.co/128x128?text=${encodeURIComponent(item.name)}`)
-  );
+  return item.buffIcon
+    ? assetsImageUrl(item.buffIcon)
+    : item.icon
+    ? assetsImageUrl(item.icon)
+    : item.buffIconUrl ||
+      item.iconUrl ||
+      (item.type
+        ? tagImageUrl(item.type)
+        : `https://placehold.co/128x128?text=${encodeURIComponent(item.name)}`);
 };
 
 export const cardFaceUrl = (
   itemArg: AnyRawChild | AllUnionFields<AnyRawChild>,
 ) => {
   const item = itemArg as AllUnionFields<AnyRawChild>;
-  return (
-    item.cardFaceUrl ||
-    (item.cardFace
-      ? assetsImageUrl(item.cardFace)
-      : `https://placehold.co/420x720?text=${encodeURIComponent(item.name)}`)
-  );
+  return item.cardFace
+    ? assetsImageUrl(item.cardFace)
+    : item.cardFaceUrl ||
+        `https://placehold.co/420x720?text=${encodeURIComponent(item.name)}`;
 };
 
 export const nar = <A, B extends A>(
