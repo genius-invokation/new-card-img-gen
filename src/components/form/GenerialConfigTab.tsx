@@ -2,6 +2,7 @@ import { createEffect, createMemo, For, Match, Show, Switch } from "solid-js";
 import { useGlobalSettings } from "../../context";
 import { useMainFormContext, type GenerationMode } from "./Forms";
 import { pseudoMainFormOption, withForm } from "./shared";
+import type { SelectOption } from "./fields/SelectField";
 
 export const GeneralConfigTab = withForm({
   ...pseudoMainFormOption,
@@ -27,6 +28,21 @@ export const GeneralConfigTab = withForm({
         currentVersion() !== "latest" &&
         !versionList().includes(currentVersion()),
     );
+    const versionOptions = createMemo(() => {
+      const list: SelectOption[] = [
+        {
+          value: "latest",
+          label: "最新",
+        },
+      ];
+      if (readonlyVersion()) {
+        const curr = currentVersion();
+        list.push({ label: curr, value: curr });
+      } else {
+        list.push(...versionList().map((v) => ({ label: v, value: v })));
+      }
+      return list;
+    });
 
     const mode = form.useStore((state) => state.values.general.mode);
     const isCharacterMode = () => mode() === "character";
@@ -45,13 +61,7 @@ export const GeneralConfigTab = withForm({
         <form.AppField name="general.version">
           {(field) => (
             <field.SelectField
-              options={[
-                {
-                  value: "latest",
-                  label: "最新",
-                },
-                ...versionList().map((v) => ({ label: v, value: v })),
-              ]}
+              options={versionOptions()}
               disabled={readonlyVersion()}
               id="general.version"
             />
