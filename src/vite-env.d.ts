@@ -9,6 +9,18 @@ declare module "solid-js" {
   }
 }
 
+declare global {
+  interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
+    toBase64(options?: {
+      alphabet?: "base64" | "base64url";
+      omitPadding?: boolean;
+    }): string;
+  }
+  interface Window {
+    renderCardImage: (data: import("./components/form/Forms").FormValue) => Promise<string>;
+  }
+}
+
 declare module "@gi-tcg/static-data" {
   interface CharacterRawData {
     cardFaceUrl?: string;

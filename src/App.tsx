@@ -192,7 +192,6 @@ export const App = () => {
   };
 
   const exportImage = async () => {
-    let objectUrl: string | null = null;
     try {
       setRenderMount(captureContainer);
       // make them reflow (?)
@@ -203,25 +202,30 @@ export const App = () => {
         height: captureContainer.scrollHeight,
       });
       if (!blob.size) {
-        alert("导出失败");
-        return;
+        return null;
       }
-      objectUrl = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.download = `${filename()}.png`;
-      link.href = objectUrl;
-      link.click();
-      link.remove();
-    } catch (e) {
-      if (e instanceof Error) {
-        alert(`导出失败: ${e}`);
-      }
-      console.error(e);
+      return blob;
     } finally {
-      if (objectUrl) {
-        URL.revokeObjectURL(objectUrl);
-      }
       setRenderMount(previewContainer);
+    }
+  };
+
+  const downloadImage = async (blob: Blob) => {
+    const objectUrl = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.download = `${filename()}.png`;
+    link.href = objectUrl;
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(objectUrl);
+  };
+
+  const exportAndDownloadImage = async () => {
+    const blob = await exportImage();
+    if (blob) {
+      await downloadImage(blob);
+    } else {
+      alert("导出图片失败");
     }
   };
 
@@ -245,6 +249,20 @@ export const App = () => {
         setLoading(false);
       }
     }
+  });
+
+  const renderImage = async (data: FormValue) => {
+    await onSubmitForm(data);
+    const blob = await exportImage();
+    if (!blob) {
+      throw new Error("导出图片失败");
+    }
+    const buffer = new Uint8Array(await blob.arrayBuffer());
+    return `${blob.type};base64,${buffer.toBase64()}`;
+  };
+
+  onMount(() => {
+    window.renderCardImage = renderImage;
   });
 
   return (
@@ -282,7 +300,10 @@ export const App = () => {
             >
               &times;
             </button>
-            <button class="btn btn-soft btn-secondary" onClick={exportImage}>
+            <button
+              class="btn btn-soft btn-secondary"
+              onClick={exportAndDownloadImage}
+            >
               导出图片
             </button>
           </div>
