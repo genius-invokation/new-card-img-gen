@@ -258,7 +258,7 @@ export const App = () => {
       throw new Error("导出图片失败");
     }
     const buffer = new Uint8Array(await blob.arrayBuffer());
-    return `${blob.type};base64,${buffer.toBase64()}`;
+    return `data:${blob.type};base64,${buffer.toBase64()}`;
   };
 
   onMount(() => {
