@@ -1,5 +1,5 @@
 import { createServer } from "vite";
-import puppeteer from "puppeteer";
+import puppeteer from "puppeteer-core";
 import path from "node:path";
 import exitHook from "exit-hook";
 import type { FormValue } from "../src/components/form/Forms";
@@ -15,16 +15,15 @@ const server = await createServer({
   },
 });
 await server.listen();
-let address = server.httpServer?.address()!;
-if (typeof address !== "string") {
-  address = `http://localhost:${address.port}`;
-}
+
+const address = `http://${import.meta.env.HOSTNAME || "localhost"}:1337`;
 
 const browser = import.meta.env.CHROMIUM_BROWSER_URL
   ? await puppeteer.connect({
       browserURL: import.meta.env.CHROMIUM_BROWSER_URL,
     })
   : await puppeteer.launch({
+      executablePath: import.meta.env.CHROMIUM_EXECUTABLE_PATH,
       // headless: false,
       args: ["--no-sandbox"],
     });
@@ -93,6 +92,10 @@ console.log(
 );
 
 exitHook(() => {
-  browser.close();
+  if (import.meta.env.CHROMIUM_BROWSER_URL) {
+    browser.disconnect();
+  } else {
+    browser.close();
+  }
   server.close();
 });

@@ -1,0 +1,20 @@
+services:
+  chromium:
+    image: chromedp/headless-shell:latest
+    restart: unless-stopped
+    shm_size: '2gb'
+    ports:
+      - '9222:9222'
+    network_mode: host
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+      - '1337:1337'
+    environment:
+      - CHROMIUM_BROWSER_URL=http://localhost:9222
+      - HOSTNAME=
+    depends_on:
+      - chromium
+    network_mode: host
