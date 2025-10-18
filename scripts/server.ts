@@ -1,7 +1,7 @@
 import { createServer } from "vite";
 import puppeteer from "puppeteer";
 import path from "node:path";
-import { asyncExitHook } from "exit-hook";
+import exitHook from "exit-hook";
 import type { FormValue } from "../src/components/form/Forms";
 import { Elysia, t } from "elysia";
 import type {} from "../src/vite-env";
@@ -20,10 +20,14 @@ if (typeof address !== "string") {
   address = `http://localhost:${address.port}`;
 }
 
-const browser = await puppeteer.launch({
-  // headless: false,
-  args: ["--no-sandbox"],
-});
+const browser = import.meta.env.CHROMIUM_BROWSER_URL
+  ? await puppeteer.connect({
+      browserURL: import.meta.env.CHROMIUM_BROWSER_URL,
+    })
+  : await puppeteer.launch({
+      // headless: false,
+      args: ["--no-sandbox"],
+    });
 const page = await browser.newPage();
 await page.goto(address, { waitUntil: "networkidle0" });
 
@@ -88,12 +92,7 @@ console.log(
   `Elysia running at http://${bunServer.server?.hostname}:${bunServer.server?.port}`,
 );
 
-asyncExitHook(
-  async () => {
-    await browser.close();
-    await server.close();
-  },
-  {
-    wait: 300,
-  },
-);
+exitHook(() => {
+  browser.close();
+  server.close();
+});
