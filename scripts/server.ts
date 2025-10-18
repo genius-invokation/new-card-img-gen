@@ -11,7 +11,9 @@ const server = await createServer({
   root: path.resolve(import.meta.dirname, ".."),
   server: {
     port: 1337,
+    strictPort: true,
     watch: null,
+    host: '0.0.0.0',
   },
 });
 await server.listen();

@@ -5,16 +5,26 @@ services:
     shm_size: '2gb'
     ports:
       - '9222:9222'
-    network_mode: host
-  app:
+    networks:
+      img-render:
+        ipv4_address: 10.7.21.2
+  card-img-renderer:
     build: .
     restart: unless-stopped
     ports:
       - '3000:3000'
       - '1337:1337'
     environment:
-      - CHROMIUM_BROWSER_URL=http://localhost:9222
-      - HOSTNAME=
-    depends_on:
-      - chromium
-    network_mode: host
+      - CHROMIUM_BROWSER_URL=http://10.7.21.2:9222
+      - HOSTNAME=10.7.21.1
+    networks:
+      img-render:
+        ipv4_address: 10.7.21.1
+
+networks:
+  img-render:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.7.21.0/24
+          gateway: 10.7.21.254
