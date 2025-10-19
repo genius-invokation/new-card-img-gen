@@ -17,12 +17,21 @@ import {
 } from "./components/form/Forms";
 import { Portal } from "solid-js/web";
 import { domToBlob } from "modern-screenshot";
-import { ASSETS_API_ENDPOINT } from "./constants";
 import {
   MOCK_NEW_ACTION_CARDS,
   MOCK_NEW_CHARACTERS,
   MOCK_NEW_ENTITIES,
 } from "./mock_data";
+import { ASSETS_API_ENDPOINT, getData } from "./shared";
+
+export interface RenderConfig {
+  format?: "png" | "jpeg" | "webp";
+  quality?: number;
+}
+
+export interface RenderAppOption extends AppConfig {
+  render?: RenderConfig;
+}
 
 const EMPTY_DATA: AllRawData = {
   keywords: [],
@@ -59,27 +68,6 @@ const INITIAL_FORM_VALUE: FormValue = {
     entities: MOCK_NEW_ENTITIES,
     keywords: [],
   },
-};
-
-const getData = async (version: string, language: Language) => {
-  const data: Partial<AllRawData> = {};
-  await Promise.all(
-    (["characters", "action_cards", "entities", "keywords"] as const).map(
-      async (category) => {
-        const key = category === "action_cards" ? "actionCards" : category;
-        data[key] = await fetch(
-          `${ASSETS_API_ENDPOINT}/data/${version}/${language}/${category}`,
-        ).then(async (r) =>
-          r.ok
-            ? (
-                await r.json()
-              ).data
-            : Promise.reject(new Error(await r.text())),
-        );
-      },
-    ),
-  );
-  return data as AllRawData;
 };
 
 export const App = () => {
@@ -191,15 +179,16 @@ export const App = () => {
     return "card";
   };
 
-  const exportImage = async () => {
+  const exportImage = async (config: RenderConfig = {}) => {
     try {
       setRenderMount(captureContainer);
       // make them reflow (?)
       await new Promise((r) => setTimeout(r, 100));
       const blob = await domToBlob(captureContainer, {
-        type: "image/png",
+        type: `image/${config.format || "png"}`,
         width: captureContainer.scrollWidth,
         height: captureContainer.scrollHeight,
+        quality: config.quality || 1,
       });
       if (!blob.size) {
         return null;
@@ -251,8 +240,8 @@ export const App = () => {
     }
   });
 
-  const renderImage = async (data: FormValue) => {
-    await onSubmitForm(data);
+  const renderImage = async (data: RenderAppOption) => {
+    setConfig(data);
     const blob = await exportImage();
     if (!blob) {
       throw new Error("导出图片失败");

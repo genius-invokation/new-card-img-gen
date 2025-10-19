@@ -1,5 +1,5 @@
 import type { Accessor } from "solid-js";
-import { ASSETS_API_ENDPOINT, TYPE_TAG_IMG_NAME_MAP } from "./constants";
+import { TYPE_TAG_IMG_NAME_MAP } from "./constants";
 import type { AllUnionFields } from "type-fest";
 import type {
   ActionCardRawData,
@@ -9,6 +9,7 @@ import type {
   ParsedChild,
   SkillRawData,
 } from "./types";
+import { ASSETS_API_ENDPOINT } from "./shared";
 
 export const tagImageUrl = (tag: string) =>
   tag.startsWith("GCG_TAG_ELEMENT_")

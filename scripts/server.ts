@@ -2,10 +2,11 @@ import { createServer } from "vite";
 import puppeteer from "puppeteer-core";
 import path from "node:path";
 import exitHook from "exit-hook";
-import type { FormValue } from "../src/components/form/Forms";
+import type { RenderAppOption } from "../src/App";
 import { Elysia, t } from "elysia";
 import type {} from "../src/vite-env";
-import type { Version } from "../src/types";
+import type { AllRawData, Version } from "../src/types";
+import { getData } from "../src/shared";
 
 const server = await createServer({
   root: path.resolve(import.meta.dirname, ".."),
@@ -13,7 +14,7 @@ const server = await createServer({
     port: 1337,
     strictPort: true,
     watch: null,
-    host: '0.0.0.0',
+    host: "0.0.0.0",
   },
 });
 await server.listen();
@@ -36,6 +37,13 @@ enum Language {
   CHS = "CHS",
   EN = "EN",
 }
+enum RenderFormat {
+  Png = "png",
+  Jpeg = "jpeg",
+  Webp = "webp",
+}
+
+const allData = new Map<string, AllRawData>();
 
 const bunServer = new Elysia()
   .onError(({ error }) => {
@@ -47,31 +55,35 @@ const bunServer = new Elysia()
   .post(
     "/render",
     async ({ body }) => {
-      const data: FormValue = {
-        general: {
-          displayId: body.displayId ?? true,
-          displayStory: body.displayStory ?? true,
-          mode: body.id > 100000 ? "singleActionCard" : "character",
-          characterId: body.id,
-          actionCardId: body.id,
-          cardbackImage:
-            body.cardbackImage ?? "UI_Gcg_CardBack_Championship_11",
-          language: body.language ?? "CHS",
-          version: (body.version as Version) ?? "latest",
-          authorName: body.authorName,
-          authorImageUrl:
-            body.authorImageUrl ?? new URL("./vite.svg", address).href,
-        },
-        newItems: {
-          actionCards: [],
-          characters: [],
-          entities: [],
-          keywords: [],
-        },
+      const language = body.language || Language.CHS;
+      const version = body.version || "latest";
+      const dataKey = `${version}-${language}`;
+      if (!allData.has(dataKey)) {
+        const data = await getData(version, language);
+        allData.set(dataKey, data);
+      }
+      const data = allData.get(dataKey)!;
+      const opt: RenderAppOption = {
+        data,
+        displayId: body.displayId ?? true,
+        displayStory: body.displayStory ?? true,
+        mode: body.id > 100000 ? "singleActionCard" : "character",
+        characterId: body.id,
+        actionCardId: body.id,
+        cardbackImage: body.cardbackImage ?? "UI_Gcg_CardBack_Championship_11",
+        language: body.language ?? "CHS",
+        version: (body.version as Version) ?? "latest",
+        authorName: body.authorName,
+        authorImageUrl:
+          body.authorImageUrl ?? new URL("./vite.svg", address).href,
+        render: {
+          format: body.renderFormat,
+          quality: body.renderQuality,
+        }
       };
       return {
         success: true,
-        url: await page.evaluate((data) => window.renderCardImage(data), data),
+        url: await page.evaluate((opt) => window.renderCardImage(opt), opt),
       };
     },
     {
@@ -82,9 +94,11 @@ const bunServer = new Elysia()
         version: t.Optional(t.String()),
         authorName: t.Optional(t.String()),
         authorImageUrl: t.Optional(t.String()),
-        displayId: t.Optional(t.Boolean({ default: true })),
-        displayStory: t.Optional(t.Boolean({ default: true })),
-        mirroredLayout: t.Optional(t.Boolean({ default: false })),
+        displayId: t.Optional(t.Boolean()),
+        displayStory: t.Optional(t.Boolean()),
+        mirroredLayout: t.Optional(t.Boolean()),
+        renderFormat: t.Optional(t.Enum(RenderFormat)),
+        renderQuality: t.Optional(t.Number()),
       }),
     },
   )

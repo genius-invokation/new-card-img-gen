@@ -1,5 +1,7 @@
 /// <reference types="vite/client" />
 
+import { RenderAppOption } from "./App";
+
 declare module "solid-js" {
   namespace JSX {
     interface DirectiveFunctions {
@@ -17,7 +19,7 @@ declare global {
     }): string;
   }
   interface Window {
-    renderCardImage: (data: import("./components/form/Forms").FormValue) => Promise<string>;
+    renderCardImage: (data: RenderAppOption) => Promise<string>;
   }
 }
 
