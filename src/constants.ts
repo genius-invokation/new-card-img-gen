@@ -59,6 +59,8 @@ export const correctId: Record<number, number> = {
   12123: 12112, // Furina
 };
 
+export const correctUnobtainableActionCards = [300008, 300009];
+
 export const CARD_BACK_FRAME = `${
   import.meta.env.BASE_URL
 }assets/frame/avatar_card_frame_2.png`;

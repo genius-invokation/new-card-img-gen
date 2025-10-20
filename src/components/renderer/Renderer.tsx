@@ -13,6 +13,7 @@ import { Character } from "./Character";
 import { ActionCard } from "./ActionCard";
 import "./Renderer.css";
 import {
+  correctUnobtainableActionCards,
   ELEMENT_TAG_TO_KEYWORD_ID,
   VERSION_REPLACE_STRS,
 } from "../../constants";
@@ -102,7 +103,8 @@ export const Renderer = (props: AppConfig) => {
           (ac) =>
             ac.sinceVersion === version &&
             (ac.obtainable || ac.tags.includes("GCG_TAG_ADVENTURE_PLACE")) &&
-            !ac.tags.includes("GCG_TAG_TALENT"),
+            !ac.tags.includes("GCG_TAG_TALENT") &&
+            !correctUnobtainableActionCards.includes(ac.id),
         );
         actionCards.push(
           ...collected.map((c) => parseActionCard(renderContext, c)),
