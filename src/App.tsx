@@ -23,6 +23,11 @@ import {
   MOCK_NEW_ENTITIES,
 } from "./mock_data";
 import { ASSETS_API_ENDPOINT, getData } from "./shared";
+import {
+  applyCharacterOverrides,
+  applyEntityOverrides,
+  applyActionCardOverrides,
+} from "./override";
 
 export interface RenderConfig {
   format?: "png" | "jpeg" | "webp";
@@ -110,6 +115,12 @@ export const App = () => {
         remoteFetched.data = await getData(newVersion, newLanguage);
       }
       const data = structuredClone(remoteFetched.data);
+      
+      // override data
+      data.characters = applyCharacterOverrides(data.characters);
+      data.entities = applyEntityOverrides(data.entities);
+      data.actionCards = applyActionCardOverrides(data.actionCards);
+      
       const skillMapper = (newSkill: NewSkillData): SkillRawData => ({
         ...newSkill,
         hidden: false,

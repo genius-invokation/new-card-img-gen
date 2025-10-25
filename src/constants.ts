@@ -1,4 +1,10 @@
-import type { Language } from "./types";
+import type { 
+  Language, 
+  CharacterRawData, 
+  SkillRawData, 
+  EntityRawData, 
+  ActionCardRawData 
+} from "./types";
 
 export const CHILDREN_CONFIG: Record<number, string> = {
   11142: "$[C111141],$[C111142],$[C111143]", // 茜特菈莉 E 有个不知道哪来的错误夜魂加持
@@ -32,9 +38,11 @@ export const CHILDREN_CONFIG: Record<number, string> = {
   22053: "$[C122051],$[S1220511],$[S1220512]$[C122052]", // 水丘丘 Q
   23032: "$[C123032]", // 火镀金旅团 E
   23053: "_", // 火龙王 Q
+  26043:"$[S26045],$[S26047]", // 黑蛇骑士 Q
   27032: "$[C127033]", // 草镀金旅团 E
   322027:
     "$[C302206],$[C302207],$[C302208],$[C302209],$[C302210],$[C302211],$[C302212],$[C302213],$[C302214],$[C302215]", // 瑟琳
+  330012: "$[C300008],$[C300009]", // 沙中遗事
   331702: "_", // 草共鸣
   332016: "$[C303216],$[C303217],$[C303218],$[C303219]", // 愚人众的阴谋
   332032: "$[C332033],$[C332034],$[C332035]", // 幻戏倒计时
@@ -302,7 +310,9 @@ export const ELEMENT_TAG_TO_KEYWORD_ID: Record<string, number> = {
 
 export const DESCRIPTION_ICON_IMAGES = {
   4007: {
-    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Shield.png`,
+    imageUrl: `${
+      import.meta.env.BASE_URL
+    }assets/UI_Gcg_Keyword_Shield.png`,
   },
   2100: {
     imageUrl: `${
@@ -344,25 +354,57 @@ export const DESCRIPTION_ICON_IMAGES = {
       import.meta.env.BASE_URL
     }assets/UI_Gcg_Keyword_Element_Grass.png`,
   },
-  1101: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Ice.png` },
+  1101: { 
+    imageUrl: `${
+      import.meta.env.BASE_URL
+    }assets/UI_Gcg_DiceL_Ice.png` },
   1102: {
-    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Water.png`,
+    imageUrl: `${
+      import.meta.env.BASE_URL
+    }assets/UI_Gcg_DiceL_Water.png`,
   },
-  1103: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Fire.png` },
-  1104: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Elec.png` },
-  1105: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Wind.png` },
-  1106: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Rock.png` },
+  1103: { 
+    imageUrl: `${
+      import.meta.env.BASE_URL
+    }assets/UI_Gcg_DiceL_Fire.png` },
+  1104: { 
+    imageUrl: `${
+      import.meta.env.BASE_URL
+    }assets/UI_Gcg_DiceL_Elec.png` },
+  1105: { 
+    imageUrl: `${
+      import.meta.env.BASE_URL
+    }assets/UI_Gcg_DiceL_Wind.png` },
+  1106: { 
+    imageUrl: `${
+      import.meta.env.BASE_URL
+    }assets/UI_Gcg_DiceL_Rock.png` },
   1107: {
-    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Grass.png`,
+    imageUrl: `${
+      import.meta.env.BASE_URL
+    }assets/UI_Gcg_DiceL_Grass.png`,
   },
-  1108: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Same.png` },
-  1109: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Diff.png` },
+  1108: { 
+    imageUrl: `${
+      import.meta.env.BASE_URL
+    }assets/UI_Gcg_DiceL_Same.png` },
+  1109: { 
+    imageUrl: `${
+      import.meta.env.BASE_URL
+    }assets/UI_Gcg_DiceL_Diff.png` },
   1110: {
-    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Energy.png`,
+    imageUrl: `${
+      import.meta.env.BASE_URL
+    }assets/UI_Gcg_Keyword_Energy.png`,
   },
-  1111: { imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Any.png` },
+  1111: { 
+    imageUrl: `${
+      import.meta.env.BASE_URL
+    }assets/UI_Gcg_DiceL_Any.png` },
   1112: {
-    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Legend.png`,
+    imageUrl: `${
+      import.meta.env.BASE_URL
+    }assets/UI_Gcg_Keyword_Legend.png`,
   },
   4008: {
     imageUrl: `${
@@ -493,3 +535,12 @@ export const VERSION_REPLACE_STRS: Record<string, Record<Language, string>> = {
     EN: "Luna IV",
   },
 };
+
+// 覆盖数据 - 用于部分更新现有数据
+export const overrideCharacterData: Partial<CharacterRawData>[] = [];
+
+export const overrideSkillData: Partial<SkillRawData>[] = [];
+
+export const overrideEntityData: Partial<EntityRawData>[] = [];
+
+export const overrideActionCardData: Partial<ActionCardRawData>[] = [];
