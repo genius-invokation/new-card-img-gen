@@ -4,7 +4,9 @@ import { COST_TYPE_IMG_NAME_MAP } from "../../constants";
 import "./Cost.css";
 
 const diceImageUrl = (type: string) =>
-  `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_${COST_TYPE_IMG_NAME_MAP[type]}_Glow_HD.png`;
+  `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_${
+    COST_TYPE_IMG_NAME_MAP[type]
+  }_Glow_HD.png`;
 
 export const Cost = (props: {
   type: "skill" | "keyword" | "actionCard";
@@ -23,11 +25,14 @@ export const Cost = (props: {
     <div class={rootClassName()}>
       <For each={props.cost}>
         {({ type, count }) => (
-          <div class="cost" data-readonly={props.readonly}>
+          <div class="cost">
             <img src={diceImageUrl(type)} class={diceClassName()} />
             <Show when={type !== "GCG_COST_LEGEND"}>
               <div class="stroked-text-top">{count}</div>
               <div class="stroked-text-bottom">{count}</div>
+            </Show>
+            <Show when={props.readonly}>
+              <div class="cost-readonly-mark" />
             </Show>
           </div>
         )}
