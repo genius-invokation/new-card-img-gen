@@ -155,7 +155,7 @@ export const parseDescription = (
         if (refType === "K") {
           const mappedObject = keywordToEntityMap.get(id);
           if (mappedObject) {
-            const isSkill = !("skills" in mappedObject || "cardFace" in mappedObject);
+            const isSkill = mappedObject.type.startsWith("GCG_SKILL_TAG_");
             result.push({
               type: "reference",
               refType: isSkill ? "S" : "C",
