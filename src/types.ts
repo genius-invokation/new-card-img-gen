@@ -95,7 +95,7 @@ export interface RenderContext {
   names: Map<number, string>;
   characterToElementKeywordIdMap: Map<number, number>;
   /** Kxxx 的同名 Cxxx 或 Sxxx 条目 */
-  keywordToEntityMap: Map<number, SkillRawData | EntityRawData>;
+  keywordToEntityMap: Map<number, SkillRawData | EntityRawData | ActionCardRawData>;
   /** 准备技能的触发角色状态 */
   prepareSkillToEntityMap: Map<number, EntityRawData>;
 }

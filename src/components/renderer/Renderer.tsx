@@ -13,7 +13,6 @@ import { Character } from "./Character";
 import { ActionCard } from "./ActionCard";
 import "./Renderer.css";
 import {
-  correctUnobtainableActionCards,
   ELEMENT_TAG_TO_KEYWORD_ID,
   VERSION_REPLACE_STRS,
 } from "../../constants";
@@ -48,7 +47,7 @@ export const Renderer = (props: AppConfig) => {
       keywords
         .filter((k) => k.name && k.id > 1000)
         .map((k) => {
-          const match = [...skills, ...data.entities].find(
+          const match = [...skills, ...data.entities, ...data.actionCards].find(
             (e) => e.name === k.name,
             // && !(e.tags as string[]).includes("GCG_TAG_PREPARE_SKILL"),
           );
@@ -103,8 +102,7 @@ export const Renderer = (props: AppConfig) => {
           (ac) =>
             ac.sinceVersion === version &&
             (ac.obtainable || ac.tags.includes("GCG_TAG_ADVENTURE_PLACE")) &&
-            !ac.tags.includes("GCG_TAG_TALENT") &&
-            !correctUnobtainableActionCards.includes(ac.id),
+            !ac.tags.includes("GCG_TAG_TALENT"),
         );
         actionCards.push(
           ...collected.map((c) => parseActionCard(renderContext, c)),

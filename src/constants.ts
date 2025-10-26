@@ -1,15 +1,14 @@
-import type { 
-  Language, 
-  CharacterRawData, 
-  SkillRawData, 
-  EntityRawData, 
-  ActionCardRawData 
+import type {
+  Language,
+  CharacterRawData,
+  SkillRawData,
+  EntityRawData,
+  ActionCardRawData,
 } from "./types";
 
 export const CHILDREN_CONFIG: Record<number, string> = {
-  11142: "$[C111141],$[C111142],$[C111143]", // 茜特菈莉 E 有个不知道哪来的错误夜魂加持
+  11154: "$[C111159],$[C111152],$[C111153],$[C111154],$[C111155]", // 爱可菲 P
   12082: "$[C112081],$[C112082]", // 妮露 E
-  12102: "$[C112101],$[S12104]", // 那维莱特 E K1020=S12104
   12111: "_", // 芙宁娜 A  // 置空不能空着，随便写点啥，下同
   12142: "$[C112142],$[S1121422],$[C112143],$[C112141]", // 玛拉妮 E
   13141: "_", // 阿蕾奇诺 A
@@ -38,7 +37,6 @@ export const CHILDREN_CONFIG: Record<number, string> = {
   22053: "$[C122051],$[S1220511],$[S1220512]$[C122052]", // 水丘丘 Q
   23032: "$[C123032]", // 火镀金旅团 E
   23053: "_", // 火龙王 Q
-  26043:"$[S26045],$[S26047]", // 黑蛇骑士 Q
   27032: "$[C127033]", // 草镀金旅团 E
   322027:
     "$[C302206],$[C302207],$[C302208],$[C302209],$[C302210],$[C302211],$[C302212],$[C302213],$[C302214],$[C302215]", // 瑟琳
@@ -60,14 +58,8 @@ export const SHOWN_KEYWORDS = [
 
 export const COST_READONLY_ENTITIES = [
   112131, 112132, 112133, 112142, 115112, 115152, 116102, 116112, 333021,
-  333022, 333023, 333024, 333025, 333026,
+  333022, 333023, 333024, 333025, 333026, 300008, 300009,
 ];
-
-export const correctId: Record<number, number> = {
-  12123: 12112, // Furina
-};
-
-export const correctUnobtainableActionCards = [300008, 300009];
 
 export const CARD_BACK_FRAME = `${
   import.meta.env.BASE_URL
@@ -294,8 +286,8 @@ export const TYPE_TAG_IMG_NAME_MAP: Record<string, string> = {
   GCG_TAG_ALLY: "Card_Ally",
   GCG_TAG_ITEM: "Card_Item",
   GCG_TAG_SLOWLY: "Card_CombatAction",
-  GCG_TAG_NATION_SIMULANKA: "Card_Simulanka",
-  GCG_TAG_ADVENTURE_PLACE: "Card_Adventure",
+  GCG_TAG_NATION_SIMULANKA: "Card_Simulanka", // ###非官方###
+  GCG_TAG_ADVENTURE_PLACE: "Card_Adventure", // ###非官方###
 };
 
 export const ELEMENT_TAG_TO_KEYWORD_ID: Record<string, number> = {
@@ -354,7 +346,7 @@ export const DESCRIPTION_ICON_IMAGES = {
       import.meta.env.BASE_URL
     }assets/UI_Gcg_Keyword_Element_Grass.png`,
   },
-  1101: { 
+  1101: {
     imageUrl: `${
       import.meta.env.BASE_URL
     }assets/UI_Gcg_DiceL_Ice.png` },
@@ -363,19 +355,19 @@ export const DESCRIPTION_ICON_IMAGES = {
       import.meta.env.BASE_URL
     }assets/UI_Gcg_DiceL_Water.png`,
   },
-  1103: { 
+  1103: {
     imageUrl: `${
       import.meta.env.BASE_URL
     }assets/UI_Gcg_DiceL_Fire.png` },
-  1104: { 
+  1104: {
     imageUrl: `${
       import.meta.env.BASE_URL
     }assets/UI_Gcg_DiceL_Elec.png` },
-  1105: { 
+  1105: {
     imageUrl: `${
       import.meta.env.BASE_URL
     }assets/UI_Gcg_DiceL_Wind.png` },
-  1106: { 
+  1106: {
     imageUrl: `${
       import.meta.env.BASE_URL
     }assets/UI_Gcg_DiceL_Rock.png` },
@@ -384,11 +376,11 @@ export const DESCRIPTION_ICON_IMAGES = {
       import.meta.env.BASE_URL
     }assets/UI_Gcg_DiceL_Grass.png`,
   },
-  1108: { 
+  1108: {
     imageUrl: `${
       import.meta.env.BASE_URL
     }assets/UI_Gcg_DiceL_Same.png` },
-  1109: { 
+  1109: {
     imageUrl: `${
       import.meta.env.BASE_URL
     }assets/UI_Gcg_DiceL_Diff.png` },
@@ -397,7 +389,7 @@ export const DESCRIPTION_ICON_IMAGES = {
       import.meta.env.BASE_URL
     }assets/UI_Gcg_Keyword_Energy.png`,
   },
-  1111: { 
+  1111: {
     imageUrl: `${
       import.meta.env.BASE_URL
     }assets/UI_Gcg_DiceL_Any.png` },
@@ -407,6 +399,7 @@ export const DESCRIPTION_ICON_IMAGES = {
     }assets/UI_Gcg_Keyword_Legend.png`,
   },
   4008: {
+    //  ###非官方###
     imageUrl: `${
       import.meta.env.BASE_URL
     }assets/UI_Gcg_Keyword_Fighting_Spirit.png`,
@@ -440,11 +433,11 @@ export const DESCRIPTION_ICON_IMAGES = {
   3505: { tagIcon: "GCG_TAG_ARKHE_OUSIA" },
   // ?: { tagIcon: "GCG_TAG_CAMP_SACREAD" },
   // ?: { tagIcon: "GCG_TAG_CAMP_ERIMITE" },
-  3901: { tagIcon: "GCG_TAG_ADVENTURE_PLACE" },
+  3901: { tagIcon: "GCG_TAG_ADVENTURE_PLACE" }, //  ###非官方###
 } as Record<number, { imageUrl?: string; tagIcon?: string }>;
 
 export const KEYWORD_COLORS: Record<number, string> = {
-  // 穿透伤害
+  // 充能
   310: "#d8b456",
 
   // 伤害
@@ -537,10 +530,52 @@ export const VERSION_REPLACE_STRS: Record<string, Record<Language, string>> = {
 };
 
 // 覆盖数据 - 用于部分更新现有数据
-export const overrideCharacterData: Partial<CharacterRawData>[] = [];
-
-export const overrideSkillData: Partial<SkillRawData>[] = [];
+export const overrideCharacterData: Partial<
+  Omit<CharacterRawData, "skills"> & {
+    skills: Partial<SkillRawData>[];
+  }
+>[] = [
+  {
+    id: 1315, // 玛薇卡
+    skills: [
+      {
+        id: 13153, // 玛薇卡 Q 技能描述增加战意图标 ###非官方###
+        rawDescription:
+          "本角色进入<color=#FFFFFFFF>$[C113151]</color>，获得1点<color=#FFFFFFFF>「夜魂值」</color>，消耗自身全部<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>，对敌方前台造成等同于消耗战意数量的$[D__KEY__ELEMENT]。\\n若消耗了6点<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>，则自身附属<color=#FFFFFFFF>$[C113152]</color>。",
+      },
+      {
+        id: 13154, // 玛薇卡 P 技能描述增加战意图标 ###非官方###
+        rawDescription:
+          "角色不会获得$[K310]。\\n在我方消耗<color=#FFFFFFFF>「夜魂值」</color>或使用「普通攻击」后，获得1点<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>。\\n本角色使用<color=#FFFFFFFF>元素战技</color>或<color=#FFFFFFFF>元素爆发</color>时，附属<color=#FFFFFFFF>$[C113153]</color>。",
+      },
+    ],
+  },
+];
 
 export const overrideEntityData: Partial<EntityRawData>[] = [];
 
-export const overrideActionCardData: Partial<ActionCardRawData>[] = [];
+export const overrideActionCardData: Partial<ActionCardRawData>[] = [
+  {
+    id: 212111, // 芙宁娜天赋 id纠错
+    rawDescription:
+      "$[K1]：我方出战角色为<color=#FFFFFFFF>$[A1211]</color>时，装备此牌。\\n$[A1211]装备此牌后，立刻使用一次<color=#FFD780FF>$[S12112]</color>。\\n装备有此牌的$[A1211]使用<color=#FFFFFFFF>$[S12112]</color>时，会对自身附属<color=#FFFFFFFF>$[K1030]</color>。（角色普通攻击时根据形态触发不同效果）\\n（牌组中包含$[A1211]，才能加入牌组）",
+  },
+  {
+    id: 300008, // 驱逐灾厄 沙中遗事挑选卡 不可获得 ###可能会在未来修复###
+    obtainable: false,
+  },
+  {
+    id: 300009, // 肃净污染 沙中遗事挑选卡 不可获得 ###可能会在未来修复###
+    obtainable: false,
+  },
+  {
+    id: 321032, // 沉玉谷 冒险地点 方便查询修改获得属性 描述补偿 ###非官方### 修正一处标点样式 ###可能会在未来修复###
+    obtainable: true,
+    rawDescription: "<color=#FFFFFFFF>冒险经历达到2时：</color>生成2张手牌<color=#FFFFFFFF>$[K1040]</color>。\\n<color=#FFFFFFFF>冒险经历达到4时：</color>我方获得3层<color=#FFFFFFFF>$[K1041]</color>和<color=#FFFFFFFF>$[K1042]</color>。\\n<color=#FFFFFFFF>冒险经历达到7时：</color>我方全体角色$[K202]，治疗我方受伤最多的角色至最大生命值，并使其获得2点最大生命值，然后弃置此牌。\\n（「{SPRITE_PRESET#3901}冒险地点」只能通过冒险生成，无法加入牌组）",
+  },
+  {
+    id: 321033, // 自身自体之塔 冒险地点 方便查询修改获得属性 描述补偿 ###非官方###
+    obtainable: true,
+    rawDescription: "<color=#FFFFFFFF>入场时：</color>对我方所有角色造成1点$[K5]。\\n<color=#FFFFFFFF>冒险经历达到偶数次时：</color>生成1个随机基础元素骰。\\n<color=#FFFFFFFF>冒险经历达到5时：</color>生成手牌<color=#FFFFFFFF>$[C301038]</color>。\\n<color=#FFFFFFFF>冒险经历达到12时：</color>生成手牌<color=#FFFFFFFF>$[C301039]</color>。\\n（「{SPRITE_PRESET#3901}冒险地点」只能通过冒险生成，无法加入牌组）",
+  },
+];
