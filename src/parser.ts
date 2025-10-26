@@ -4,7 +4,6 @@ import {
   DAMAGE_KEYWORD_MAP,
   KEYWORD_COLORS,
   SHOWN_KEYWORDS,
-  correctId,
 } from "./constants";
 import type {
   DescriptionToken,
@@ -151,15 +150,15 @@ export const parseDescription = (
         continue;
       } else {
         const refType = ref[0];
-        let id = Number(ref.substring(1));
+        const id = Number(ref.substring(1));
         let manualColor: string | undefined = undefined;
         if (refType === "K") {
           const mappedObject = keywordToEntityMap.get(id);
           if (mappedObject) {
-            const isEntity = "skills" in mappedObject;
+            const isSkill = !("skills" in mappedObject || "cardFace" in mappedObject);
             result.push({
               type: "reference",
-              refType: isEntity ? "C" : "S",
+              refType: isSkill ? "S" : "C",
               id: mappedObject.id,
               manualColor,
               ...styles,
@@ -167,8 +166,7 @@ export const parseDescription = (
           } else {
             usingKeywordId = id;
           }
-        } else if (names.get(id) || id in correctId) {
-          id = names.get(id) ? id : correctId[id];
+        } else if (names.get(id)) {
           const hasKeywordId = characterToElementKeywordIdMap.get(id);
           if (hasKeywordId) {
             manualColor = KEYWORD_COLORS[hasKeywordId];
