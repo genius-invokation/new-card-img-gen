@@ -100,6 +100,20 @@ export interface RenderContext {
   prepareSkillToEntityMap: Map<number, EntityRawData>;
 }
 
+export interface AdjustmentRecord {
+  id: number;
+  subject: "self" | "normalAttack" | "elementalSkill" | "elementalBurst" | "passiveSkill" | "talent" | "technique" | "summon" | "status" | "combatStatus" | "relatedCard";
+  type: "hp" | "cost" | "effect" | "damage" | "usage" | "duration";
+  oldData: string;
+  newData: string;
+}
+
+export interface AdjustmentData {
+  id: number;
+  offset: number;
+  adjustment: AdjustmentRecord[];
+}
+
 export type {
   ActionCardRawData,
   CharacterRawData,
