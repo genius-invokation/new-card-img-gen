@@ -209,8 +209,8 @@ export const TYPE_TAG_TEXT_MAP: Record<Language, Record<string, string>> = {
     GCG_TAG_CAMP_MONSTER: "Monster",
     GCG_TAG_CAMP_SACREAD: "Sacread",
     GCG_TAG_CAMP_HILICHURL: "Hilichurl",
-    GCG_TAG_ARKHE_PNEUMA: "Arkhe: Pneuma",
-    GCG_TAG_ARKHE_OUSIA: "Arkhe: Ousia",
+    GCG_TAG_ARKHE_PNEUMA: "Arkhe: Ousia", // 神秘原神，荒芒不分
+    GCG_TAG_ARKHE_OUSIA: "Arkhe: Pneuma",
     GCG_TAG_WEAPON: "Weapon",
     GCG_TAG_WEAPON_BOW: "Bow",
     GCG_TAG_WEAPON_SWORD: "Sword",
