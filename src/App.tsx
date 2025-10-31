@@ -55,7 +55,7 @@ if (versionFromUrl && !VERSION_REGEX.test(versionFromUrl)) {
 
 const INITIAL_FORM_VALUE: FormValue = {
   general: {
-    mode: "character",
+    mode: "balanceAdjustment", // test: "character"
     characterId: Number(search.get("character_id") || Number.NaN) || 1503,
     actionCardId: Number(search.get("action_card_id") || Number.NaN) || 332005,
     language: "CHS",
@@ -73,6 +73,7 @@ const INITIAL_FORM_VALUE: FormValue = {
     entities: MOCK_NEW_ENTITIES,
     keywords: [],
   },
+  adjustments: [],
 };
 
 export const App = () => {
@@ -167,6 +168,7 @@ export const App = () => {
       setConfig({
         data,
         ...newFormValue.general,
+        adjustments: newFormValue.adjustments,
       });
       setMobilePreviewing(true);
     } catch (e) {
@@ -186,6 +188,9 @@ export const App = () => {
     }
     if (c?.mode === "versionedActionCards") {
       return c.version || "vX.Y.Z";
+    }
+    if (c?.mode === "balanceAdjustment") {
+      return "balance-adjustment";
     }
     return "card";
   };

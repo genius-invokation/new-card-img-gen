@@ -20,6 +20,7 @@ import * as R from "remeda";
 import { useAppForm } from "./shared";
 import { OverrideTab } from "./OverrideTab";
 import { NewItemsTab } from "./NewItemTab";
+import { BalanceAdjustmentTab } from "./BalanceAdjustmentTab";
 
 export interface FormsProps {
   initialValue: FormValue;
@@ -43,6 +44,11 @@ const TAB_LISTS = [
     title: "微调",
     key: "override",
     component: OverrideTab,
+  },
+  {
+    title: "平衡性调整",
+    key: "adjustments",
+    component: BalanceAdjustmentTab,
   },
 ] as const satisfies {
   title: string;
@@ -105,7 +111,8 @@ export interface NewKeywordData {
 export type GenerationMode =
   | "character"
   | "singleActionCard"
-  | "versionedActionCards";
+  | "versionedActionCards"
+  | "balanceAdjustment";
 
 export interface FormValue {
   general: {
@@ -127,6 +134,7 @@ export interface FormValue {
     entities: NewEntityData[];
     keywords: NewKeywordData[];
   };
+  adjustments: import("../../types").AdjustmentData[];
 }
 
 type TabKey = (typeof TAB_LISTS)[number]["key"];

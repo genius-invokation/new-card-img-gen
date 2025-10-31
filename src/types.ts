@@ -17,7 +17,7 @@ export type Version = `v${number}.${number}.${number}${"" | `-beta`}` | "latest"
 export const VERSION_REGEX = /^(v\d+\.\d+\.\d+(?:-beta)?|latest)$/;
 
 export interface AppConfig {
-  mode: "character" | "singleActionCard" | "versionedActionCards";
+  mode: "character" | "singleActionCard" | "versionedActionCards" | "balanceAdjustment";
   characterId?: number;
   actionCardId?: number;
   version: Version;
@@ -29,6 +29,7 @@ export interface AppConfig {
   cardbackImage: string;
   displayId?: boolean;
   displayStory?: boolean;
+  adjustments?: AdjustmentData[];
 }
 
 export interface ParsedCharacter extends CharacterRawData {

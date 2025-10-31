@@ -1,0 +1,139 @@
+.balance-adjustment {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.adjustment-card {
+  position: relative;
+  min-height: 40rem;
+  margin-right: 1.5rem;
+  margin-left: 1.5rem;
+  background-color: var(--box-bg-color);
+  border: 1px solid #b4967e;
+  border-radius: 1.8rem;
+  padding: 2rem 1.75rem 1.125rem;
+  box-sizing: border-box;
+  overflow: visible;
+  word-break: break-word;
+  display: flex;
+  flex-direction: column;
+}
+
+.adjustment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.adjustment-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: 0;
+  color: #1f2937;
+}
+
+.adjustment-offset {
+  font-size: 0.875rem;
+  color: #6b7280;
+  background: #f3f4f6;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.adjustment-records {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.adjustment-record {
+  background: #f9fafb;
+  border-radius: 0.375rem;
+  padding: 0.75rem;
+  border-left: 4px solid #3b82f6;
+}
+
+.record-header {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.record-id {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.record-subject {
+  font-size: 0.875rem;
+  background: #dbeafe;
+  color: #1e40af;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.record-type {
+  font-size: 0.875rem;
+  background: #fef3c7;
+  color: #92400e;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.record-comparison {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.record-old,
+.record-new {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.record-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+}
+
+.record-data {
+  font-size: 0.875rem;
+  color: #1f2937;
+  background: white;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.record-arrow {
+  font-size: 1.5rem;
+  color: #3b82f6;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .record-comparison {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .record-arrow {
+    align-self: center;
+    transform: rotate(90deg);
+  }
+}
+
