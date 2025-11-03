@@ -1,7 +1,58 @@
-import { createMemo, createSignal, Index, Show } from "solid-js";
+import { createMemo, createSignal, Index, Show, createEffect, createResource } from "solid-js";
 import { pseudoMainFormOption, withForm } from "./shared";
-import type { AdjustmentData, AdjustmentRecord } from "../../types";
+import type { AdjustmentData, AdjustmentRecord, AllRawData } from "../../types";
 import { useGlobalSettings } from "../../context";
+import { getData } from "../../shared";
+
+// 辅助函数：从 AllRawData 中根据 id 查找 rawDescription
+const findRawDescriptionById = (data: AllRawData, id: number): string | null => {
+  // 查找角色
+  const character = data.characters.find(c => c.id === id);
+  if (character) {
+    // 如果是角色本身，可能没有 rawDescription，需要查找技能
+    // 先检查角色的技能
+    const skill = character.skills.find(s => s.id === id);
+    if (skill) {
+      return skill.rawDescription;
+    }
+    // 角色的 rawDescription 通常是空的，返回 null
+    return null;
+  }
+  
+  // 查找行动卡
+  const actionCard = data.actionCards.find(c => c.id === id);
+  if (actionCard) {
+    return actionCard.rawDescription;
+  }
+  
+  // 查找实体
+  const entity = data.entities.find(e => e.id === id);
+  if (entity) {
+    // 检查是否是实体的技能
+    const skill = entity.skills.find(s => s.id === id);
+    if (skill) {
+      return skill.rawDescription;
+    }
+    return entity.rawDescription;
+  }
+  
+  // 查找所有技能（从角色和实体中）
+  for (const ch of data.characters) {
+    const skill = ch.skills.find(s => s.id === id);
+    if (skill) {
+      return skill.rawDescription;
+    }
+  }
+  
+  for (const et of data.entities) {
+    const skill = et.skills.find(s => s.id === id);
+    if (skill) {
+      return skill.rawDescription;
+    }
+  }
+  
+  return null;
+};
 
 export const BalanceAdjustmentTab = withForm({
   ...pseudoMainFormOption,
@@ -10,6 +61,8 @@ export const BalanceAdjustmentTab = withForm({
     const form = props.form;
 
     const adjustments = form.useStore((state) => state.values.adjustments);
+    const currentVersion = form.useStore((state) => state.values.general.version);
+    const language = form.useStore((state) => state.values.general.language);
 
     const { allData } = useGlobalSettings();
     const names = createMemo(() => {
@@ -18,6 +71,14 @@ export const BalanceAdjustmentTab = withForm({
         [...data.characters, ...data.actionCards].map((v) => [v.id, v.name]),
       );
     });
+
+    // 获取 latest 版本的数据
+    const [latestData] = createResource(
+      () => currentVersion() !== "latest" ? language() : null,
+      async (lang) => {
+        return await getData("latest", lang);
+      }
+    );
 
     const [currentAdjustmentIndex, setCurrentAdjustmentIndex] = createSignal<
       number | null
@@ -170,11 +231,56 @@ export const BalanceAdjustmentTab = withForm({
                                     <form.AppField
                                       name={`adjustments[${idx}].adjustment[${recordIdx}].id`}
                                     >
-                                      {(field) => (
-                                        <field.NumberField
-                                          id={`adjustments[${idx}].adjustment[${recordIdx}].id`}
-                                        />
-                                      )}
+                                      {(field) => {
+                                        const handleQuery = () => {
+                                          const recordId = form.useStore(
+                                            (state) => state.values.adjustments[idx]?.adjustment[recordIdx]?.id
+                                          )();
+                                          
+                                          if (recordId && typeof recordId === 'number') {
+                                            // 获取当前版本的 rawDescription
+                                            const currentData = allData();
+                                            const currentRawDesc = findRawDescriptionById(currentData, recordId);
+                                            
+                                            // 获取 latest 版本的 rawDescription
+                                            const latestRawDesc = latestData() 
+                                              ? findRawDescriptionById(latestData()!, recordId)
+                                              : null;
+                                            
+                                            // 填充数据
+                                            if (latestRawDesc !== null) {
+                                              form.setFieldValue(
+                                                `adjustments[${idx}].adjustment[${recordIdx}].oldData`,
+                                                latestRawDesc
+                                              );
+                                            }
+                                            
+                                            if (currentRawDesc !== null) {
+                                              form.setFieldValue(
+                                                `adjustments[${idx}].adjustment[${recordIdx}].newData`,
+                                                currentRawDesc
+                                              );
+                                            }
+                                          }
+                                        };
+                                        
+                                        return (
+                                          <div class="flex gap-2">
+                                            <field.NumberField
+                                              id={`adjustments[${idx}].adjustment[${recordIdx}].id`}
+                                              class="flex-1"
+                                            />
+                                            <button
+                                              type="button"
+                                              class="btn btn-sm btn-ghost"
+                                              onClick={handleQuery}
+                                              title="从当前版本和最新版本查询 rawDescription"
+                                            >
+                                              查询
+                                            </button>
+                                          </div>
+                                        );
+                                      }}
                                     </form.AppField>
 
                                     <label

@@ -6,7 +6,7 @@
 
 .adjustment-card {
   position: relative;
-  min-height: 40rem;
+  min-height: 12rem;
   margin-right: 1.5rem;
   margin-left: 1.5rem;
   background-color: var(--box-bg-color);
@@ -14,10 +14,41 @@
   border-radius: 1.8rem;
   padding: 2rem 1.75rem 1.125rem;
   box-sizing: border-box;
-  overflow: visible;
+  overflow: clip;
   word-break: break-word;
   display: flex;
   flex-direction: column;
+}
+
+.adjustment-card-title {
+  font-size: 79px;
+  line-height: 1;
+  color: #716864;
+  white-space: pre-wrap;
+  word-break: break-word;
+  text-indent: 0;
+}
+
+.dashed-line {
+  border-top: solid 2px black;
+  border-image-source: repeating-linear-gradient(
+    to right,
+    #e6e1d4 0,
+    #e6e1d4 14px,
+    transparent 14px,
+    transparent 20px
+  );
+  border-image-slice: 1;
+  width: 100%;
+  margin: 1rem 0 0;
+}
+
+.adjustment-card-face {
+  position: absolute;
+  right: 0;
+  width: auto;
+  height: 40rem;
+  object-fit: contain;
 }
 
 .adjustment-header {
