@@ -2,7 +2,8 @@ import { For, Show, createMemo, type JSX } from "solid-js";
 import type { AdjustmentData, AdjustmentRecord } from "../../types";
 import { useGlobalSettings } from "../../context";
 import { Text } from "./Text";
-import { cardFaceUrl } from "../../utils";
+import { cardFaceUrl, tagImageUrl } from "../../utils";
+import { DESCRIPTION_ICON_IMAGES, ADJUSTMENT_SUBJECT_LABELS, ADJUSTMENT_TYPE_LABELS } from "../../constants";
 import "./BalanceAdjustment.css";
 
 export interface BalanceAdjustmentProps {
@@ -38,30 +39,114 @@ const AdjustmentCard = (props: AdjustmentCardProps) => {
   );
 };
 
+// 解析富文本，支持 <b></b> 和 {SPRITE_PRESET#id}
+const parseRichText = (text: string): JSX.Element[] => {
+  if (!text) return [];
+
+  const parts: JSX.Element[] = [];
+  let currentIndex = 0;
+
+  // 匹配 <b></b> 和 {SPRITE_PRESET#id}
+  const regex = /(<b>.*?<\/b>|{SPRITE_PRESET#(\d+)})/g;
+  let match;
+
+  while ((match = regex.exec(text)) !== null) {
+    // 添加匹配前的普通文本
+    if (match.index > currentIndex) {
+      parts.push(
+        <span class="record-text-light">{text.substring(currentIndex, match.index)}</span>
+      );
+    }
+
+    // 处理匹配的内容
+    if (match[0].startsWith('<b>')) {
+      // 处理 <b></b> 标签
+      const boldText = match[0].replace(/<\/?b>/g, '');
+      parts.push(
+        <span class="record-text-bold">{boldText}</span>
+      );
+    } else if (match[2]) {
+      // 处理 {SPRITE_PRESET#id}
+      const iconId = Number(match[2]);
+      const iconDef = DESCRIPTION_ICON_IMAGES[iconId] || {};
+      if (iconDef.imageUrl) {
+        parts.push(
+          <img class="description-icon" src={iconDef.imageUrl} alt="" />
+        );
+      } else if (iconDef.tagIcon) {
+        parts.push(
+          <span
+            class="description-icon-tag"
+            style={{
+              "--image": `url("${tagImageUrl(iconDef.tagIcon)}")`,
+            }}
+          />
+        );
+      }
+    }
+
+    currentIndex = match.index + match[0].length;
+  }
+
+  // 添加剩余的文本
+  if (currentIndex < text.length) {
+    parts.push(
+      <span class="record-text-light">{text.substring(currentIndex)}</span>
+    );
+  }
+
+  return parts.length > 0 ? parts : [<span class="record-text-light">{text}</span>];
+};
+
 const AdjustmentRecords = (props: { records: AdjustmentRecord[] }) => {
+  const isInlineType = (type: string) => type === "hp" || type === "cost";
+  const { allData } = useGlobalSettings();
+  const names = createMemo(() => {
+    const data = allData();
+    return new Map(
+      [...data.characters,
+      ...data.actionCards,
+      ...data.entities,
+      ...data.characters.flatMap(c => c.skills),
+      ...data.entities.flatMap(e => e.skills)
+      ].map((v) => [v.id, v.name]),
+    );
+  });
+
   return (
     <div class="adjustment-records">
       <For each={props.records}>
-        {(record) => (
-          <div class="adjustment-record">
-            <div class="record-header">
-              <span class="record-id">ID: {record.id}</span>
-              <span class="record-subject">{getSubjectLabel(record.subject)}</span>
-              <span class="record-type">{getTypeLabel(record.type)}</span>
+        {(record) => {
+          const recordName = createMemo(() => names()?.get(record.id));
+          const title = record.subject === "self"
+            ? `${ADJUSTMENT_TYPE_LABELS[record.type]}调整：`
+            : `${ADJUSTMENT_SUBJECT_LABELS[record.subject]}「${recordName()}」${ADJUSTMENT_TYPE_LABELS[record.type]}调整：`;
+          const isInline = isInlineType(record.type);
+
+          return (
+            <div class="adjustment-record">
+              <div class="record-title">{title}</div>
+              <Show when={isInline} fallback={
+                <>
+                  <div class="record-block">
+                    <div class="record-label">旧</div>
+                    <div class="record-content">{parseRichText(record.oldData)}</div>
+                  </div>
+                  <div class="record-block">
+                    <div class="record-label">新</div>
+                    <div class="record-content">{parseRichText(record.newData)}</div>
+                  </div>
+                </>
+              }>
+                <div class="record-inline">
+                  <div class="record-content">{parseRichText(record.oldData)}</div>
+                  <span class="record-arrow">→</span>
+                  <div class="record-content">{parseRichText(record.newData)}</div>
+                </div>
+              </Show>
             </div>
-            <div class="record-comparison">
-              <div class="record-old">
-                <span class="record-label">旧数据:</span>
-                <span class="record-data">{record.oldData}</span>
-              </div>
-              <div class="record-arrow">→</div>
-              <div class="record-new">
-                <span class="record-label">新数据:</span>
-                <span class="record-data">{record.newData}</span>
-              </div>
-            </div>
-          </div>
-        )}
+          );
+        }}
       </For>
     </div>
   );
@@ -113,33 +198,3 @@ export const BalanceAdjustment = (props: BalanceAdjustmentProps) => {
     </div>
   );
 };
-
-function getSubjectLabel(subject: string): string {
-  const labels: Record<string, string> = {
-    self: "自身",
-    normalAttack: "普通攻击",
-    elementalSkill: "元素战技",
-    elementalBurst: "元素爆发",
-    passiveSkill: "被动技能",
-    talent: "天赋",
-    technique: "秘传",
-    summon: "召唤物",
-    status: "状态",
-    combatStatus: "出战状态",
-    relatedCard: "关联卡牌",
-  };
-  return labels[subject] || subject;
-}
-
-function getTypeLabel(type: string): string {
-  const labels: Record<string, string> = {
-    hp: "生命值",
-    cost: "费用",
-    effect: "效果",
-    damage: "伤害",
-    usage: "可用次数",
-    duration: "持续回合",
-  };
-  return labels[type] || type;
-}
-

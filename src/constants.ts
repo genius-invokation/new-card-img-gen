@@ -510,6 +510,31 @@ export const DAMAGE_KEYWORD_MAP: Record<string, number> = {
 
 export const BOLD_COLOR = "#FFFFFFFF";
 
+export const ADJUSTMENT_SUBJECT_LABELS: Record<string, string> = {
+  self: "自身",
+  normalAttack: "普通攻击",
+  elementalSkill: "元素战技",
+  elementalBurst: "元素爆发",
+  passiveSkill: "被动技能",
+  prepareSkill: "准备技能",
+  talent: "天赋牌",
+  technique: "特技",
+  techniqueCard: "特技牌",
+  summon: "召唤物",
+  status: "状态",
+  combatStatus: "出战状态",
+  relatedCard: "衍生卡牌",
+};
+
+export const ADJUSTMENT_TYPE_LABELS: Record<string, string> = {
+  hp: "初始最大生命值",
+  cost: "所需元素骰费用",
+  effect: "效果",
+  damage: "伤害",
+  usage: "可用次数",
+  duration: "持续回合",
+};
+
 export const VERSION_REPLACE_STRS: Record<string, Record<Language, string>> = {
   "6.0": {
     CHS: "「月之一」",

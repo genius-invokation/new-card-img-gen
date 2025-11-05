@@ -103,7 +103,7 @@ export interface RenderContext {
 
 export interface AdjustmentRecord {
   id: number;
-  subject: "self" | "normalAttack" | "elementalSkill" | "elementalBurst" | "passiveSkill" | "talent" | "technique" | "summon" | "status" | "combatStatus" | "relatedCard";
+  subject: "self" | "normalAttack" | "elementalSkill" | "elementalBurst" | "passiveSkill" | "prepareSkill" | "talent" | "technique" | "techniqueCard" | "summon" | "status" | "combatStatus" | "relatedCard";
   type: "hp" | "cost" | "effect" | "damage" | "usage" | "duration";
   oldData: string;
   newData: string;

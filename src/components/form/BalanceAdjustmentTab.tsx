@@ -3,26 +3,27 @@ import { pseudoMainFormOption, withForm } from "./shared";
 import type { AdjustmentData, AdjustmentRecord, AllRawData } from "../../types";
 import { useGlobalSettings } from "../../context";
 import { getData } from "../../shared";
+import { ADJUSTMENT_SUBJECT_LABELS, ADJUSTMENT_TYPE_LABELS } from "../../constants";
 
-// 辅助函数：从 AllRawData 中根据 id 查找 rawDescription
-const findRawDescriptionById = (data: AllRawData, id: number): string | null => {
+// 辅助函数：从 AllRawData 中根据 id 查找 description
+const findDescriptionById = (data: AllRawData, id: number): string | null => {
   // 查找角色
   const character = data.characters.find(c => c.id === id);
   if (character) {
-    // 如果是角色本身，可能没有 rawDescription，需要查找技能
+    // 如果是角色本身，可能没有 description，需要查找技能
     // 先检查角色的技能
     const skill = character.skills.find(s => s.id === id);
     if (skill) {
-      return skill.rawDescription;
+      return skill.description;
     }
-    // 角色的 rawDescription 通常是空的，返回 null
+    // 角色的 description 通常是空的，返回 null
     return null;
   }
   
   // 查找行动卡
   const actionCard = data.actionCards.find(c => c.id === id);
   if (actionCard) {
-    return actionCard.rawDescription;
+    return actionCard.description;
   }
   
   // 查找实体
@@ -31,23 +32,23 @@ const findRawDescriptionById = (data: AllRawData, id: number): string | null => 
     // 检查是否是实体的技能
     const skill = entity.skills.find(s => s.id === id);
     if (skill) {
-      return skill.rawDescription;
+      return skill.description;
     }
-    return entity.rawDescription;
+    return entity.description;
   }
   
   // 查找所有技能（从角色和实体中）
   for (const ch of data.characters) {
     const skill = ch.skills.find(s => s.id === id);
     if (skill) {
-      return skill.rawDescription;
+      return skill.description;
     }
   }
   
   for (const et of data.entities) {
     const skill = et.skills.find(s => s.id === id);
     if (skill) {
-      return skill.rawDescription;
+      return skill.description;
     }
   }
   
@@ -238,27 +239,27 @@ export const BalanceAdjustmentTab = withForm({
                                           )();
                                           
                                           if (recordId && typeof recordId === 'number') {
-                                            // 获取当前版本的 rawDescription
+                                            // 获取当前版本的 description
                                             const currentData = allData();
-                                            const currentRawDesc = findRawDescriptionById(currentData, recordId);
+                                            const currentDesc = findDescriptionById(currentData, recordId);
                                             
-                                            // 获取 latest 版本的 rawDescription
-                                            const latestRawDesc = latestData() 
-                                              ? findRawDescriptionById(latestData()!, recordId)
+                                            // 获取 latest 版本的 description
+                                            const latestDesc = latestData() 
+                                              ? findDescriptionById(latestData()!, recordId)
                                               : null;
                                             
                                             // 填充数据
-                                            if (latestRawDesc !== null) {
+                                            if (latestDesc !== null) {
                                               form.setFieldValue(
                                                 `adjustments[${idx}].adjustment[${recordIdx}].oldData`,
-                                                latestRawDesc
+                                                latestDesc
                                               );
                                             }
                                             
-                                            if (currentRawDesc !== null) {
+                                            if (currentDesc !== null) {
                                               form.setFieldValue(
                                                 `adjustments[${idx}].adjustment[${recordIdx}].newData`,
-                                                currentRawDesc
+                                                currentDesc
                                               );
                                             }
                                           }
@@ -272,11 +273,11 @@ export const BalanceAdjustmentTab = withForm({
                                             />
                                             <button
                                               type="button"
-                                              class="btn btn-sm btn-ghost"
+                                              class="btn btn-sm btn-ghost h-full"
                                               onClick={handleQuery}
-                                              title="从当前版本和最新版本查询 rawDescription"
+                                              title="填充description"
                                             >
-                                              查询
+                                              填充
                                             </button>
                                           </div>
                                         );
@@ -295,40 +296,10 @@ export const BalanceAdjustmentTab = withForm({
                                       {(field) => (
                                         <field.SelectField
                                           id={`adjustments[${idx}].adjustment[${recordIdx}].subject`}
-                                          options={[
-                                            { value: "self", label: "自身" },
-                                            {
-                                              value: "normalAttack",
-                                              label: "普通攻击",
-                                            },
-                                            {
-                                              value: "elementalSkill",
-                                              label: "元素战技",
-                                            },
-                                            {
-                                              value: "elementalBurst",
-                                              label: "元素爆发",
-                                            },
-                                            {
-                                              value: "passiveSkill",
-                                              label: "被动技能",
-                                            },
-                                            { value: "talent", label: "天赋" },
-                                            {
-                                              value: "technique",
-                                              label: "秘传",
-                                            },
-                                            { value: "summon", label: "召唤物" },
-                                            { value: "status", label: "状态" },
-                                            {
-                                              value: "combatStatus",
-                                              label: "出战状态",
-                                            },
-                                            {
-                                              value: "relatedCard",
-                                              label: "关联卡牌",
-                                            },
-                                          ]}
+                                          options={Object.entries(ADJUSTMENT_SUBJECT_LABELS).map(([value, label]) => ({
+                                            value,
+                                            label,
+                                          }))}
                                         />
                                       )}
                                     </form.AppField>
@@ -345,14 +316,10 @@ export const BalanceAdjustmentTab = withForm({
                                       {(field) => (
                                         <field.SelectField
                                           id={`adjustments[${idx}].adjustment[${recordIdx}].type`}
-                                          options={[
-                                            { value: "hp", label: "生命值" },
-                                            { value: "cost", label: "费用" },
-                                            { value: "effect", label: "效果" },
-                                            { value: "damage", label: "伤害" },
-                                            { value: "usage", label: "可用次数" },
-                                            { value: "duration", label: "持续回合" },
-                                          ]}
+                                          options={Object.entries(ADJUSTMENT_TYPE_LABELS).map(([value, label]) => ({
+                                            value,
+                                            label,
+                                          }))}
                                         />
                                       )}
                                     </form.AppField>
