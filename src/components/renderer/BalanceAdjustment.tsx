@@ -100,7 +100,7 @@ const parseRichText = (text: string): JSX.Element[] => {
 
 const AdjustmentRecords = (props: { records: AdjustmentRecord[] }) => {
   const isInlineType = (type: string) => type === "hp" || type === "cost";
-  const { allData } = useGlobalSettings();
+  const { allData, language } = useGlobalSettings();
   const names = createMemo(() => {
     const data = allData();
     return new Map(
@@ -117,10 +117,14 @@ const AdjustmentRecords = (props: { records: AdjustmentRecord[] }) => {
     <div class="adjustment-records">
       <For each={props.records}>
         {(record) => {
-          const recordName = createMemo(() => names()?.get(record.id));
+          const lang = language();
+          const recordName = createMemo(() => lang === "CHS" ? `「${names()?.get(record.id)}」` : ` "${names()?.get(record.id)}" `);
+          const subjectLabel = ADJUSTMENT_SUBJECT_LABELS[lang][record.subject] || record.subject;
+          const typeLabel = ADJUSTMENT_TYPE_LABELS[lang][record.type] || record.type;
+          const adjustmentText = lang === "CHS" ? "调整：" : " adjustment:";
           const title = record.subject === "self"
-            ? `${ADJUSTMENT_TYPE_LABELS[record.type]}调整：`
-            : `${ADJUSTMENT_SUBJECT_LABELS[record.subject]}「${recordName()}」${ADJUSTMENT_TYPE_LABELS[record.type]}调整：`;
+            ? `${typeLabel}${adjustmentText}`
+            : `${subjectLabel}${recordName()}${typeLabel}${adjustmentText}`;
           const isInline = isInlineType(record.type);
 
           return (

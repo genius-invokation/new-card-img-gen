@@ -134,6 +134,11 @@ export const Renderer = (props: AppConfig) => {
           CHS: `${mainVersionText}版本新增行动牌`,
           EN: `Action Cards added in ${mainVersionText}`,
         }[props.language];
+      } else if (props.mode === "balanceAdjustment") {
+        title = {
+          CHS: `${mainVersionText}版本平衡性调整`,
+          EN: `Balance Adjustment in ${mainVersionText}`,
+        }[props.language];
       }
     }
     return { mode, title, character, actionCards, versionText, renderContext };

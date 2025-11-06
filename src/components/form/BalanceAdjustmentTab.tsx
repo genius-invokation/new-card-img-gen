@@ -296,7 +296,7 @@ export const BalanceAdjustmentTab = withForm({
                                       {(field) => (
                                         <field.SelectField
                                           id={`adjustments[${idx}].adjustment[${recordIdx}].subject`}
-                                          options={Object.entries(ADJUSTMENT_SUBJECT_LABELS).map(([value, label]) => ({
+                                          options={Object.entries(ADJUSTMENT_SUBJECT_LABELS.CHS).map(([value, label]) => ({
                                             value,
                                             label,
                                           }))}
@@ -316,7 +316,7 @@ export const BalanceAdjustmentTab = withForm({
                                       {(field) => (
                                         <field.SelectField
                                           id={`adjustments[${idx}].adjustment[${recordIdx}].type`}
-                                          options={Object.entries(ADJUSTMENT_TYPE_LABELS).map(([value, label]) => ({
+                                          options={Object.entries(ADJUSTMENT_TYPE_LABELS.CHS).map(([value, label]) => ({
                                             value,
                                             label,
                                           }))}
