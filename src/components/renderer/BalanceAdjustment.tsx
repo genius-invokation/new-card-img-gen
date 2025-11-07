@@ -98,7 +98,11 @@ const parseRichText = (text: string): JSX.Element[] => {
   return parts.length > 0 ? parts : [<span class="record-text-light">{text}</span>];
 };
 
-const AdjustmentRecords = (props: { records: AdjustmentRecord[] }) => {
+interface AdjustmentRecordProps {
+  record: AdjustmentRecord;
+}
+
+const AdjustmentRecord = (props: AdjustmentRecordProps) => {
   const isInlineType = (type: string) => type === "hp" || type === "cost";
   const { allData, language } = useGlobalSettings();
   const names = createMemo(() => {
@@ -113,91 +117,90 @@ const AdjustmentRecords = (props: { records: AdjustmentRecord[] }) => {
     );
   });
 
-  return (
-    <div class="adjustment-records">
-      <For each={props.records}>
-        {(record) => {
-          const lang = language();
-          const recordName = createMemo(() => lang === "CHS" ? `「${names()?.get(record.id)}」` : ` "${names()?.get(record.id)}" `);
-          const subjectLabel = ADJUSTMENT_SUBJECT_LABELS[lang][record.subject] || record.subject;
-          const typeLabel = ADJUSTMENT_TYPE_LABELS[lang][record.type] || record.type;
-          const adjustmentText = lang === "CHS" ? "调整：" : " adjustment:";
-          const title = record.subject === "self"
-            ? `${typeLabel}${adjustmentText}`
-            : `${subjectLabel}${recordName()}${typeLabel}${adjustmentText}`;
-          const isInline = isInlineType(record.type);
+  const lang = language();
+  const recordName = createMemo(() => lang === "CHS" ? `「${names()?.get(props.record.id)}」` : ` "${names()?.get(props.record.id)}" `);
+  const subjectLabel = ADJUSTMENT_SUBJECT_LABELS[lang][props.record.subject] || props.record.subject;
+  const typeLabel = ADJUSTMENT_TYPE_LABELS[lang][props.record.type] || props.record.type;
+  const adjustmentText = lang === "CHS" ? "调整：" : " adjustment:";
+  const title = props.record.subject === "self"
+    ? `${typeLabel}${adjustmentText}`
+    : `${subjectLabel}${recordName()}${typeLabel}${adjustmentText}`;
+  const isInline = isInlineType(props.record.type);
 
-          return (
-            <div class="adjustment-record">
-              <div class="record-title">{title}</div>
-              <Show when={isInline} fallback={
-                <>
-                  <div class="record-block">
-                    <div class="record-label">旧</div>
-                    <div class="record-content">{parseRichText(record.oldData)}</div>
-                  </div>
-                  <div class="record-block">
-                    <div class="record-label">新</div>
-                    <div class="record-content">{parseRichText(record.newData)}</div>
-                  </div>
-                </>
-              }>
-                <div class="record-inline">
-                  <div class="record-content">{parseRichText(record.oldData)}</div>
-                  <span class="record-arrow">→</span>
-                  <div class="record-content">{parseRichText(record.newData)}</div>
-                </div>
-              </Show>
-            </div>
-          );
-        }}
-      </For>
+  return (
+    <div class="adjustment-record">
+      <div class="record-title">{title}</div>
+      <Show when={isInline} fallback={
+        <>
+          <div class="record-block">
+            <div class="record-label">旧</div>
+            <div class="record-content">{parseRichText(props.record.oldData)}</div>
+          </div>
+          <div class="record-block">
+            <div class="record-label">新</div>
+            <div class="record-content">{parseRichText(props.record.newData)}</div>
+          </div>
+        </>
+      }>
+        <div class="record-inline">
+          <div class="record-content">{parseRichText(props.record.oldData)}</div>
+          <span class="record-arrow">→</span>
+          <div class="record-content">{parseRichText(props.record.newData)}</div>
+        </div>
+      </Show>
     </div>
   );
 };
 
 export const BalanceAdjustment = (props: BalanceAdjustmentProps) => {
   const { allData, displayId } = useGlobalSettings();
+  const processedAdjustments = createMemo(() => {
+    const data = allData();
+
+    const resolveCardData = (id: number) => {
+      const character = data.characters.find((c) => c.id === id);
+      if (character) {
+        return {
+          name: character.name,
+          cardFace: character.cardFace,
+          item: character,
+        };
+      }
+      const actionCard = data.actionCards.find((c) => c.id === id);
+      if (actionCard) {
+        return {
+          name: actionCard.name,
+          cardFace: actionCard.cardFace,
+          item: actionCard,
+          isLegend: actionCard.tags.includes("GCG_TAG_LEGEND"),
+        };
+      }
+      return null;
+    };
+
+    return props.adjustments.map((adjustment) => ({
+      adjustment,
+      cardData: resolveCardData(adjustment.id),
+    }));
+  });
 
   return (
     <div class="balance-adjustment">
-      <For each={props.adjustments}>
-        {(adjustment) => {
-          const cardData = createMemo(() => {
-            const data = allData();
-            // 先查找角色
-            const character = data.characters.find(c => c.id === adjustment.id);
-            if (character) {
-              return {
-                name: character.name,
-                cardFace: character.cardFace,
-                item: character
-              };
-            }
-            // 再查找行动卡
-            const actionCard = data.actionCards.find(c => c.id === adjustment.id);
-            if (actionCard) {
-              return {
-                name: actionCard.name,
-                cardFace: actionCard.cardFace,
-                item: actionCard,
-                isLegend: actionCard.tags.includes("GCG_TAG_LEGEND")
-              };
-            }
-            return null;
-          });
-
-          return (
-            <AdjustmentCard
-              id={adjustment.id}
-              offset={adjustment.offset}
-              name={cardData()?.name}
-              cardFaceItem={cardData()?.item}
-            >
-              <AdjustmentRecords records={adjustment.adjustment} />
-            </AdjustmentCard>
-          );
-        }}
+      <For each={processedAdjustments()}>
+        {(item) => (
+          <AdjustmentCard
+            id={item.adjustment.id}
+            offset={item.adjustment.offset}
+            name={item.cardData?.name}
+            cardFaceItem={item.cardData?.item}
+          >
+            <div class="adjustment-records">
+              <For each={item.adjustment.adjustment}>
+                {(record) => <AdjustmentRecord record={record} />}
+              </For>
+            </div>
+          </AdjustmentCard>
+        )}
       </For>
     </div>
   );
