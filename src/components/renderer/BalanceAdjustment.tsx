@@ -42,19 +42,14 @@ const AdjustmentCard = (props: AdjustmentCardProps) => {
   );
 };
 
-// 解析富文本，支持 <b></b> 和 {SPRITE_PRESET#id}
-const parseRichText = (text: string): JSX.Element[] => {
+const parseAdjustmentText = (text: string): JSX.Element[] => {
   if (!text) return [];
 
   const parts: JSX.Element[] = [];
   let currentIndex = 0;
-
-  // 匹配 <b></b> 和 {SPRITE_PRESET#id}
   const regex = /(<b>.*?<\/b>|{SPRITE_PRESET#(\d+)})/g;
   let match;
-
   while ((match = regex.exec(text)) !== null) {
-    // 添加匹配前的普通文本
     if (match.index > currentIndex) {
       parts.push(
         <span class="record-text-light">
@@ -62,10 +57,7 @@ const parseRichText = (text: string): JSX.Element[] => {
         </span>
       );
     }
-
-    // 处理匹配的内容
     if (match[0].startsWith('<b>')) {
-      // 处理 <b></b> 标签
       const boldText = match[0].replace(/<\/?b>/g, '');
       parts.push(
         <span class="record-text-bold">
@@ -73,7 +65,6 @@ const parseRichText = (text: string): JSX.Element[] => {
         </span>
       );
     } else if (match[2]) {
-      // 处理 {SPRITE_PRESET#id}
       const iconId = Number(match[2]);
       const iconDef = DESCRIPTION_ICON_IMAGES[iconId] || {};
       if (iconDef.imageUrl) {
@@ -91,11 +82,9 @@ const parseRichText = (text: string): JSX.Element[] => {
         );
       }
     }
-
     currentIndex = match.index + match[0].length;
   }
 
-  // 添加剩余的文本
   if (currentIndex < text.length) {
     parts.push(
       <span class="record-text-light">{text.substring(currentIndex)}</span>
@@ -143,20 +132,20 @@ const AdjustmentRecord = (props: AdjustmentRecordProps) => {
         <>
           <div class="record-block">
             <img src={oldSign} class="record-sign" />
-            <div class="record-content">{parseRichText(props.record.oldData)}</div>
+            <div class="record-content">{parseAdjustmentText(props.record.oldData)}</div>
           </div>
           <div class="record-block">
             <img src={newSign} class="record-sign" />
-            <div class="record-content">{parseRichText(props.record.newData)}</div>
+            <div class="record-content">{parseAdjustmentText(props.record.newData)}</div>
           </div>
         </>
       }>
         <div class="record-inline">
           <img src={oldSign} class="record-sign" style={{ "transform": "translateY(-0.15rem)" }} />
-          <div class="record-content">{parseRichText(props.record.oldData)}</div>
+          <div class="record-content">{parseAdjustmentText(props.record.oldData)}</div>
           <span class="record-arrow">→</span>
           <img src={newSign} class="record-sign" style={{ "transform": "translateY(-0.15rem)" }} />
-          <div class="record-content">{parseRichText(props.record.newData)}</div>
+          <div class="record-content">{parseAdjustmentText(props.record.newData)}</div>
         </div>
       </Show>
     </div>
@@ -164,7 +153,7 @@ const AdjustmentRecord = (props: AdjustmentRecordProps) => {
 };
 
 export const BalanceAdjustment = (props: BalanceAdjustmentProps) => {
-  const { allData, displayId } = useGlobalSettings();
+  const { allData } = useGlobalSettings();
   const processedAdjustments = createMemo(() => {
     const data = allData();
 

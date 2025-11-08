@@ -1,8 +1,6 @@
-import { createMemo, createSignal, Index, Show, createEffect, createResource } from "solid-js";
+import { createMemo, createSignal, Index, Show, createResource } from "solid-js";
 import { pseudoMainFormOption, withForm } from "./shared";
 import type {
-  AdjustmentData,
-  AdjustmentRecord,
   AllRawData,
   PlayCost,
   Language,
@@ -15,7 +13,6 @@ import {
   COST_TYPE_SPRITE_MAP,
 } from "../../constants";
 
-// 辅助函数：从 AllRawData 中根据 id 查找 description
 const findDescriptionById = (data: AllRawData, id: number): string | null => {
   const descriptionMap = new Map<number, string | null>([
     ...data.actionCards.map((card) => [card.id, card.description ?? null] as const),
@@ -67,7 +64,6 @@ const formatPlayCost = (playCost: PlayCost[] | null, lang: Language): string | n
 export const BalanceAdjustmentTab = withForm({
   ...pseudoMainFormOption,
   render: (props) => {
-    // eslint-disable-next-line solid/reactivity
     const form = props.form;
 
     const adjustments = form.useStore((state) => state.values.adjustments);
@@ -82,7 +78,6 @@ export const BalanceAdjustmentTab = withForm({
       );
     });
 
-    // 获取 latest 版本的数据
     const [latestData] = createResource(
       () => currentVersion() !== "latest" ? language() : null,
       async (lang) => {

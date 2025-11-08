@@ -173,12 +173,16 @@ export const Forms = (props: FormsProps) => {
   const [currentTab, setCurrentTab] = createSignal<TabKey>("general");
   const handleExport = () => {
     try {
-      const blob = new Blob([JSON.stringify(form.state.values, null, 2)], {
+      const isAdjustmentTab = currentTab() === "adjustments";
+      const dataToExport = isAdjustmentTab
+        ? form.state.values.adjustments
+        : form.state.values;
+      const blob = new Blob([JSON.stringify(dataToExport, null, 2)], {
         type: "application/json",
       });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
-      a.download = `config-${Date.now()}.json`;
+      a.download = `${isAdjustmentTab ? "adjustments" : "config"}-${Date.now()}.json`;
       a.click();
       setTimeout(() => URL.revokeObjectURL(a.href), 0);
     } catch {
@@ -207,12 +211,31 @@ export const Forms = (props: FormsProps) => {
     try {
       const text = await file.text();
       const json = JSON.parse(text);
-      form.reset(json);
+      const isAdjustmentTab = currentTab() === "adjustments";
+
+      if (isAdjustmentTab) {
+        const adjustmentsData = Array.isArray(json)
+          ? json
+          : json?.adjustments;
+
+        if (!Array.isArray(adjustmentsData)) {
+          throw new Error("Invalid adjustments data");
+        }
+
+        form.setFieldValue("adjustments", adjustmentsData);
+      } else {
+        form.reset(json);
+      }
+
       if (previewVisible() && form.state.canSubmit) {
         formEl.requestSubmit();
       }
-    } catch {
+    } catch (err) {
+      if (currentTab() === "adjustments") {
+        alert("导入失败：请提供有效的平衡性调整数据");
+      } else {
       alert("导入失败：无法解析 JSON");
+      }
     } finally {
       currentTarget.value = "";
     }

@@ -55,7 +55,7 @@ if (versionFromUrl && !VERSION_REGEX.test(versionFromUrl)) {
 
 const INITIAL_FORM_VALUE: FormValue = {
   general: {
-    mode: "balanceAdjustment", // test: "character"
+    mode: "character",
     characterId: Number(search.get("character_id") || Number.NaN) || 1503,
     actionCardId: Number(search.get("action_card_id") || Number.NaN) || 332005,
     language: "CHS",
