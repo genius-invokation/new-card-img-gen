@@ -11,6 +11,7 @@ import { parseCharacter, parseActionCard } from "../../parser";
 import { RenderContextProvider } from "../../context";
 import { Character } from "./Character";
 import { ActionCard } from "./ActionCard";
+import { BalanceAdjustment } from "./BalanceAdjustment";
 import "./Renderer.css";
 import {
   ELEMENT_TAG_TO_KEYWORD_ID,
@@ -133,6 +134,11 @@ export const Renderer = (props: AppConfig) => {
           CHS: `${mainVersionText}版本新增行动牌`,
           EN: `Action Cards added in ${mainVersionText}`,
         }[props.language];
+      } else if (props.mode === "balanceAdjustment") {
+        title = {
+          CHS: `${mainVersionText}版本平衡性调整`,
+          EN: `Balance Adjustment in ${mainVersionText}`,
+        }[props.language];
       }
     }
     return { mode, title, character, actionCards, versionText, renderContext };
@@ -149,7 +155,8 @@ export const Renderer = (props: AppConfig) => {
   const getRenderContext = () => renderingObjects().renderContext;
   const empty = () =>
     !renderingObjects().character &&
-    renderingObjects().actionCards.length === 0;
+    renderingObjects().actionCards.length === 0 &&
+    props.mode !== "balanceAdjustment";
 
   return (
     <RenderContextProvider value={getRenderContext}>
@@ -163,6 +170,9 @@ export const Renderer = (props: AppConfig) => {
       >
         <Show when={renderingObjects().title}>
           {(title) => <PageTitle text={title()} />}
+        </Show>
+        <Show when={props.mode === "balanceAdjustment" && props.adjustments}>
+          <BalanceAdjustment adjustments={props.adjustments || []} />
         </Show>
         <Show when={renderingObjects().character}>
           {(c) => <Character character={c()} />}

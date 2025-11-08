@@ -82,6 +82,17 @@ export const KEYWORD_CARDBACK_BOTTOM = `${
 export const PAGE_TITLE_ICON = `${
   import.meta.env.BASE_URL
 }assets/frame/pagetitle.png`;
+export const BLOCK_CARD_MASK = `${
+  import.meta.env.BASE_URL
+}assets/frame/block_card_mask.png`;
+export const NEW_SIGN_CHS = `${
+  import.meta.env.BASE_URL
+}assets/frame/new_CHS.png`;
+export const NEW_SIGN_EN = `${import.meta.env.BASE_URL}assets/frame/new_EN.png`;
+export const OLD_SIGN_CHS = `${
+  import.meta.env.BASE_URL
+}assets/frame/old_CHS.png`;
+export const OLD_SIGN_EN = `${import.meta.env.BASE_URL}assets/frame/old_EN.png`;
 
 export const AVATAR_CARD_HP = `${
   import.meta.env.BASE_URL
@@ -112,6 +123,21 @@ export const COST_TYPE_IMG_NAME_MAP: Record<string, string> = {
   GCG_COST_ENERGY: "Energy",
   GCG_COST_LEGEND: "Legend",
   GCG_COST_SPECIAL_ENERGY: "Energy_Mavuika",
+};
+
+export const COST_TYPE_SPRITE_MAP: Record<string, string> = {
+  GCG_COST_DICE_VOID: "{SPRITE_PRESET#1109}",
+  GCG_COST_DICE_CRYO: "{SPRITE_PRESET#1101}",
+  GCG_COST_DICE_HYDRO: "{SPRITE_PRESET#1102}",
+  GCG_COST_DICE_PYRO: "{SPRITE_PRESET#1103}",
+  GCG_COST_DICE_ELECTRO: "{SPRITE_PRESET#1104}",
+  GCG_COST_DICE_ANEMO: "{SPRITE_PRESET#1105}",
+  GCG_COST_DICE_GEO: "{SPRITE_PRESET#1106}",
+  GCG_COST_DICE_DENDRO: "{SPRITE_PRESET#1107}",
+  GCG_COST_DICE_SAME: "{SPRITE_PRESET#1108}",
+  GCG_COST_ENERGY: "{SPRITE_PRESET#1110}",
+  GCG_COST_LEGEND: "{SPRITE_PRESET#1112}",
+  GCG_COST_SPECIAL_ENERGY: "{SPRITE_PRESET#4008}",
 };
 
 export const TYPE_TAG_TEXT_MAP: Record<Language, Record<string, string>> = {
@@ -302,9 +328,7 @@ export const ELEMENT_TAG_TO_KEYWORD_ID: Record<string, number> = {
 
 export const DESCRIPTION_ICON_IMAGES = {
   4007: {
-    imageUrl: `${
-      import.meta.env.BASE_URL
-    }assets/UI_Gcg_Keyword_Shield.png`,
+    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Shield.png`,
   },
   2100: {
     imageUrl: `${
@@ -347,56 +371,40 @@ export const DESCRIPTION_ICON_IMAGES = {
     }assets/UI_Gcg_Keyword_Element_Grass.png`,
   },
   1101: {
-    imageUrl: `${
-      import.meta.env.BASE_URL
-    }assets/UI_Gcg_DiceL_Ice.png` },
+    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Ice.png`,
+  },
   1102: {
-    imageUrl: `${
-      import.meta.env.BASE_URL
-    }assets/UI_Gcg_DiceL_Water.png`,
+    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Water.png`,
   },
   1103: {
-    imageUrl: `${
-      import.meta.env.BASE_URL
-    }assets/UI_Gcg_DiceL_Fire.png` },
+    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Fire.png`,
+  },
   1104: {
-    imageUrl: `${
-      import.meta.env.BASE_URL
-    }assets/UI_Gcg_DiceL_Elec.png` },
+    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Elec.png`,
+  },
   1105: {
-    imageUrl: `${
-      import.meta.env.BASE_URL
-    }assets/UI_Gcg_DiceL_Wind.png` },
+    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Wind.png`,
+  },
   1106: {
-    imageUrl: `${
-      import.meta.env.BASE_URL
-    }assets/UI_Gcg_DiceL_Rock.png` },
+    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Rock.png`,
+  },
   1107: {
-    imageUrl: `${
-      import.meta.env.BASE_URL
-    }assets/UI_Gcg_DiceL_Grass.png`,
+    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Grass.png`,
   },
   1108: {
-    imageUrl: `${
-      import.meta.env.BASE_URL
-    }assets/UI_Gcg_DiceL_Same.png` },
+    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Same.png`,
+  },
   1109: {
-    imageUrl: `${
-      import.meta.env.BASE_URL
-    }assets/UI_Gcg_DiceL_Diff.png` },
+    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Diff.png`,
+  },
   1110: {
-    imageUrl: `${
-      import.meta.env.BASE_URL
-    }assets/UI_Gcg_Keyword_Energy.png`,
+    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Energy.png`,
   },
   1111: {
-    imageUrl: `${
-      import.meta.env.BASE_URL
-    }assets/UI_Gcg_DiceL_Any.png` },
+    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Any.png`,
+  },
   1112: {
-    imageUrl: `${
-      import.meta.env.BASE_URL
-    }assets/UI_Gcg_Keyword_Legend.png`,
+    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Legend.png`,
   },
   4008: {
     //  ###非官方###
@@ -510,6 +518,64 @@ export const DAMAGE_KEYWORD_MAP: Record<string, number> = {
 
 export const BOLD_COLOR = "#FFFFFFFF";
 
+export const ADJUSTMENT_SUBJECT_LABELS: Record<
+  Language,
+  Record<string, string>
+> = {
+  CHS: {
+    self: "自身",
+    normalAttack: "普通攻击",
+    elementalSkill: "元素战技",
+    elementalBurst: "元素爆发",
+    passiveSkill: "被动技能",
+    prepareSkill: "准备技能",
+    talent: "天赋牌",
+    technique: "特技",
+    techniqueCard: "特技牌",
+    summon: "召唤物",
+    status: "状态",
+    combatStatus: "出战状态",
+    relatedCard: "衍生卡牌",
+  },
+  EN: {
+    self: "Self",
+    normalAttack: "Normal Attack",
+    elementalSkill: "Elemental Skill",
+    elementalBurst: "Elemental Burst",
+    passiveSkill: "Passive Skill",
+    prepareSkill: "Prepare Skill",
+    talent: "Talent Card",
+    technique: "Technique",
+    techniqueCard: "Technique Card",
+    summon: "Summon",
+    status: "Status",
+    combatStatus: "Combat Status",
+    relatedCard: "Related Card",
+  },
+};
+
+export const ADJUSTMENT_TYPE_LABELS: Record<
+  Language,
+  Record<string, string>
+> = {
+  CHS: {
+    hp: "初始最大生命值",
+    cost: "所需元素骰费用",
+    effect: "效果",
+    damage: "伤害",
+    usage: "可用次数",
+    duration: "持续回合",
+  },
+  EN: {
+    hp: "Initial Max HP",
+    cost: "Elemental Dice cost",
+    effect: "Effect",
+    damage: "DMG",
+    usage: "Usage(s)",
+    duration: "Duration",
+  },
+};
+
 export const VERSION_REPLACE_STRS: Record<string, Record<Language, string>> = {
   "6.0": {
     CHS: "「月之一」",
@@ -571,11 +637,13 @@ export const overrideActionCardData: Partial<ActionCardRawData>[] = [
   {
     id: 321032, // 沉玉谷 冒险地点 方便查询修改获得属性 描述补偿 ###非官方### 修正一处标点样式 ###可能会在未来修复###
     obtainable: true,
-    rawDescription: "<color=#FFFFFFFF>冒险经历达到2时：</color>生成2张手牌<color=#FFFFFFFF>$[K1040]</color>。\\n<color=#FFFFFFFF>冒险经历达到4时：</color>我方获得3层<color=#FFFFFFFF>$[K1041]</color>和<color=#FFFFFFFF>$[K1042]</color>。\\n<color=#FFFFFFFF>冒险经历达到7时：</color>我方全体角色$[K202]，治疗我方受伤最多的角色至最大生命值，并使其获得2点最大生命值，然后弃置此牌。\\n（「{SPRITE_PRESET#3901}冒险地点」只能通过冒险生成，无法加入牌组）",
+    rawDescription:
+      "<color=#FFFFFFFF>冒险经历达到2时：</color>生成2张手牌<color=#FFFFFFFF>$[K1040]</color>。\\n<color=#FFFFFFFF>冒险经历达到4时：</color>我方获得3层<color=#FFFFFFFF>$[K1041]</color>和<color=#FFFFFFFF>$[K1042]</color>。\\n<color=#FFFFFFFF>冒险经历达到7时：</color>我方全体角色$[K202]，治疗我方受伤最多的角色至最大生命值，并使其获得2点最大生命值，然后弃置此牌。\\n（「{SPRITE_PRESET#3901}冒险地点」只能通过冒险生成，无法加入牌组）",
   },
   {
     id: 321033, // 自身自体之塔 冒险地点 方便查询修改获得属性 描述补偿 ###非官方###
     obtainable: true,
-    rawDescription: "<color=#FFFFFFFF>入场时：</color>对我方所有角色造成1点$[K5]。\\n<color=#FFFFFFFF>冒险经历达到偶数次时：</color>生成1个随机基础元素骰。\\n<color=#FFFFFFFF>冒险经历达到5时：</color>生成手牌<color=#FFFFFFFF>$[C301038]</color>。\\n<color=#FFFFFFFF>冒险经历达到12时：</color>生成手牌<color=#FFFFFFFF>$[C301039]</color>。\\n（「{SPRITE_PRESET#3901}冒险地点」只能通过冒险生成，无法加入牌组）",
+    rawDescription:
+      "<color=#FFFFFFFF>入场时：</color>对我方所有角色造成1点$[K5]。\\n<color=#FFFFFFFF>冒险经历达到偶数次时：</color>生成1个随机基础元素骰。\\n<color=#FFFFFFFF>冒险经历达到5时：</color>生成手牌<color=#FFFFFFFF>$[C301038]</color>。\\n<color=#FFFFFFFF>冒险经历达到12时：</color>生成手牌<color=#FFFFFFFF>$[C301039]</color>。\\n（「{SPRITE_PRESET#3901}冒险地点」只能通过冒险生成，无法加入牌组）",
   },
 ];

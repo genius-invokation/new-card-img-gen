@@ -1,0 +1,158 @@
+.balance-adjustment {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.adjustment-card {
+  position: relative;
+  min-height: 12rem;
+  margin-right: 1.5rem;
+  margin-left: 1.5rem;
+  background-color: var(--box-bg-color);
+  border: 1px solid #b4967e;
+  border-radius: 1.8rem;
+  padding: 2rem 1.75rem 1.125rem;
+  box-sizing: border-box;
+  overflow: clip;
+  word-break: break-word;
+  display: flex;
+  flex-direction: column;
+}
+
+.adjustment-card-title {
+  font-size: 79px;
+  line-height: 1;
+  color: #716864;
+  white-space: pre-wrap;
+  word-break: break-word;
+  text-indent: 0;
+}
+
+.dashed-line {
+  border-top: solid 2px black;
+  border-image-source: repeating-linear-gradient(
+    to right,
+    #e6e1d4 0,
+    #e6e1d4 14px,
+    transparent 14px,
+    transparent 20px
+  );
+  border-image-slice: 1;
+  width: 75%;
+  margin: 1rem 0 0;
+}
+
+.adjustment-card-face {
+  position: absolute;
+  right: -0.25rem;
+  width: auto;
+  height: 45rem;
+  object-fit: contain;
+  mask-size: cover;
+}
+
+.adjustment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.adjustment-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: 0;
+  color: #1f2937;
+}
+
+.adjustment-offset {
+  font-size: 0.875rem;
+  color: #6b7280;
+  background: #f3f4f6;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.adjustment-records {
+  margin-top: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  width: 72rem;
+  position: relative;
+  font-size: 2.5rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+  text-align: justify;
+  text-indent: 0;
+}
+
+.adjustment-record {
+  padding: 0.5rem;
+}
+
+.record-title {
+  color: #aa8d76;
+}
+
+.record-block {
+  display: flex;
+  flex-direction: row;
+  gap: 0.25rem;
+}
+
+.record-inline {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.record-sign {
+  height: 1.4em;
+  margin-right: 0rem;
+  flex-shrink: 0;
+}
+
+.record-content {
+  color: #716864;
+  white-space: pre-wrap;
+  word-break: break-word;
+  text-align: justify;
+  text-indent: 0;
+}
+
+.record-text-light {
+  color: #9d918c;
+}
+
+.record-text-bold {
+  color: #716864;
+}
+
+.description-icon {
+  width: 1.2em;
+  vertical-align: -0.35em;
+  margin-inline: 0.25rem;
+}
+
+.description-icon-tag {
+  width: 1.2em;
+  height: 1.2em;
+  display: inline-block;
+  vertical-align: text-top;
+  background-color: currentColor;
+  mask-image: var(--image);
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+}
+
+.record-arrow {
+  color: #9d918c;
+  margin: 0 0.25rem;
+}

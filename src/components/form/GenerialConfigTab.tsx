@@ -48,6 +48,7 @@ export const GeneralConfigTab = withForm({
     const isCharacterMode = () => mode() === "character";
     const isSingleActionCardMode = () => mode() === "singleActionCard";
     const isVersionedActionCardsMode = () => mode() === "versionedActionCards";
+    const isBalanceAdjustmentMode = () => mode() === "balanceAdjustment";
 
     return (
       <div class="grid grid-cols-[6rem_1fr] gap-2">
@@ -76,6 +77,7 @@ export const GeneralConfigTab = withForm({
                 { value: "character", label: "角色卡" },
                 { value: "singleActionCard", label: "行动卡" },
                 { value: "versionedActionCards", label: "版本新增行动卡" },
+                { value: "balanceAdjustment", label: "平衡性调整" },
               ]}
             />
           )}

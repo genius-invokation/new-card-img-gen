@@ -73,6 +73,7 @@ const INITIAL_FORM_VALUE: FormValue = {
     entities: MOCK_NEW_ENTITIES,
     keywords: [],
   },
+  adjustments: [],
 };
 
 export const App = () => {
@@ -115,12 +116,12 @@ export const App = () => {
         remoteFetched.data = await getData(newVersion, newLanguage);
       }
       const data = structuredClone(remoteFetched.data);
-      
+
       // override data
       data.characters = applyCharacterOverrides(data.characters);
       data.entities = applyEntityOverrides(data.entities);
       data.actionCards = applyActionCardOverrides(data.actionCards);
-      
+
       const skillMapper = (newSkill: NewSkillData): SkillRawData => ({
         ...newSkill,
         hidden: false,
@@ -167,6 +168,7 @@ export const App = () => {
       setConfig({
         data,
         ...newFormValue.general,
+        adjustments: newFormValue.adjustments,
       });
       setMobilePreviewing(true);
     } catch (e) {
@@ -186,6 +188,9 @@ export const App = () => {
     }
     if (c?.mode === "versionedActionCards") {
       return c.version || "vX.Y.Z";
+    }
+    if (c?.mode === "balanceAdjustment") {
+      return "balance-adjustment";
     }
     return "card";
   };

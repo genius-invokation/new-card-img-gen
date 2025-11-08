@@ -13,7 +13,7 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  background: top/contain no-repeat url("/assets/frame/header_decor.png"),
+  background: top / 100% auto no-repeat url("/assets/frame/header_decor.png"),
     rgb(var(--page-bg-color));
 }
 
@@ -23,7 +23,7 @@
 
 .layout.single-action-card {
   padding-top: 0;
-  background: top/contain no-repeat
+  background: top / 100% auto no-repeat
     url("/assets/frame/header_decor_onecard.png") rgb(var(--page-bg-color));
 }
 
