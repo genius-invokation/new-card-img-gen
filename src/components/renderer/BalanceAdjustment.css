@@ -37,15 +37,15 @@
       transparent 14px,
       transparent 20px);
   border-image-slice: 1;
-  width: 100%;
+  width: 75%;
   margin: 1rem 0 0;
 }
 
 .adjustment-card-face {
   position: absolute;
-  right: 0;
+  right: -0.25rem;
   width: auto;
-  height: 40rem;
+  height: 45rem;
   object-fit: contain;
 }
 
@@ -99,6 +99,7 @@
 .record-block {
   display: flex;
   flex-direction: row;
+  gap: 0.25rem;
 }
 
 .record-inline {
@@ -108,8 +109,9 @@
   flex-wrap: wrap;
 }
 
-.record-label {
-  margin-right: 0.5rem;
+.record-sign {
+  height: 1.4em;
+  margin-right: 0rem;
   flex-shrink: 0;
 }
 
@@ -132,6 +134,7 @@
 .description-icon {
   width: 1.2em;
   vertical-align: -0.35em;
+  margin-inline: 0.25rem;
 }
 
 .description-icon-tag {

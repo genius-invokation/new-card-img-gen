@@ -82,6 +82,21 @@ export const KEYWORD_CARDBACK_BOTTOM = `${
 export const PAGE_TITLE_ICON = `${
   import.meta.env.BASE_URL
 }assets/frame/pagetitle.png`;
+export const BLOCK_CARD_MASK = `${
+  import.meta.env.BASE_URL
+}assets/frame/block_card_mask.png`;
+export const NEW_SIGN_CHS = `${
+  import.meta.env.BASE_URL
+}assets/frame/new_CHS.png`;
+export const NEW_SIGN_EN = `${
+  import.meta.env.BASE_URL
+}assets/frame/new_EN.png`;
+export const OLD_SIGN_CHS = `${
+  import.meta.env.BASE_URL
+}assets/frame/old_CHS.png`;
+export const OLD_SIGN_EN = `${
+  import.meta.env.BASE_URL
+}assets/frame/old_EN.png`;
 
 export const AVATAR_CARD_HP = `${
   import.meta.env.BASE_URL
@@ -112,6 +127,21 @@ export const COST_TYPE_IMG_NAME_MAP: Record<string, string> = {
   GCG_COST_ENERGY: "Energy",
   GCG_COST_LEGEND: "Legend",
   GCG_COST_SPECIAL_ENERGY: "Energy_Mavuika",
+};
+
+export const COST_TYPE_SPRITE_MAP: Record<string, string> = {
+  GCG_COST_DICE_VOID: "{SPRITE_PRESET#1109}",
+  GCG_COST_DICE_CRYO: "{SPRITE_PRESET#1101}",
+  GCG_COST_DICE_HYDRO: "{SPRITE_PRESET#1102}",
+  GCG_COST_DICE_PYRO: "{SPRITE_PRESET#1103}",
+  GCG_COST_DICE_ELECTRO: "{SPRITE_PRESET#1104}",
+  GCG_COST_DICE_ANEMO: "{SPRITE_PRESET#1105}",
+  GCG_COST_DICE_GEO: "{SPRITE_PRESET#1106}",
+  GCG_COST_DICE_DENDRO: "{SPRITE_PRESET#1107}",
+  GCG_COST_DICE_SAME: "{SPRITE_PRESET#1108}",
+  GCG_COST_ENERGY: "{SPRITE_PRESET#1110}",
+  GCG_COST_LEGEND: "{SPRITE_PRESET#1112}",
+  GCG_COST_SPECIAL_ENERGY: "{SPRITE_PRESET#4008}",
 };
 
 export const TYPE_TAG_TEXT_MAP: Record<Language, Record<string, string>> = {

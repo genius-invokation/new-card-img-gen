@@ -5,6 +5,7 @@ import { Text } from "./Text";
 import { cardFaceUrl, tagImageUrl } from "../../utils";
 import { DESCRIPTION_ICON_IMAGES, ADJUSTMENT_SUBJECT_LABELS, ADJUSTMENT_TYPE_LABELS } from "../../constants";
 import "./BalanceAdjustment.css";
+import { BLOCK_CARD_MASK, NEW_SIGN_CHS, NEW_SIGN_EN, OLD_SIGN_CHS, OLD_SIGN_EN } from "../../constants";
 
 export interface BalanceAdjustmentProps {
   adjustments: AdjustmentData[];
@@ -30,7 +31,9 @@ const AdjustmentCard = (props: AdjustmentCardProps) => {
           src={cardFaceUrl(props.cardFaceItem)}
           class="adjustment-card-face"
           style={{
-            top: `${props.offset}rem`,
+            top: `${props.offset - 0.25}rem`,
+            "mask-image": `url("${BLOCK_CARD_MASK}")`,
+            "mask-size": "cover",
           }}
         />
       </Show>
@@ -54,7 +57,9 @@ const parseRichText = (text: string): JSX.Element[] => {
     // 添加匹配前的普通文本
     if (match.index > currentIndex) {
       parts.push(
-        <span class="record-text-light">{text.substring(currentIndex, match.index)}</span>
+        <span class="record-text-light">
+          <Text text={text.substring(currentIndex, match.index)} />
+        </span>
       );
     }
 
@@ -63,7 +68,9 @@ const parseRichText = (text: string): JSX.Element[] => {
       // 处理 <b></b> 标签
       const boldText = match[0].replace(/<\/?b>/g, '');
       parts.push(
-        <span class="record-text-bold">{boldText}</span>
+        <span class="record-text-bold">
+          <Text text={boldText} />
+        </span>
       );
     } else if (match[2]) {
       // 处理 {SPRITE_PRESET#id}
@@ -122,6 +129,8 @@ const AdjustmentRecord = (props: AdjustmentRecordProps) => {
   const subjectLabel = ADJUSTMENT_SUBJECT_LABELS[lang][props.record.subject] || props.record.subject;
   const typeLabel = ADJUSTMENT_TYPE_LABELS[lang][props.record.type] || props.record.type;
   const adjustmentText = lang === "CHS" ? "调整：" : " adjustment:";
+  const oldSign = lang === "CHS" ? OLD_SIGN_CHS : OLD_SIGN_EN;
+  const newSign = lang === "CHS" ? NEW_SIGN_CHS : NEW_SIGN_EN;
   const title = props.record.subject === "self"
     ? `${typeLabel}${adjustmentText}`
     : `${subjectLabel}${recordName()}${typeLabel}${adjustmentText}`;
@@ -133,18 +142,20 @@ const AdjustmentRecord = (props: AdjustmentRecordProps) => {
       <Show when={isInline} fallback={
         <>
           <div class="record-block">
-            <div class="record-label">旧</div>
+            <img src={oldSign} class="record-sign" />
             <div class="record-content">{parseRichText(props.record.oldData)}</div>
           </div>
           <div class="record-block">
-            <div class="record-label">新</div>
+            <img src={newSign} class="record-sign" />
             <div class="record-content">{parseRichText(props.record.newData)}</div>
           </div>
         </>
       }>
         <div class="record-inline">
+          <img src={oldSign} class="record-sign" style={{ "transform": "translateY(-0.15rem)" }} />
           <div class="record-content">{parseRichText(props.record.oldData)}</div>
           <span class="record-arrow">→</span>
+          <img src={newSign} class="record-sign" style={{ "transform": "translateY(-0.15rem)" }} />
           <div class="record-content">{parseRichText(props.record.newData)}</div>
         </div>
       </Show>

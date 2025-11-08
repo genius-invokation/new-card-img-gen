@@ -1,58 +1,67 @@
 import { createMemo, createSignal, Index, Show, createEffect, createResource } from "solid-js";
 import { pseudoMainFormOption, withForm } from "./shared";
-import type { AdjustmentData, AdjustmentRecord, AllRawData } from "../../types";
+import type {
+  AdjustmentData,
+  AdjustmentRecord,
+  AllRawData,
+  PlayCost,
+  Language,
+} from "../../types";
 import { useGlobalSettings } from "../../context";
 import { getData } from "../../shared";
-import { ADJUSTMENT_SUBJECT_LABELS, ADJUSTMENT_TYPE_LABELS } from "../../constants";
+import {
+  ADJUSTMENT_SUBJECT_LABELS,
+  ADJUSTMENT_TYPE_LABELS,
+  COST_TYPE_SPRITE_MAP,
+} from "../../constants";
 
 // 辅助函数：从 AllRawData 中根据 id 查找 description
 const findDescriptionById = (data: AllRawData, id: number): string | null => {
-  // 查找角色
-  const character = data.characters.find(c => c.id === id);
-  if (character) {
-    // 如果是角色本身，可能没有 description，需要查找技能
-    // 先检查角色的技能
-    const skill = character.skills.find(s => s.id === id);
-    if (skill) {
-      return skill.description;
-    }
-    // 角色的 description 通常是空的，返回 null
-    return null;
+  const descriptionMap = new Map<number, string | null>([
+    ...data.actionCards.map((card) => [card.id, card.description ?? null] as const),
+    ...data.entities.flatMap((entity) => [
+      [entity.id, entity.description ?? null] as const,
+      ...entity.skills.map((skill) => [skill.id, skill.description ?? null] as const),
+    ]),
+    ...data.characters.flatMap((character) => [
+      [character.id, null] as const,
+      ...character.skills.map((skill) => [skill.id, skill.description ?? null] as const),
+    ]),
+  ]);
+
+  return descriptionMap.get(id) ?? null;
+};
+
+const findHpById = (data: AllRawData, id: number): number | null => {
+  const hpMap = new Map<number, number>(
+    data.characters.map((character) => [character.id, character.hp]),
+  );
+
+  return hpMap.get(id) ?? null;
+};
+
+const findPlayCostById = (data: AllRawData, id: number): PlayCost[] | null => {
+  const playCostEntries: readonly (readonly [number, PlayCost[]])[] = [
+    ...data.actionCards.map((card) => [card.id, card.playCost] as const),
+    ...data.characters.flatMap((character) =>
+      character.skills.map((skill) => [skill.id, skill.playCost] as const),
+    ),
+    ...data.entities.flatMap((entity) =>
+      entity.skills.map((skill) => [skill.id, skill.playCost] as const),
+    ),
+  ];
+
+  const playCostMap = new Map<number, PlayCost[]>(playCostEntries);
+
+  return playCostMap.get(id) ?? null;
+};
+
+const formatPlayCost = (playCost: PlayCost[] | null, lang: Language): string | null => {
+  if (!playCost) return null;
+  if (playCost.length === 0) {
+    return `<b>0</b>${COST_TYPE_SPRITE_MAP["GCG_COST_DICE_SAME"]}`;
   }
-  
-  // 查找行动卡
-  const actionCard = data.actionCards.find(c => c.id === id);
-  if (actionCard) {
-    return actionCard.description;
-  }
-  
-  // 查找实体
-  const entity = data.entities.find(e => e.id === id);
-  if (entity) {
-    // 检查是否是实体的技能
-    const skill = entity.skills.find(s => s.id === id);
-    if (skill) {
-      return skill.description;
-    }
-    return entity.description;
-  }
-  
-  // 查找所有技能（从角色和实体中）
-  for (const ch of data.characters) {
-    const skill = ch.skills.find(s => s.id === id);
-    if (skill) {
-      return skill.description;
-    }
-  }
-  
-  for (const et of data.entities) {
-    const skill = et.skills.find(s => s.id === id);
-    if (skill) {
-      return skill.description;
-    }
-  }
-  
-  return null;
+  return playCost.map(({ type, count }) => `<b>${count}</b>${COST_TYPE_SPRITE_MAP[type]}`).join('');
 };
 
 export const BalanceAdjustmentTab = withForm({
@@ -120,9 +129,8 @@ export const BalanceAdjustmentTab = withForm({
                       class="btn btn-success btn-soft btn-sm"
                       type="button"
                       onClick={() => {
-                        const newId = Date.now();
                         field().pushValue({
-                          id: newId,
+                          id: 0,
                           offset: 0,
                           adjustment: [],
                         });
@@ -151,8 +159,8 @@ export const BalanceAdjustmentTab = withForm({
                       class="data-[shown]:flex flex-col hidden gap-4"
                       bool:data-shown={currentAdjustmentIndex() === idx}
                     >
-                      <div class="prose flex flex-row gap-2 align-baseline items-center justify-between">
-                        <h3 class="mb-0">{names()?.get(adjId() ?? 0) ?? "新增调整卡牌"}</h3>
+                      <div class="col-span-full flex flex-row gap-2 align-baseline items-center justify-between">
+                        <h3 class="mb-0 text-lg font-bold">{names()?.get(adjId() ?? 0) ?? "新增调整卡牌"}</h3>
                         <form.Field name="adjustments" mode="array">
                           {(field) => (
                             <button
@@ -163,7 +171,7 @@ export const BalanceAdjustmentTab = withForm({
                                 setCurrentAdjustmentIndex(null);
                               }}
                             >
-                              删除此项
+                              删除卡牌
                             </button>
                           )}
                         </form.Field>
@@ -177,7 +185,7 @@ export const BalanceAdjustmentTab = withForm({
                         </label>
                         <form.AppField name={`adjustments[${idx}].id`}>
                           {(field) => (
-                            <field.NumberField id={`adjustments[${idx}].id`} />
+                            <field.NumberField id={`adjustments[${idx}].id`}/>
                           )}
                         </form.AppField>
 
@@ -194,11 +202,6 @@ export const BalanceAdjustmentTab = withForm({
                             />
                           )}
                         </form.AppField>
-
-                        <span class="col-span-full fieldset-legend text-lg">
-                          调整项
-                        </span>
-
                         <form.Field
                           name={`adjustments[${idx}].adjustment`}
                           mode="array"
@@ -233,43 +236,102 @@ export const BalanceAdjustmentTab = withForm({
                                       name={`adjustments[${idx}].adjustment[${recordIdx}].id`}
                                     >
                                       {(field) => {
+                                        const recordIdAccessor = form.useStore(
+                                          (state) =>
+                                            state.values.adjustments[idx]?.adjustment[recordIdx]?.id,
+                                        );
+                                        const recordTypeAccessor = form.useStore(
+                                          (state) =>
+                                            state.values.adjustments[idx]?.adjustment[recordIdx]?.type,
+                                        );
+
                                         const handleQuery = () => {
-                                          const recordId = form.useStore(
-                                            (state) => state.values.adjustments[idx]?.adjustment[recordIdx]?.id
-                                          )();
-                                          
-                                          if (recordId && typeof recordId === 'number') {
-                                            // 获取当前版本的 description
-                                            const currentData = allData();
-                                            const currentDesc = findDescriptionById(currentData, recordId);
-                                            
-                                            // 获取 latest 版本的 description
-                                            const latestDesc = latestData() 
-                                              ? findDescriptionById(latestData()!, recordId)
-                                              : null;
-                                            
-                                            // 填充数据
-                                            if (latestDesc !== null) {
+                                          const recordId = recordIdAccessor();
+                                          const recordType = recordTypeAccessor();
+
+                                          if (!recordId || typeof recordId !== "number") {
+                                            return;
+                                          }
+
+                                          const lang = language();
+                                          const currentData = allData();
+                                          const latest = latestData();
+
+                                          let handled = false;
+
+                                          if (recordType === "hp") {
+                                            const currentHp = findHpById(currentData, recordId);
+                                            const latestHp = latest ? findHpById(latest, recordId) : null;
+
+                                            if (latestHp !== null) {
                                               form.setFieldValue(
                                                 `adjustments[${idx}].adjustment[${recordIdx}].oldData`,
-                                                latestDesc
+                                                `<b>${latestHp}</b>`,
                                               );
+                                              handled = true;
                                             }
-                                            
-                                            if (currentDesc !== null) {
+
+                                            if (currentHp !== null) {
                                               form.setFieldValue(
                                                 `adjustments[${idx}].adjustment[${recordIdx}].newData`,
-                                                currentDesc
+                                                `<b>${currentHp}</b>`,
                                               );
+                                              handled = true;
+                                            }
+                                          } else if (recordType === "cost") {
+                                            const currentCost = formatPlayCost(
+                                              findPlayCostById(currentData, recordId),
+                                              lang,
+                                            );
+                                            const latestCost = latest
+                                              ? formatPlayCost(findPlayCostById(latest, recordId), lang)
+                                              : null;
+
+                                            if (latestCost !== null) {
+                                              form.setFieldValue(
+                                                `adjustments[${idx}].adjustment[${recordIdx}].oldData`,
+                                                latestCost,
+                                              );
+                                              handled = true;
+                                            }
+
+                                            if (currentCost !== null) {
+                                              form.setFieldValue(
+                                                `adjustments[${idx}].adjustment[${recordIdx}].newData`,
+                                                currentCost,
+                                              );
+                                              handled = true;
                                             }
                                           }
+
+                                          if (handled) {
+                                            return;
+                                          }
+
+                                          const currentDesc = findDescriptionById(currentData, recordId);
+                                          const latestDesc = latest
+                                            ? findDescriptionById(latest, recordId)
+                                            : null;
+
+                                          if (latestDesc !== null) {
+                                            form.setFieldValue(
+                                              `adjustments[${idx}].adjustment[${recordIdx}].oldData`,
+                                              latestDesc,
+                                            );
+                                          }
+
+                                          if (currentDesc !== null) {
+                                            form.setFieldValue(
+                                              `adjustments[${idx}].adjustment[${recordIdx}].newData`,
+                                              currentDesc,
+                                            );
+                                          }
                                         };
-                                        
+
                                         return (
                                           <div class="flex gap-2">
                                             <field.NumberField
                                               id={`adjustments[${idx}].adjustment[${recordIdx}].id`}
-                                              class="flex-1"
                                             />
                                             <button
                                               type="button"
@@ -366,9 +428,9 @@ export const BalanceAdjustmentTab = withForm({
                                   type="button"
                                   onClick={() => {
                                     field().pushValue({
-                                      id: Date.now(),
+                                      id: adjId() ?? 0,
                                       subject: "self",
-                                      type: "hp",
+                                      type: "effect",
                                       oldData: "",
                                       newData: "",
                                     });
