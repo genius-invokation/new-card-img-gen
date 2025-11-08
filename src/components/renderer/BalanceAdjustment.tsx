@@ -3,9 +3,19 @@ import type { AdjustmentData, AdjustmentRecord } from "../../types";
 import { useGlobalSettings } from "../../context";
 import { Text } from "./Text";
 import { cardFaceUrl, tagImageUrl } from "../../utils";
-import { DESCRIPTION_ICON_IMAGES, ADJUSTMENT_SUBJECT_LABELS, ADJUSTMENT_TYPE_LABELS } from "../../constants";
+import {
+  DESCRIPTION_ICON_IMAGES,
+  ADJUSTMENT_SUBJECT_LABELS,
+  ADJUSTMENT_TYPE_LABELS,
+} from "../../constants";
 import "./BalanceAdjustment.css";
-import { BLOCK_CARD_MASK, NEW_SIGN_CHS, NEW_SIGN_EN, OLD_SIGN_CHS, OLD_SIGN_EN } from "../../constants";
+import {
+  BLOCK_CARD_MASK,
+  NEW_SIGN_CHS,
+  NEW_SIGN_EN,
+  OLD_SIGN_CHS,
+  OLD_SIGN_EN,
+} from "../../constants";
 
 export interface BalanceAdjustmentProps {
   adjustments: AdjustmentData[];
@@ -54,22 +64,22 @@ const parseAdjustmentText = (text: string): JSX.Element[] => {
       parts.push(
         <span class="record-text-light">
           <Text text={text.substring(currentIndex, match.index)} />
-        </span>
+        </span>,
       );
     }
-    if (match[0].startsWith('<b>')) {
-      const boldText = match[0].replace(/<\/?b>/g, '');
+    if (match[0].startsWith("<b>")) {
+      const boldText = match[0].replace(/<\/?b>/g, "");
       parts.push(
         <span class="record-text-bold">
           <Text text={boldText} />
-        </span>
+        </span>,
       );
     } else if (match[2]) {
       const iconId = Number(match[2]);
       const iconDef = DESCRIPTION_ICON_IMAGES[iconId] || {};
       if (iconDef.imageUrl) {
         parts.push(
-          <img class="description-icon" src={iconDef.imageUrl} alt="" />
+          <img class="description-icon" src={iconDef.imageUrl} alt="" />,
         );
       } else if (iconDef.tagIcon) {
         parts.push(
@@ -78,7 +88,7 @@ const parseAdjustmentText = (text: string): JSX.Element[] => {
             style={{
               "--image": `url("${tagImageUrl(iconDef.tagIcon)}")`,
             }}
-          />
+          />,
         );
       }
     }
@@ -87,11 +97,13 @@ const parseAdjustmentText = (text: string): JSX.Element[] => {
 
   if (currentIndex < text.length) {
     parts.push(
-      <span class="record-text-light">{text.substring(currentIndex)}</span>
+      <span class="record-text-light">{text.substring(currentIndex)}</span>,
     );
   }
 
-  return parts.length > 0 ? parts : [<span class="record-text-light">{text}</span>];
+  return parts.length > 0
+    ? parts
+    : [<span class="record-text-light">{text}</span>];
 };
 
 interface AdjustmentRecordProps {
@@ -104,48 +116,76 @@ const AdjustmentRecord = (props: AdjustmentRecordProps) => {
   const names = createMemo(() => {
     const data = allData();
     return new Map(
-      [...data.characters,
-      ...data.actionCards,
-      ...data.entities,
-      ...data.characters.flatMap(c => c.skills),
-      ...data.entities.flatMap(e => e.skills)
+      [
+        ...data.characters,
+        ...data.actionCards,
+        ...data.entities,
+        ...data.characters.flatMap((c) => c.skills),
+        ...data.entities.flatMap((e) => e.skills),
       ].map((v) => [v.id, v.name]),
     );
   });
 
   const lang = language();
-  const recordName = createMemo(() => lang === "CHS" ? `「${names()?.get(props.record.id)}」` : ` "${names()?.get(props.record.id)}" `);
-  const subjectLabel = ADJUSTMENT_SUBJECT_LABELS[lang][props.record.subject] || props.record.subject;
-  const typeLabel = ADJUSTMENT_TYPE_LABELS[lang][props.record.type] || props.record.type;
+  const recordName = createMemo(() =>
+    lang === "CHS"
+      ? `「${names()?.get(props.record.id)}」`
+      : ` "${names()?.get(props.record.id)}" `,
+  );
+  const subjectLabel =
+    ADJUSTMENT_SUBJECT_LABELS[lang][props.record.subject] ||
+    props.record.subject;
+  const typeLabel =
+    ADJUSTMENT_TYPE_LABELS[lang][props.record.type] || props.record.type;
   const adjustmentText = lang === "CHS" ? "调整：" : " adjustment:";
   const oldSign = lang === "CHS" ? OLD_SIGN_CHS : OLD_SIGN_EN;
   const newSign = lang === "CHS" ? NEW_SIGN_CHS : NEW_SIGN_EN;
-  const title = props.record.subject === "self"
-    ? `${typeLabel}${adjustmentText}`
-    : `${subjectLabel}${recordName()}${typeLabel}${adjustmentText}`;
+  const title =
+    props.record.subject === "self"
+      ? `${typeLabel}${adjustmentText}`
+      : `${subjectLabel}${recordName()}${typeLabel}${adjustmentText}`;
   const isInline = isInlineType(props.record.type);
 
   return (
     <div class="adjustment-record">
       <div class="record-title">{title}</div>
-      <Show when={isInline} fallback={
-        <>
-          <div class="record-block">
-            <img src={oldSign} class="record-sign" />
-            <div class="record-content">{parseAdjustmentText(props.record.oldData)}</div>
-          </div>
-          <div class="record-block">
-            <img src={newSign} class="record-sign" />
-            <div class="record-content">{parseAdjustmentText(props.record.newData)}</div>
-          </div>
-        </>
-      }>
+      <Show
+        when={isInline}
+        fallback={
+          <>
+            <div class="record-block">
+              <img src={oldSign} class="record-sign" />
+              <div class="record-content">
+                {parseAdjustmentText(props.record.oldData)}
+              </div>
+            </div>
+            <div class="record-block">
+              <img src={newSign} class="record-sign" />
+              <div class="record-content">
+                {parseAdjustmentText(props.record.newData)}
+              </div>
+            </div>
+          </>
+        }
+      >
         <div class="record-inline">
-          <img src={oldSign} class="record-sign" style={{ "transform": "translateY(-0.15rem)" }} />
-          <div class="record-content">{parseAdjustmentText(props.record.oldData)}</div>
+          <img
+            src={oldSign}
+            class="record-sign"
+            style={{ transform: "translateY(-0.15rem)" }}
+          />
+          <div class="record-content">
+            {parseAdjustmentText(props.record.oldData)}
+          </div>
           <span class="record-arrow">→</span>
-          <img src={newSign} class="record-sign" style={{ "transform": "translateY(-0.15rem)" }} />
-          <div class="record-content">{parseAdjustmentText(props.record.newData)}</div>
+          <img
+            src={newSign}
+            class="record-sign"
+            style={{ transform: "translateY(-0.15rem)" }}
+          />
+          <div class="record-content">
+            {parseAdjustmentText(props.record.newData)}
+          </div>
         </div>
       </Show>
     </div>

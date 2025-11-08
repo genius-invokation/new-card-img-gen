@@ -31,11 +31,13 @@
 
 .dashed-line {
   border-top: solid 2px black;
-  border-image-source: repeating-linear-gradient(to right,
-      #e6e1d4 0,
-      #e6e1d4 14px,
-      transparent 14px,
-      transparent 20px);
+  border-image-source: repeating-linear-gradient(
+    to right,
+    #e6e1d4 0,
+    #e6e1d4 14px,
+    transparent 14px,
+    transparent 20px
+  );
   border-image-slice: 1;
   width: 75%;
   margin: 1rem 0 0;

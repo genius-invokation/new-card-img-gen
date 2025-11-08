@@ -1,10 +1,12 @@
-import { createMemo, createSignal, Index, Show, createResource } from "solid-js";
+import {
+  createMemo,
+  createSignal,
+  Index,
+  Show,
+  createResource,
+} from "solid-js";
 import { pseudoMainFormOption, withForm } from "./shared";
-import type {
-  AllRawData,
-  PlayCost,
-  Language,
-} from "../../types";
+import type { AllRawData, PlayCost, Language } from "../../types";
 import { useGlobalSettings } from "../../context";
 import { getData } from "../../shared";
 import {
@@ -15,14 +17,20 @@ import {
 
 const findDescriptionById = (data: AllRawData, id: number): string | null => {
   const descriptionMap = new Map<number, string | null>([
-    ...data.actionCards.map((card) => [card.id, card.description ?? null] as const),
+    ...data.actionCards.map(
+      (card) => [card.id, card.description ?? null] as const,
+    ),
     ...data.entities.flatMap((entity) => [
       [entity.id, entity.description ?? null] as const,
-      ...entity.skills.map((skill) => [skill.id, skill.description ?? null] as const),
+      ...entity.skills.map(
+        (skill) => [skill.id, skill.description ?? null] as const,
+      ),
     ]),
     ...data.characters.flatMap((character) => [
       [character.id, null] as const,
-      ...character.skills.map((skill) => [skill.id, skill.description ?? null] as const),
+      ...character.skills.map(
+        (skill) => [skill.id, skill.description ?? null] as const,
+      ),
     ]),
   ]);
 
@@ -53,12 +61,17 @@ const findPlayCostById = (data: AllRawData, id: number): PlayCost[] | null => {
   return playCostMap.get(id) ?? null;
 };
 
-const formatPlayCost = (playCost: PlayCost[] | null, lang: Language): string | null => {
+const formatPlayCost = (
+  playCost: PlayCost[] | null,
+  lang: Language,
+): string | null => {
   if (!playCost) return null;
   if (playCost.length === 0) {
     return `<b>0</b>${COST_TYPE_SPRITE_MAP["GCG_COST_DICE_SAME"]}`;
   }
-  return playCost.map(({ type, count }) => `<b>${count}</b>${COST_TYPE_SPRITE_MAP[type]}`).join('');
+  return playCost
+    .map(({ type, count }) => `<b>${count}</b>${COST_TYPE_SPRITE_MAP[type]}`)
+    .join("");
 };
 
 export const BalanceAdjustmentTab = withForm({
@@ -67,7 +80,9 @@ export const BalanceAdjustmentTab = withForm({
     const form = props.form;
 
     const adjustments = form.useStore((state) => state.values.adjustments);
-    const currentVersion = form.useStore((state) => state.values.general.version);
+    const currentVersion = form.useStore(
+      (state) => state.values.general.version,
+    );
     const language = form.useStore((state) => state.values.general.language);
 
     const { allData } = useGlobalSettings();
@@ -79,10 +94,10 @@ export const BalanceAdjustmentTab = withForm({
     });
 
     const [latestData] = createResource(
-      () => currentVersion() !== "latest" ? language() : null,
+      () => (currentVersion() !== "latest" ? language() : null),
       async (lang) => {
         return await getData("latest", lang);
-      }
+      },
     );
 
     const [currentAdjustmentIndex, setCurrentAdjustmentIndex] = createSignal<
@@ -155,7 +170,9 @@ export const BalanceAdjustmentTab = withForm({
                       bool:data-shown={currentAdjustmentIndex() === idx}
                     >
                       <div class="col-span-full flex flex-row gap-2 align-baseline items-center justify-between">
-                        <h3 class="mb-0 text-lg font-bold">{names()?.get(adjId() ?? 0) ?? "新增调整卡牌"}</h3>
+                        <h3 class="mb-0 text-lg font-bold">
+                          {names()?.get(adjId() ?? 0) ?? "新增调整卡牌"}
+                        </h3>
                         <form.Field name="adjustments" mode="array">
                           {(field) => (
                             <button
@@ -180,7 +197,7 @@ export const BalanceAdjustmentTab = withForm({
                         </label>
                         <form.AppField name={`adjustments[${idx}].id`}>
                           {(field) => (
-                            <field.NumberField id={`adjustments[${idx}].id`}/>
+                            <field.NumberField id={`adjustments[${idx}].id`} />
                           )}
                         </form.AppField>
 
@@ -233,18 +250,25 @@ export const BalanceAdjustmentTab = withForm({
                                       {(field) => {
                                         const recordIdAccessor = form.useStore(
                                           (state) =>
-                                            state.values.adjustments[idx]?.adjustment[recordIdx]?.id,
+                                            state.values.adjustments[idx]
+                                              ?.adjustment[recordIdx]?.id,
                                         );
-                                        const recordTypeAccessor = form.useStore(
-                                          (state) =>
-                                            state.values.adjustments[idx]?.adjustment[recordIdx]?.type,
-                                        );
+                                        const recordTypeAccessor =
+                                          form.useStore(
+                                            (state) =>
+                                              state.values.adjustments[idx]
+                                                ?.adjustment[recordIdx]?.type,
+                                          );
 
                                         const handleQuery = () => {
                                           const recordId = recordIdAccessor();
-                                          const recordType = recordTypeAccessor();
+                                          const recordType =
+                                            recordTypeAccessor();
 
-                                          if (!recordId || typeof recordId !== "number") {
+                                          if (
+                                            !recordId ||
+                                            typeof recordId !== "number"
+                                          ) {
                                             return;
                                           }
 
@@ -255,8 +279,13 @@ export const BalanceAdjustmentTab = withForm({
                                           let handled = false;
 
                                           if (recordType === "hp") {
-                                            const currentHp = findHpById(currentData, recordId);
-                                            const latestHp = latest ? findHpById(latest, recordId) : null;
+                                            const currentHp = findHpById(
+                                              currentData,
+                                              recordId,
+                                            );
+                                            const latestHp = latest
+                                              ? findHpById(latest, recordId)
+                                              : null;
 
                                             if (latestHp !== null) {
                                               form.setFieldValue(
@@ -275,11 +304,20 @@ export const BalanceAdjustmentTab = withForm({
                                             }
                                           } else if (recordType === "cost") {
                                             const currentCost = formatPlayCost(
-                                              findPlayCostById(currentData, recordId),
+                                              findPlayCostById(
+                                                currentData,
+                                                recordId,
+                                              ),
                                               lang,
                                             );
                                             const latestCost = latest
-                                              ? formatPlayCost(findPlayCostById(latest, recordId), lang)
+                                              ? formatPlayCost(
+                                                  findPlayCostById(
+                                                    latest,
+                                                    recordId,
+                                                  ),
+                                                  lang,
+                                                )
                                               : null;
 
                                             if (latestCost !== null) {
@@ -303,9 +341,16 @@ export const BalanceAdjustmentTab = withForm({
                                             return;
                                           }
 
-                                          const currentDesc = findDescriptionById(currentData, recordId);
+                                          const currentDesc =
+                                            findDescriptionById(
+                                              currentData,
+                                              recordId,
+                                            );
                                           const latestDesc = latest
-                                            ? findDescriptionById(latest, recordId)
+                                            ? findDescriptionById(
+                                                latest,
+                                                recordId,
+                                              )
                                             : null;
 
                                           if (latestDesc !== null) {
@@ -353,7 +398,9 @@ export const BalanceAdjustmentTab = withForm({
                                       {(field) => (
                                         <field.SelectField
                                           id={`adjustments[${idx}].adjustment[${recordIdx}].subject`}
-                                          options={Object.entries(ADJUSTMENT_SUBJECT_LABELS.CHS).map(([value, label]) => ({
+                                          options={Object.entries(
+                                            ADJUSTMENT_SUBJECT_LABELS.CHS,
+                                          ).map(([value, label]) => ({
                                             value,
                                             label,
                                           }))}
@@ -373,7 +420,9 @@ export const BalanceAdjustmentTab = withForm({
                                       {(field) => (
                                         <field.SelectField
                                           id={`adjustments[${idx}].adjustment[${recordIdx}].type`}
-                                          options={Object.entries(ADJUSTMENT_TYPE_LABELS.CHS).map(([value, label]) => ({
+                                          options={Object.entries(
+                                            ADJUSTMENT_TYPE_LABELS.CHS,
+                                          ).map(([value, label]) => ({
                                             value,
                                             label,
                                           }))}
@@ -449,4 +498,3 @@ export const BalanceAdjustmentTab = withForm({
     );
   },
 });
-
