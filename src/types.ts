@@ -12,12 +12,18 @@ type AllRawDataImpl = typeof import("@gi-tcg/static-data");
 export interface AllRawData extends AllRawDataImpl {}
 
 export type Language = "EN" | "CHS";
-export type Version = `v${number}.${number}.${number}${"" | `-beta`}` | "latest";
+export type Version =
+  | `v${number}.${number}.${number}${"" | `-beta`}`
+  | "latest";
 
 export const VERSION_REGEX = /^(v\d+\.\d+\.\d+(?:-beta)?|latest)$/;
 
 export interface AppConfig {
-  mode: "character" | "singleActionCard" | "versionedActionCards" | "balanceAdjustment";
+  mode:
+    | "character"
+    | "singleActionCard"
+    | "versionedActionCards"
+    | "balanceAdjustment";
   characterId?: number;
   actionCardId?: number;
   version: Version;
@@ -96,14 +102,30 @@ export interface RenderContext {
   names: Map<number, string>;
   characterToElementKeywordIdMap: Map<number, number>;
   /** Kxxx 的同名 Cxxx 或 Sxxx 条目 */
-  keywordToEntityMap: Map<number, SkillRawData | EntityRawData | ActionCardRawData>;
+  keywordToEntityMap: Map<
+    number,
+    SkillRawData | EntityRawData | ActionCardRawData
+  >;
   /** 准备技能的触发角色状态 */
   prepareSkillToEntityMap: Map<number, EntityRawData>;
 }
 
 export interface AdjustmentRecord {
   id: number;
-  subject: "self" | "normalAttack" | "elementalSkill" | "elementalBurst" | "passiveSkill" | "prepareSkill" | "talent" | "technique" | "techniqueCard" | "summon" | "status" | "combatStatus" | "relatedCard";
+  subject:
+    | "self"
+    | "normalAttack"
+    | "elementalSkill"
+    | "elementalBurst"
+    | "passiveSkill"
+    | "prepareSkill"
+    | "talent"
+    | "technique"
+    | "techniqueCard"
+    | "summon"
+    | "status"
+    | "combatStatus"
+    | "relatedCard";
   type: "hp" | "cost" | "effect" | "damage" | "usage" | "duration";
   oldData: string;
   newData: string;

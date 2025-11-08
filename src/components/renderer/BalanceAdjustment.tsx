@@ -1,5 +1,5 @@
 import { For, Show, createMemo, type JSX } from "solid-js";
-import type { AdjustmentData, AdjustmentRecord } from "../../types";
+import type { ActionCardRawData, AdjustmentData, AdjustmentRecord, CharacterRawData } from "../../types";
 import { useGlobalSettings } from "../../context";
 import { Text } from "./Text";
 import { cardFaceUrl, tagImageUrl } from "../../utils";
@@ -25,7 +25,7 @@ interface AdjustmentCardProps {
   id: number;
   offset: number;
   name: string | undefined;
-  cardFaceItem: any;
+  cardFaceItem?: CharacterRawData | ActionCardRawData;
   children?: JSX.Element;
 }
 
@@ -37,15 +37,17 @@ const AdjustmentCard = (props: AdjustmentCardProps) => {
       </div>
       <div class="dashed-line" />
       <Show when={props.cardFaceItem}>
-        <img
-          src={cardFaceUrl(props.cardFaceItem)}
-          class="adjustment-card-face"
-          style={{
-            top: `${props.offset - 0.25}rem`,
-            "mask-image": `url("${BLOCK_CARD_MASK}")`,
-            "mask-size": "cover",
-          }}
-        />
+        {(item) => (
+          <img
+            src={cardFaceUrl(item())}
+            class="adjustment-card-face"
+            style={{
+              top: `${props.offset - 0.25}rem`,
+              "mask-image": `url("${BLOCK_CARD_MASK}")`,
+              "mask-size": "cover",
+            }}
+          />
+        )}
       </Show>
       {props.children}
     </div>
@@ -132,25 +134,25 @@ const AdjustmentRecord = (props: AdjustmentRecordProps) => {
       ? `「${names()?.get(props.record.id)}」`
       : ` "${names()?.get(props.record.id)}" `,
   );
-  const subjectLabel =
+  const subjectLabel = () =>
     ADJUSTMENT_SUBJECT_LABELS[lang][props.record.subject] ||
     props.record.subject;
-  const typeLabel =
+  const typeLabel = () =>
     ADJUSTMENT_TYPE_LABELS[lang][props.record.type] || props.record.type;
   const adjustmentText = lang === "CHS" ? "调整：" : " adjustment:";
   const oldSign = lang === "CHS" ? OLD_SIGN_CHS : OLD_SIGN_EN;
   const newSign = lang === "CHS" ? NEW_SIGN_CHS : NEW_SIGN_EN;
-  const title =
+  const title = () =>
     props.record.subject === "self"
-      ? `${typeLabel}${adjustmentText}`
-      : `${subjectLabel}${recordName()}${typeLabel}${adjustmentText}`;
-  const isInline = isInlineType(props.record.type);
+      ? `${typeLabel()}${adjustmentText}`
+      : `${subjectLabel()}${recordName()}${typeLabel()}${adjustmentText}`;
+  const isInline = () => isInlineType(props.record.type);
 
   return (
     <div class="adjustment-record">
-      <div class="record-title">{title}</div>
+      <div class="record-title">{title()}</div>
       <Show
-        when={isInline}
+        when={isInline()}
         fallback={
           <>
             <div class="record-block">
@@ -192,12 +194,19 @@ const AdjustmentRecord = (props: AdjustmentRecordProps) => {
   );
 };
 
+interface ResolvedCardData {
+  name: string;
+  cardFace: string;
+  item: CharacterRawData | ActionCardRawData;
+  isLegend?: boolean;
+}
+
 export const BalanceAdjustment = (props: BalanceAdjustmentProps) => {
   const { allData } = useGlobalSettings();
   const processedAdjustments = createMemo(() => {
     const data = allData();
 
-    const resolveCardData = (id: number) => {
+    const resolveCardData = (id: number): ResolvedCardData | null => {
       const character = data.characters.find((c) => c.id === id);
       if (character) {
         return {
