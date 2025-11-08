@@ -61,10 +61,7 @@ const findPlayCostById = (data: AllRawData, id: number): PlayCost[] | null => {
   return playCostMap.get(id) ?? null;
 };
 
-const formatPlayCost = (
-  playCost: PlayCost[] | null,
-  lang: Language,
-): string | null => {
+const formatPlayCost = (playCost: PlayCost[] | null): string | null => {
   if (!playCost) return null;
   if (playCost.length === 0) {
     return `<b>0</b>${COST_TYPE_SPRITE_MAP["GCG_COST_DICE_SAME"]}`;
@@ -77,6 +74,7 @@ const formatPlayCost = (
 export const BalanceAdjustmentTab = withForm({
   ...pseudoMainFormOption,
   render: (props) => {
+    // eslint-disable-next-line solid/reactivity
     const form = props.form;
 
     const adjustments = form.useStore((state) => state.values.adjustments);
@@ -272,7 +270,6 @@ export const BalanceAdjustmentTab = withForm({
                                             return;
                                           }
 
-                                          const lang = language();
                                           const currentData = allData();
                                           const latest = latestData();
 
@@ -308,7 +305,6 @@ export const BalanceAdjustmentTab = withForm({
                                                 currentData,
                                                 recordId,
                                               ),
-                                              lang,
                                             );
                                             const latestCost = latest
                                               ? formatPlayCost(
@@ -316,7 +312,6 @@ export const BalanceAdjustmentTab = withForm({
                                                     latest,
                                                     recordId,
                                                   ),
-                                                  lang,
                                                 )
                                               : null;
 

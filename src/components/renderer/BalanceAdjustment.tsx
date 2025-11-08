@@ -44,7 +44,6 @@ const AdjustmentCard = (props: AdjustmentCardProps) => {
             style={{
               top: `${props.offset - 0.25}rem`,
               "mask-image": `url("${BLOCK_CARD_MASK}")`,
-              "mask-size": "cover",
             }}
           />
         )}
