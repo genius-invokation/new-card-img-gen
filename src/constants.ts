@@ -646,6 +646,6 @@ export const overrideActionCardData: Partial<ActionCardRawData>[] = [
     id: 321033, // 自身自体之塔 冒险地点 方便查询修改获得属性 描述补偿 ###非官方###
     obtainable: true,
     rawDescription:
-      "<color=#FFFFFFFF>入场时：</color>对我方所有角色造成1点$[K5]。\\n<color=#FFFFFFFF>冒险经历达到偶数次时：</color>生成1个随机基础元素骰。\\n<color=#FFFFFFFF>冒险经历达到5时：</color>生成手牌<color=#FFFFFFFF>$[C301038]</color>。\\n<color=#FFFFFFFF>冒险经历达到12时：</color>生成手牌<color=#FFFFFFFF>$[C301039]</color>。\\n（「{SPRITE_PRESET#3901}冒险地点」只能通过冒险生成，无法加入牌组）",
+      "<color=#FFFFFFFF>入场时：</color>对我方所有角色造成1点$[K5]。\\n<color=#FFFFFFFF>冒险经历达到偶数次时：</color>生成1个随机基础元素骰。\\n<color=#FFFFFFFF>冒险经历达到5时：</color>生成手牌<color=#FFFFFFFF>$[C301038]</color>。\\n<color=#FFFFFFFF>冒险经历达到12时：</color>生成手牌<color=#FFFFFFFF>$[C301039]</color>，然后弃置此牌。\\n（「{SPRITE_PRESET#3901}冒险地点」只能通过冒险生成，无法加入牌组）",
   },
 ];
