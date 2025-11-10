@@ -18,6 +18,7 @@ import {
   VERSION_REPLACE_STRS,
 } from "../../constants";
 import { PageTitle } from "./PageTitle";
+import { Watermark } from "./Watermark";
 
 export const Renderer = (props: AppConfig) => {
   const renderingObjects = createMemo<RenderingObjects>(() => {
@@ -168,6 +169,7 @@ export const Renderer = (props: AppConfig) => {
         }}
         data-language={props.language}
       >
+        <Watermark text={props.watermarkText} />
         <Show when={renderingObjects().title}>
           {(title) => <PageTitle text={title()} />}
         </Show>

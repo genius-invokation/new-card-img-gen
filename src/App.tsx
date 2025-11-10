@@ -66,6 +66,7 @@ const INITIAL_FORM_VALUE: FormValue = {
     displayId: true,
     displayStory: true,
     mirroredLayout: false,
+    watermarkText: "",
   },
   newItems: {
     characters: MOCK_NEW_CHARACTERS,
@@ -279,6 +280,8 @@ export const App = () => {
           config()?.cardbackImage || INITIAL_FORM_VALUE.general.cardbackImage,
         displayStory: () => !!config()?.displayStory,
         displayId: () => !!config()?.displayId,
+        watermarkText: () =>
+          config()?.watermarkText ?? INITIAL_FORM_VALUE.general.watermarkText,
       }}
     >
       <div

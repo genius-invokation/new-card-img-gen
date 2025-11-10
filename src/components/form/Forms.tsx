@@ -132,6 +132,7 @@ export interface FormValue {
     cardbackImage: string;
     displayId: boolean;
     displayStory: boolean;
+    watermarkText: string;
   };
   newItems: {
     characters: NewCharacterData[];

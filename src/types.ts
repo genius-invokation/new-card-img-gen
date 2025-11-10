@@ -35,6 +35,7 @@ export interface AppConfig {
   cardbackImage: string;
   displayId?: boolean;
   displayStory?: boolean;
+  watermarkText?: string;
   adjustments?: AdjustmentData[];
 }
 
@@ -91,6 +92,7 @@ export interface GlobalSettingsValue {
   cardbackImage: Accessor<string>;
   displayId: Accessor<boolean>;
   displayStory: Accessor<boolean>;
+  watermarkText?: Accessor<string>;
 }
 
 export interface RenderContext {

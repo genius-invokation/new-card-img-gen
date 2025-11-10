@@ -1,0 +1,9 @@
+.watermark {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-repeat: repeat;
+  background-size: 360px 200px;
+  z-index: 0;
+}
+
