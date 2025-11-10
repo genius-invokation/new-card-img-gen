@@ -70,18 +70,22 @@
 .character-title {
   margin-left: 0.5rem;
   width: 100%;
-  height: 8rem;
+  min-height: 8rem;
   padding-left: 8rem;
-  padding-top: 0.5rem;
+  padding-top: 0.75rem;
   font-size: 5rem;
+  line-height: 1.1;
   color: #716864;
-  white-space: nowrap;
+  white-space: pre-wrap;
+  word-break: break-word;
+  text-indent: 0;
   background: center / contain no-repeat url("/assets/frame/TitleIcon.png");
   background-position: 0 0rem;
 }
 
 .character-title .id-box {
   margin-left: 1rem;
+  vertical-align: 0.75rem;
 }
 
 .character-tags {
