@@ -151,10 +151,7 @@ export const GeneralConfigTab = withForm({
         </label>
         <form.AppField name="general.watermarkText">
           {(field) => (
-            <field.TextField
-              id="general.watermarkText"
-              placeholder="留空则不显示"
-            />
+            <field.TextField id="general.watermarkText" />
           )}
         </form.AppField>
 
