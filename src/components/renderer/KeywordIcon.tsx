@@ -25,7 +25,7 @@ export const KeywordIcon = (props: KeywordIconProps) => {
   );
 
   const isSkillMask = () =>
-    ["GCG_SKILL_TAG_A", "GCG_SKILL_TAG_E", "GCG_SKILL_TAG_Q"].includes(
+    ["GCG_SKILL_TAG_A", "GCG_SKILL_TAG_E", "GCG_SKILL_TAG_Q", "GCG_SKILL_TAG_PASSIVE"].includes(
       props.item.type,
     );
 
