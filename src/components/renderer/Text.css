@@ -1,8 +1,13 @@
-.english-text {
-  letter-spacing: -0.05em;
-}
-
 .middot {
   margin-inline-start: -0.2em;
   margin-inline-end: -0.18em;
+}
+
+.english-word {
+  letter-spacing: -0.08em;
+}
+
+.english-space {
+  display: inline-block;
+  width: 0.4em;
 }
