@@ -458,7 +458,7 @@ export const BalanceAdjustmentTab = withForm({
                                                 "</b>" +
                                                 value.substring(end);
                                               field().handleChange(newValue);
-                                              setTimeout(() => {
+                                              Promise.resolve().then(() => {
                                                 textarea.focus();
                                                 const newCursorPos =
                                                   end + 7; // <b></b> = 7 chars
@@ -466,7 +466,7 @@ export const BalanceAdjustmentTab = withForm({
                                                   newCursorPos,
                                                   newCursorPos,
                                                 );
-                                              }, 0);
+                                              });
                                             }
                                           }
                                         };
@@ -513,7 +513,7 @@ export const BalanceAdjustmentTab = withForm({
                                                 "</b>" +
                                                 value.substring(end);
                                               field().handleChange(newValue);
-                                              setTimeout(() => {
+                                              Promise.resolve().then(() => {
                                                 textarea.focus();
                                                 const newCursorPos =
                                                   end + 7; // <b></b> = 7 chars
@@ -521,7 +521,7 @@ export const BalanceAdjustmentTab = withForm({
                                                   newCursorPos,
                                                   newCursorPos,
                                                 );
-                                              }, 0);
+                                              });
                                             }
                                           }
                                         };
