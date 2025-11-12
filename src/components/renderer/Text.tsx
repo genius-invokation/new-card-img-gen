@@ -51,7 +51,7 @@ const English = (props: { text: string }) => {
           when={/^\s+$/.test(segment)}
           fallback={<span class="english-word">{segment}</span>}
         >
-          <span class="english-space" />
+          <span> </span>
         </Show>
       )}
     </For>

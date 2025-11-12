@@ -156,13 +156,19 @@ const AdjustmentRecord = (props: AdjustmentRecordProps) => {
           <>
             <div class="record-block">
               <img src={oldSign} class="record-sign" />
-              <div class="record-content">
+              <div 
+                class="record-content" 
+                data-justify={["CHS", "CHT"].includes(language())}
+              >
                 {parseAdjustmentText(props.record.oldData)}
               </div>
             </div>
             <div class="record-block">
               <img src={newSign} class="record-sign" />
-              <div class="record-content">
+              <div 
+                class="record-content" 
+                data-justify={["CHS", "CHT"].includes(language())}
+              >
                 {parseAdjustmentText(props.record.newData)}
               </div>
             </div>
