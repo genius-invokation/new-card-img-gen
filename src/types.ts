@@ -92,7 +92,6 @@ export interface GlobalSettingsValue {
   cardbackImage: Accessor<string>;
   displayId: Accessor<boolean>;
   displayStory: Accessor<boolean>;
-  watermarkText?: Accessor<string>;
 }
 
 export interface RenderContext {
