@@ -434,12 +434,50 @@ export const BalanceAdjustmentTab = withForm({
                                     <form.AppField
                                       name={`adjustments[${idx}].adjustment[${recordIdx}].oldData`}
                                     >
-                                      {(field) => (
-                                        <field.TextAreaField
-                                          id={`adjustments[${idx}].adjustment[${recordIdx}].oldData`}
-                                          class="h-16"
-                                        />
-                                      )}
+                                      {(field) => {
+                                        const handleKeyDown = (
+                                          e: KeyboardEvent & {
+                                            currentTarget: HTMLTextAreaElement;
+                                          },
+                                        ) => {
+                                          if (e.ctrlKey && e.key === "b") {
+                                            e.preventDefault();
+                                            const textarea = e.currentTarget;
+                                            const start = textarea.selectionStart;
+                                            const end = textarea.selectionEnd;
+                                            const value = field().state.value || "";
+                                            const selectedText = value.substring(
+                                              start,
+                                              end,
+                                            );
+                                            if (selectedText) {
+                                              const newValue =
+                                                value.substring(0, start) +
+                                                "<b>" +
+                                                selectedText +
+                                                "</b>" +
+                                                value.substring(end);
+                                              field().handleChange(newValue);
+                                              Promise.resolve().then(() => {
+                                                textarea.focus();
+                                                const newCursorPos =
+                                                  end + 7; // <b></b> = 7 chars
+                                                textarea.setSelectionRange(
+                                                  newCursorPos,
+                                                  newCursorPos,
+                                                );
+                                              });
+                                            }
+                                          }
+                                        };
+                                        return (
+                                          <field.TextAreaField
+                                            id={`adjustments[${idx}].adjustment[${recordIdx}].oldData`}
+                                            class="h-16"
+                                            onKeyDown={handleKeyDown}
+                                          />
+                                        );
+                                      }}
                                     </form.AppField>
 
                                     <label
@@ -451,12 +489,50 @@ export const BalanceAdjustmentTab = withForm({
                                     <form.AppField
                                       name={`adjustments[${idx}].adjustment[${recordIdx}].newData`}
                                     >
-                                      {(field) => (
-                                        <field.TextAreaField
-                                          id={`adjustments[${idx}].adjustment[${recordIdx}].newData`}
-                                          class="h-16"
-                                        />
-                                      )}
+                                      {(field) => {
+                                        const handleKeyDown = (
+                                          e: KeyboardEvent & {
+                                            currentTarget: HTMLTextAreaElement;
+                                          },
+                                        ) => {
+                                          if (e.ctrlKey && e.key === "b") {
+                                            e.preventDefault();
+                                            const textarea = e.currentTarget;
+                                            const start = textarea.selectionStart;
+                                            const end = textarea.selectionEnd;
+                                            const value = field().state.value || "";
+                                            const selectedText = value.substring(
+                                              start,
+                                              end,
+                                            );
+                                            if (selectedText) {
+                                              const newValue =
+                                                value.substring(0, start) +
+                                                "<b>" +
+                                                selectedText +
+                                                "</b>" +
+                                                value.substring(end);
+                                              field().handleChange(newValue);
+                                              Promise.resolve().then(() => {
+                                                textarea.focus();
+                                                const newCursorPos =
+                                                  end + 7; // <b></b> = 7 chars
+                                                textarea.setSelectionRange(
+                                                  newCursorPos,
+                                                  newCursorPos,
+                                                );
+                                              });
+                                            }
+                                          }
+                                        };
+                                        return (
+                                          <field.TextAreaField
+                                            id={`adjustments[${idx}].adjustment[${recordIdx}].newData`}
+                                            class="h-16"
+                                            onKeyDown={handleKeyDown}
+                                          />
+                                        );
+                                      }}
                                     </form.AppField>
                                   </>
                                 )}
