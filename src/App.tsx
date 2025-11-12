@@ -66,6 +66,7 @@ const INITIAL_FORM_VALUE: FormValue = {
     displayId: true,
     displayStory: true,
     mirroredLayout: false,
+    watermarkText: "",
   },
   newItems: {
     characters: MOCK_NEW_CHARACTERS,

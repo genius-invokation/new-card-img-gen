@@ -35,6 +35,7 @@ export interface AppConfig {
   cardbackImage: string;
   displayId?: boolean;
   displayStory?: boolean;
+  watermarkText?: string;
   adjustments?: AdjustmentData[];
 }
 

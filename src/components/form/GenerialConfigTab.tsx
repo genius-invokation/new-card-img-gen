@@ -146,6 +146,15 @@ export const GeneralConfigTab = withForm({
           {(field) => <field.TextField id="general.authorName" />}
         </form.AppField>
 
+        <label class="fieldset-legend" for="general.watermarkText">
+          水印文本
+        </label>
+        <form.AppField name="general.watermarkText">
+          {(field) => (
+            <field.TextField id="general.watermarkText" />
+          )}
+        </form.AppField>
+
         <label class="fieldset-legend" for="general.authorImageUrl">
           右下图片
         </label>
