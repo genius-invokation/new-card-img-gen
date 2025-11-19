@@ -1,4 +1,4 @@
-import { Show, For, createMemo } from "solid-js";
+import { Show, For, createMemo, Switch, Match } from "solid-js";
 import { useGlobalSettings } from "../../context";
 import "./Text.css";
 
@@ -7,18 +7,20 @@ export const Text = (props: { text: string | undefined | null }) => {
   return (
     <Show when={props.text}>
       {(text) => (
-        <Show
-          when={["CHS", "CHT"].includes(language())}
-          fallback={<English text={text()} />}
-        >
-          <Chinese text={text()} />
-        </Show>
+        <Switch>
+          <Match when={["CHS", "CHT", "JP", "KR"].includes(language())}>
+            <CJK text={text()} />
+          </Match>
+          <Match when={true}>
+            <Latin text={text()} />
+          </Match>
+        </Switch>
       )}
     </Show>
   );
 };
 
-const Chinese = (props: { text: string }) => {
+const CJK = (props: { text: string }) => {
   const parts = () => props.text.split("·");
   return (
     <For each={parts()}>
@@ -34,26 +36,25 @@ const Chinese = (props: { text: string }) => {
   );
 };
 
-const English = (props: { text: string }) => {
-  const segments = createMemo(() => {
-    const result: string[] = [];
-    for (const part of props.text.split(/(\s+)/)) {
-      if (part === "") continue;
-      result.push(part);
-    }
-    return result;
-  });
+const Latin = (props: { text: string }) => {
+  const leadingSpace = () => /^\s+/.test(props.text);
+  const trailingSpace = () => /\s+$/.test(props.text);
+  const segments = createMemo(() =>
+    props.text.split(/\s+/).filter((seg) => seg),
+  );
 
   return (
-    <For each={segments()}>
-      {(segment) => (
-        <Show 
-          when={/^\s+$/.test(segment)}
-          fallback={<span class="english-word">{segment}</span>}
-        >
-          <span> </span>
-        </Show>
-      )}
-    </For>
+    <>
+      <Show when={leadingSpace()}> </Show>
+      <For each={segments()}>
+        {(segment, i) => (
+          <>
+            {i() > 0 && " "}
+            <span class="latin-word">{segment}</span>
+          </>
+        )}
+      </For>
+      <Show when={trailingSpace()}> </Show>
+    </>
   );
 };
