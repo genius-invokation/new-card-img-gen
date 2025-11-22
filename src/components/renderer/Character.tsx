@@ -13,7 +13,7 @@ import { Text } from "./Text";
 import "./Character.css";
 
 export const Character = (props: { character: ParsedCharacter }) => {
-  const { displayId, displayStory } = useGlobalSettings();
+  const { displayId, displayStory, language } = useGlobalSettings();
   const character = () => props.character;
   const skillsMemo = createMemo(() => character().parsedSkills);
   const normalSkill = createMemo(() => skillsMemo()[0]);
@@ -67,7 +67,10 @@ export const Character = (props: { character: ParsedCharacter }) => {
             </For>
           </div>
           <hr class="info-divider" />
-          <p class="info-story">
+          <p 
+            class="info-story"
+            data-justify={["CHS", "CHT"].includes(language())}
+          >
             <Show when={displayStory()}>
               <Text text={character().storyText} />
             </Show>

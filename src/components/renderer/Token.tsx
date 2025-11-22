@@ -41,7 +41,10 @@ export const Token = (props: { token: DescriptionToken }) => {
               return (
                 <Switch>
                   <Match when={def.imageUrl}>
-                    <img class="description-icon" src={def.imageUrl} />
+                    <span class="icon-nobreak">
+                      <img class="description-icon" src={def.imageUrl} />
+                      &nbsp;
+                    </span>
                   </Match>
                   <Match when={def.tagIcon}>
                     <span
@@ -53,7 +56,9 @@ export const Token = (props: { token: DescriptionToken }) => {
                       style={{
                         "--image": `url("${tagImageUrl(def.tagIcon!)}")`,
                       }}
-                    />
+                    >
+                      &nbsp;
+                    </span>
                   </Match>
                 </Switch>
               );

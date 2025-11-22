@@ -24,9 +24,15 @@ span:not(.keyword-description):has(
   -webkit-box-decoration-break: clone;
 }
 
+.icon-nobreak {
+  white-space: nowrap;
+  margin-inline-end: -0.4em;
+}
+
 .description-icon {
   width: 1.2em;
   vertical-align: -0.35em;
+  white-space: nowrap;
 }
 
 .description-icon-tag {
@@ -39,6 +45,7 @@ span:not(.keyword-description):has(
   mask-repeat: no-repeat;
   mask-position: center;
   mask-size: contain;
+  white-space: nowrap;
 }
 
 .description-light:not(#fkYouCss) {

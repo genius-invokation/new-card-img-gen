@@ -30,6 +30,7 @@ export const ActionCard = (props: { card: ParsedActionCard }) => {
         <div class="dashed-line" />
         <div
           class={`action-card-description`}
+          data-justify={["CHS", "CHT"].includes(language())}
         >
           <Description description={card().parsedDescription} />
         </div>
