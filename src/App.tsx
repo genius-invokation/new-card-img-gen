@@ -173,6 +173,7 @@ export const App = () => {
       });
       setMobilePreviewing(true);
     } catch (e) {
+      console.error(e);
       alert((e as Error).message || "加载数据失败");
     } finally {
       setLoading(false);
@@ -250,6 +251,7 @@ export const App = () => {
           remoteFetched.language,
         );
       } catch (e) {
+        console.error(e);
         alert((e as Error).message || "加载数据失败");
       } finally {
         setLoading(false);
