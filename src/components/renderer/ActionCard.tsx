@@ -18,6 +18,7 @@ export const ActionCard = (props: { card: ParsedActionCard }) => {
         <div class="action-card-title">
           <Text text={card().name} />
           <Show when={displayId()}>
+            <span> </span>
             <span class="id-box">ID: {card().id}</span>
           </Show>
         </div>

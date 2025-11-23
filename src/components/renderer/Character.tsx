@@ -57,6 +57,7 @@ export const Character = (props: { character: ParsedCharacter }) => {
             <div class="character-title">
               <Text text={character().name} />
               <Show when={displayId()}>
+                <span> </span>
                 <span class="id-box">ID: {character().id}</span>
               </Show>
             </div>
