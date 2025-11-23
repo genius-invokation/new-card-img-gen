@@ -60,7 +60,7 @@ export const SHOWN_KEYWORDS = [
 
 export const COST_READONLY_ENTITIES = [
   112131, 112132, 112133, 112142, 115112, 115152, 116102, 116112, 333021,
-  333022, 333023, 333024, 333025, 333026, 300008, 300009,
+  333022, 333023, 333024, 333025, 333026, 300008, 300009, 111159,
 ];
 
 export const CARD_NORMAL_FRAME = `${
@@ -617,7 +617,12 @@ export const overrideCharacterData: Partial<
   },
 ];
 
-export const overrideEntityData: Partial<EntityRawData>[] = [];
+export const overrideEntityData: Partial<EntityRawData>[] = [
+  {
+    id: 113163, // 嘉明 踏云献瑞 弃用的准备技能 干扰出图 ###可能会在未来修复###
+    "tags": [],
+  }
+];
 
 export const overrideActionCardData: Partial<ActionCardRawData>[] = [
   {
