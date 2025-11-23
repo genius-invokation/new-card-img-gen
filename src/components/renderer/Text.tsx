@@ -37,24 +37,23 @@ const CJK = (props: { text: string }) => {
 };
 
 const Latin = (props: { text: string }) => {
-  const leadingSpace = () => /^\s+/.test(props.text);
-  const trailingSpace = () => /\s+$/.test(props.text);
-  const segments = createMemo(() =>
-    props.text.split(/\s+/).filter((seg) => seg),
-  );
+  const SPACE: unique symbol = Symbol("space");
+  const segments = createMemo(() => {
+    return props.text
+      .split(/(\s+)/)
+      .filter((part) => part)
+      .map((part) => (part.trim() ? part : SPACE));
+  });
 
   return (
     <>
-      <Show when={leadingSpace()}> </Show>
       <For each={segments()}>
-        {(segment, i) => (
-          <>
-            {i() > 0 && " "}
-            <span class="latin-word">{segment}</span>
-          </>
+        {(segment) => (
+          <Show when={typeof segment === "string"} fallback={" "}>
+            <span class="latin-word">{segment as string}</span>
+          </Show>
         )}
       </For>
-      <Show when={trailingSpace()}> </Show>
     </>
   );
 };
