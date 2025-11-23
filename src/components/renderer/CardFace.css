@@ -16,12 +16,7 @@
       var(--front-card-translate-y)
     )
     rotate(4.2deg);
-}
-
-.card-frame-shadow {
-  height: var(--card-container-height);
-  position: absolute;
-  inset: 0;
+  aspect-ratio: 7/12;
 }
 
 .card-face {
@@ -40,13 +35,35 @@
 }
 
 .card-face-image {
+  position: absolute;
   background-color: #cbc0a6;
   border-radius: 1.5rem;
-  width: 100%;
+  inset: 2px 1px;
+  width: calc(100% - 2px);
+  height: calc(100% - 4px);
+  box-shadow: 8px 8px 21px rgba(0, 0, 0, 0.6);
 }
 
-.card-frame {
+.card-back-image {
   position: absolute;
+  border-radius: 1.5rem;
+  inset: 2px 1px;
+  width: calc(100% - 2px);
+  height: calc(100% - 4px);
+  box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.4);
+}
+
+.card-face-frame {
+  position: absolute;
+  width: 100%;
   height: 100%;
   inset: 0;
+}
+
+.card-back-frame {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  inset: 0;
+  filter: brightness(95%);
 }

@@ -63,9 +63,6 @@ export const COST_READONLY_ENTITIES = [
   333022, 333023, 333024, 333025, 333026, 300008, 300009,
 ];
 
-export const CARD_BACK_FRAME = `${
-  import.meta.env.BASE_URL
-}assets/frame/avatar_card_frame_2.png`;
 export const CARD_NORMAL_FRAME = `${
   import.meta.env.BASE_URL
 }assets/frame/card_frame_normal.png`;
