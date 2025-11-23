@@ -43,7 +43,6 @@
 }
 
 .action-card-title .id-box {
-  margin-left: 1rem;
   vertical-align: 0.25rem;
 }
 
@@ -78,8 +77,12 @@
   color: #716864;
   white-space: pre-wrap;
   word-break: break-word;
-  text-align: justify;
+  text-align: left;
   text-indent: 0;
+}
+
+.action-card-description[data-justify="true"] {
+  text-align: justify;
 }
 
 .action-card-image-container {
