@@ -1,5 +1,6 @@
 import type {
   Language,
+  OverrideData,
   CharacterRawData,
   SkillRawData,
   EntityRawData,
@@ -595,59 +596,101 @@ export const VERSION_REPLACE_STRS: Record<string, Record<Language, string>> = {
 };
 
 // 覆盖数据 - 用于部分更新现有数据
-export const overrideCharacterData: Partial<
+export const overrideCharacterData: OverrideData<
   Omit<CharacterRawData, "skills"> & {
-    skills: Partial<SkillRawData>[];
+    skills: OverrideData<SkillRawData>[];
+    language?: Language;
+    version?: string;
   }
 >[] = [
   {
     id: 1315, // 玛薇卡
+    language: "CHS",
+    version: ">=v5.7.0",
     skills: [
       {
         id: 13153, // 玛薇卡 Q 技能描述增加战意图标 ###非官方###
-        rawDescription:
-          "本角色进入<color=#FFFFFFFF>$[C113151]</color>，获得1点<color=#FFFFFFFF>「夜魂值」</color>，消耗自身全部<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>，对敌方前台造成等同于消耗战意数量的$[D__KEY__ELEMENT]。\\n若消耗了6点<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>，则自身附属<color=#FFFFFFFF>$[C113152]</color>。",
+        rawDescription: (before: string) =>
+          before
+            .replace(
+              "<color=#FFFFFFFF>战意</color>",
+              "<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>"
+            )
+            .replace(
+              "战意",
+              "<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>"
+            ),
       },
       {
         id: 13154, // 玛薇卡 P 技能描述增加战意图标 ###非官方###
-        rawDescription:
-          "角色不会获得$[K310]。\\n在我方消耗<color=#FFFFFFFF>「夜魂值」</color>或使用「普通攻击」后，获得1点<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>。\\n本角色使用<color=#FFFFFFFF>元素战技</color>或<color=#FFFFFFFF>元素爆发</color>时，附属<color=#FFFFFFFF>$[C113153]</color>。",
+        rawDescription: (before: string) =>
+          before
+            .replace("<color=#FFFFFFFF>充能</color>", "$[K310]")
+            .replace(
+              "战意",
+              "<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>"
+            ),
       },
     ],
   },
 ];
 
-export const overrideEntityData: Partial<EntityRawData>[] = [
+export const overrideEntityData: OverrideData<
+  Omit<EntityRawData, "skills"> & {
+    skills: OverrideData<SkillRawData>[];
+    language?: Language;
+    version?: string;
+  }
+>[] = [
   {
     id: 113163, // 嘉明 踏云献瑞 弃用的准备技能 干扰出图 ###可能会在未来修复###
-    "tags": [],
-  }
+    language: "CHS",
+    version: ">=v6.1.50",
+    tags: [],
+  },
 ];
 
-export const overrideActionCardData: Partial<ActionCardRawData>[] = [
+export const overrideActionCardData: OverrideData<
+  ActionCardRawData & {
+    language?: Language;
+    version?: string;
+  }
+>[] = [
   {
     id: 212111, // 芙宁娜天赋 id纠错
-    rawDescription:
-      "$[K1]：我方出战角色为<color=#FFFFFFFF>$[A1211]</color>时，装备此牌。\\n$[A1211]装备此牌后，立刻使用一次<color=#FFD780FF>$[S12112]</color>。\\n装备有此牌的$[A1211]使用<color=#FFFFFFFF>$[S12112]</color>时，会对自身附属<color=#FFFFFFFF>$[K1030]</color>。（角色普通攻击时根据形态触发不同效果）\\n（牌组中包含$[A1211]，才能加入牌组）",
+    version: ">=v4.7.0",
+    rawDescription: (before: string) =>
+      before.replace("$[S12123]", "$[S12112]"),
   },
   {
     id: 300008, // 驱逐灾厄 沙中遗事挑选卡 不可获得 ###可能会在未来修复###
+    version: ">=v6.1.50",
     obtainable: false,
   },
   {
     id: 300009, // 肃净污染 沙中遗事挑选卡 不可获得 ###可能会在未来修复###
+    version: ">=v6.1.50",
     obtainable: false,
   },
   {
     id: 321032, // 沉玉谷 冒险地点 方便查询修改获得属性 描述补偿 ###非官方### 修正一处标点样式 ###可能会在未来修复###
+    language: "CHS",
+    version: ">=v6.1.0",
     obtainable: true,
-    rawDescription:
-      "<color=#FFFFFFFF>冒险经历达到2时：</color>生成2张手牌<color=#FFFFFFFF>$[K1040]</color>。\\n<color=#FFFFFFFF>冒险经历达到4时：</color>我方获得3层<color=#FFFFFFFF>$[K1041]</color>和<color=#FFFFFFFF>$[K1042]</color>。\\n<color=#FFFFFFFF>冒险经历达到7时：</color>我方全体角色$[K202]，治疗我方受伤最多的角色至最大生命值，并使其获得2点最大生命值，然后弃置此牌。\\n（「{SPRITE_PRESET#3901}冒险地点」只能通过冒险生成，无法加入牌组）",
+    rawDescription: (before: string) =>
+      before.replace(
+        "<color=#FFFFFFFF>冒险经历达到7时</color>：",
+        "<color=#FFFFFFFF>冒险经历达到7时：</color>"
+      ) +
+      "\\n（「{SPRITE_PRESET#3901}冒险地点」只能通过冒险生成，无法加入牌组）",
   },
   {
     id: 321033, // 自身自体之塔 冒险地点 方便查询修改获得属性 描述补偿 ###非官方###
+    language: "CHS",
+    version: ">=v6.1.50",
     obtainable: true,
     rawDescription:
-      "<color=#FFFFFFFF>入场时：</color>对我方所有角色造成1点$[K5]。\\n<color=#FFFFFFFF>冒险经历达到偶数次时：</color>生成1个随机基础元素骰。\\n<color=#FFFFFFFF>冒险经历达到5时：</color>生成手牌<color=#FFFFFFFF>$[C301038]</color>。\\n<color=#FFFFFFFF>冒险经历达到12时：</color>生成手牌<color=#FFFFFFFF>$[C301039]</color>，然后弃置此牌。\\n（「{SPRITE_PRESET#3901}冒险地点」只能通过冒险生成，无法加入牌组）",
+    (before: string) =>
+      before + "\\n（「{SPRITE_PRESET#3901}冒险地点」只能通过冒险生成，无法加入牌组）",
   },
 ];

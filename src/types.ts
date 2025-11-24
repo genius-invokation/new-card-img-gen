@@ -138,6 +138,12 @@ export interface AdjustmentData {
   adjustment: AdjustmentRecord[];
 }
 
+export type OverrideData<T> = T extends (infer U)[]
+  ? (OverrideData<U> | ((value: U) => U))[] | ((value: T) => T)
+  : T extends object
+  ? { [K in keyof T]?: OverrideData<T[K]> | ((value: T[K]) => T[K]) }
+  : T | ((value: T) => T);
+
 export type {
   ActionCardRawData,
   CharacterRawData,

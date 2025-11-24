@@ -119,9 +119,9 @@ export const App = () => {
       const data = structuredClone(remoteFetched.data);
 
       // override data
-      data.characters = applyCharacterOverrides(data.characters);
-      data.entities = applyEntityOverrides(data.entities);
-      data.actionCards = applyActionCardOverrides(data.actionCards);
+      data.characters = applyCharacterOverrides(data.characters, newLanguage, newVersion);
+      data.entities = applyEntityOverrides(data.entities, newLanguage, newVersion);
+      data.actionCards = applyActionCardOverrides(data.actionCards, newLanguage, newVersion);
 
       const skillMapper = (newSkill: NewSkillData): SkillRawData => ({
         ...newSkill,
