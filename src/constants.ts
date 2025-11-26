@@ -62,7 +62,7 @@ export const SHOWN_KEYWORDS = [
 
 export const COST_READONLY_ENTITIES = [
   112131, 112132, 112133, 112142, 115112, 115152, 116102, 116112, 333021,
-  333022, 333023, 333024, 333025, 333026, 300008, 300009, 111159,
+  333022, 333023, 333024, 333025, 333026, 300008, 300009, 111159, 13164,
 ];
 
 export const CARD_NORMAL_FRAME = `${
@@ -611,11 +611,7 @@ export const overrideData: OverrideData<AllRawData> = {
           id: 13153, // 玛薇卡 Q 技能描述增加战意图标 ###非官方###
           rawDescription: (before) =>
             before
-              .replace(
-                "<color=#FFFFFFFF>战意</color>",
-                "<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>",
-              )
-              .replace(
+              .replaceAll(
                 "战意",
                 "<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>",
               ),
@@ -624,8 +620,8 @@ export const overrideData: OverrideData<AllRawData> = {
           id: 13154, // 玛薇卡 P 技能描述增加战意图标 ###非官方###
           rawDescription: (before) =>
             before
-              .replace("<color=#FFFFFFFF>充能</color>", "$[K310]")
-              .replace(
+              .replaceAll("<color=#FFFFFFFF>充能</color>", "$[K310]")
+              .replaceAll(
                 "战意",
                 "<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>",
               ),
@@ -639,11 +635,7 @@ export const overrideData: OverrideData<AllRawData> = {
           id: 13153,
           rawDescription: (before: string) =>
             before
-              .replace(
-                "<color=#FFFFFFFF>Fighting Spirit</color>",
-                "<color=#D8B456FF>{SPRITE_PRESET#4008}Fighting Spirit</color>",
-              )
-              .replace(
+              .replaceAll(
                 "Fighting Spirit",
                 "<color=#D8B456FF>{SPRITE_PRESET#4008}Fighting Spirit</color>",
               ),
@@ -652,8 +644,8 @@ export const overrideData: OverrideData<AllRawData> = {
           id: 13154,
           rawDescription: (before: string) =>
             before
-              .replace("<color=#FFFFFFFF>Energy</color>", "$[K310]")
-              .replace(
+              .replaceAll("<color=#FFFFFFFF>Energy</color>", "$[K310]")
+              .replaceAll(
                 "Fighting Spirit",
                 "<color=#D8B456FF>{SPRITE_PRESET#4008}Fighting Spirit</color>",
               ),
@@ -673,7 +665,7 @@ export const overrideData: OverrideData<AllRawData> = {
       rawDescription: (before) => before.replace("$[S12123]", "$[S12112]"),
     }),
     defineOverride<ActionCardRawData>(null, "CHS", {
-      id: 321032, // 沉玉谷 冒险地点 方便查询修改获得属性 描述补偿 ###非官方### 修正一处标点样式 ###可能会在未来修复###
+      id: 321032, // 沉玉谷 修正一处标点样式 ###可能会在未来修复###
       rawDescription: (before) =>
         before.replace(
           "<color=#FFFFFFFF>冒险经历达到7时</color>：",
