@@ -597,7 +597,7 @@ export const VERSION_REPLACE_STRS: Record<string, Record<Language, string>> = {
 };
 
 export const ADVENTURE_PLACE_ADDITIONAL_DESC: Record<Language, string> = {
-  CHS: `（「{SPRITE_PRESET#3901}冒险地点」只能通过冒险生成，无法加入牌组）`,
+  CHS: `（「{SPRITE_PRESET#3901}冒险地点」只能通过$[K66]生成，无法加入牌组）`,
   EN: `(You cannot add {SPRITE_PRESET#3901}$[K66] Spot to your deck)`,
 };
 
