@@ -131,7 +131,6 @@ export const App = () => {
         overrideData,
         overrideContext,
       );
-      console.log(data);
 
       const skillMapper = (newSkill: NewSkillData): SkillRawData => ({
         ...newSkill,
