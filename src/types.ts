@@ -95,6 +95,7 @@ export interface GlobalSettingsValue {
 }
 
 export interface RenderContext {
+  language: Language;
   skills: SkillRawData[];
   keywords: KeywordRawData[];
   genericEntities: (EntityRawData | ActionCardRawData)[];

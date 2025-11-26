@@ -596,6 +596,11 @@ export const VERSION_REPLACE_STRS: Record<string, Record<Language, string>> = {
   },
 };
 
+export const ADVENTURE_PLACE_ADDITIONAL_DESC: Record<Language, string> = {
+  CHS: `（「{SPRITE_PRESET#3901}冒险地点」只能通过冒险生成，无法加入牌组）`,
+  EN: `(You cannot add {SPRITE_PRESET#3901}$[K66] Spot to your deck)`,
+};
+
 // 覆盖数据 - 用于部分更新现有数据
 export const overrideData: OverrideData<AllRawData> = {
   characters: [
@@ -627,6 +632,33 @@ export const overrideData: OverrideData<AllRawData> = {
         },
       ],
     }),
+    defineOverride<CharacterRawData>(null, "EN", {
+      skills: [
+        {
+          id: 13153,
+          rawDescription: (before: string) =>
+            before
+              .replace(
+                "<color=#FFFFFFFF>Fighting Spirit</color>",
+                "<color=#D8B456FF>{SPRITE_PRESET#4008}Fighting Spirit</color>",
+              )
+              .replace(
+                "Fighting Spirit",
+                "<color=#D8B456FF>{SPRITE_PRESET#4008}Fighting Spirit</color>",
+              ),
+        },
+        {
+          id: 13154,
+          rawDescription: (before: string) =>
+            before
+              .replace("<color=#FFFFFFFF>Energy</color>", "$[K310]")
+              .replace(
+                "Fighting Spirit",
+                "<color=#D8B456FF>{SPRITE_PRESET#4008}Fighting Spirit</color>",
+              ),
+        },
+      ],
+    }),
   ],
   entities: [
     defineOverride<EntityRawData>(null, null, {
@@ -639,30 +671,13 @@ export const overrideData: OverrideData<AllRawData> = {
       id: 212111, // 芙宁娜天赋 id纠错
       rawDescription: (before) => before.replace("$[S12123]", "$[S12112]"),
     }),
-    defineOverride<ActionCardRawData>(null, null, {
-      id: 300008, // 驱逐灾厄 沙中遗事挑选卡 不可获得 ###可能会在未来修复###
-      obtainable: false,
-    }),
-    defineOverride<ActionCardRawData>(null, null, {
-      id: 300009, // 肃净污染 沙中遗事挑选卡 不可获得 ###可能会在未来修复###
-      obtainable: false,
-    }),
     defineOverride<ActionCardRawData>(null, "CHS", {
       id: 321032, // 沉玉谷 冒险地点 方便查询修改获得属性 描述补偿 ###非官方### 修正一处标点样式 ###可能会在未来修复###
-      obtainable: true,
       rawDescription: (before) =>
         before.replace(
           "<color=#FFFFFFFF>冒险经历达到7时</color>：",
           "<color=#FFFFFFFF>冒险经历达到7时：</color>",
-        ) +
-        "\\n（「{SPRITE_PRESET#3901}冒险地点」只能通过冒险生成，无法加入牌组）",
-    }),
-    defineOverride<ActionCardRawData>(null, "CHS", {
-      id: 321033, // 自身自体之塔 冒险地点 方便查询修改获得属性 描述补偿 ###非官方###
-      obtainable: true,
-      rawDescription: (before) =>
-        before +
-        "\\n（「{SPRITE_PRESET#3901}冒险地点」只能通过冒险生成，无法加入牌组）",
+        ),
     }),
   ],
 };

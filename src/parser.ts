@@ -1,4 +1,5 @@
 import {
+  ADVENTURE_PLACE_ADDITIONAL_DESC,
   BOLD_COLOR,
   CHILDREN_CONFIG,
   DAMAGE_KEYWORD_MAP,
@@ -362,9 +363,13 @@ export const parseActionCard = (
   data: ActionCardRawData,
 ) => {
   ctx.supIds.push(data.id);
+  let description = data.rawDescription;
+  if (data.tags.includes("GCG_TAG_ADVENTURE_PLACE")) {
+    description += `\\n${ADVENTURE_PLACE_ADDITIONAL_DESC[ctx.language]}`;
+  }
   return {
     ...data,
-    parsedDescription: parseDescription(ctx, data.rawDescription),
+    parsedDescription: parseDescription(ctx, description),
     children: appendChildren(ctx, data, "children"),
   };
 };
