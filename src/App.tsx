@@ -2,13 +2,9 @@ import { createSignal, createResource, Show, onMount } from "solid-js";
 import {
   type AppConfig,
   type AllRawData,
-  type Language,
   type Version,
   VERSION_REGEX,
   type SkillRawData,
-  type CharacterRawData,
-  type EntityRawData,
-  type ActionCardRawData,
   type OverrideContext,
 } from "./types";
 import { GlobalSettings } from "./context";
