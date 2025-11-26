@@ -1,11 +1,12 @@
 import type {
   Language,
-  OverrideData,
   CharacterRawData,
-  SkillRawData,
   EntityRawData,
   ActionCardRawData,
+  OverrideData,
+  AllRawData,
 } from "./types";
+import { defineOverride } from "./override";
 
 export const CHILDREN_CONFIG: Record<number, string> = {
   11154: "$[C111159],$[C111152],$[C111153],$[C111154],$[C111155]", // 爱可菲 P
@@ -596,101 +597,72 @@ export const VERSION_REPLACE_STRS: Record<string, Record<Language, string>> = {
 };
 
 // 覆盖数据 - 用于部分更新现有数据
-export const overrideCharacterData: OverrideData<
-  Omit<CharacterRawData, "skills"> & {
-    skills: OverrideData<SkillRawData>[];
-    language?: Language;
-    version?: string;
-  }
->[] = [
-  {
-    id: 1315, // 玛薇卡
-    language: "CHS",
-    version: ">=v5.7.0",
-    skills: [
-      {
-        id: 13153, // 玛薇卡 Q 技能描述增加战意图标 ###非官方###
-        rawDescription: (before: string) =>
-          before
-            .replace(
-              "<color=#FFFFFFFF>战意</color>",
-              "<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>"
-            )
-            .replace(
-              "战意",
-              "<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>"
-            ),
-      },
-      {
-        id: 13154, // 玛薇卡 P 技能描述增加战意图标 ###非官方###
-        rawDescription: (before: string) =>
-          before
-            .replace("<color=#FFFFFFFF>充能</color>", "$[K310]")
-            .replace(
-              "战意",
-              "<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>"
-            ),
-      },
-    ],
-  },
-];
-
-export const overrideEntityData: OverrideData<
-  Omit<EntityRawData, "skills"> & {
-    skills: OverrideData<SkillRawData>[];
-    language?: Language;
-    version?: string;
-  }
->[] = [
-  {
-    id: 113163, // 嘉明 踏云献瑞 弃用的准备技能 干扰出图 ###可能会在未来修复###
-    language: "CHS",
-    version: ">=v6.1.50",
-    tags: [],
-  },
-];
-
-export const overrideActionCardData: OverrideData<
-  ActionCardRawData & {
-    language?: Language;
-    version?: string;
-  }
->[] = [
-  {
-    id: 212111, // 芙宁娜天赋 id纠错
-    version: ">=v4.7.0",
-    rawDescription: (before: string) =>
-      before.replace("$[S12123]", "$[S12112]"),
-  },
-  {
-    id: 300008, // 驱逐灾厄 沙中遗事挑选卡 不可获得 ###可能会在未来修复###
-    version: ">=v6.1.50",
-    obtainable: false,
-  },
-  {
-    id: 300009, // 肃净污染 沙中遗事挑选卡 不可获得 ###可能会在未来修复###
-    version: ">=v6.1.50",
-    obtainable: false,
-  },
-  {
-    id: 321032, // 沉玉谷 冒险地点 方便查询修改获得属性 描述补偿 ###非官方### 修正一处标点样式 ###可能会在未来修复###
-    language: "CHS",
-    version: ">=v6.1.0",
-    obtainable: true,
-    rawDescription: (before: string) =>
-      before.replace(
-        "<color=#FFFFFFFF>冒险经历达到7时</color>：",
-        "<color=#FFFFFFFF>冒险经历达到7时：</color>"
-      ) +
-      "\\n（「{SPRITE_PRESET#3901}冒险地点」只能通过冒险生成，无法加入牌组）",
-  },
-  {
-    id: 321033, // 自身自体之塔 冒险地点 方便查询修改获得属性 描述补偿 ###非官方###
-    language: "CHS",
-    version: ">=v6.1.50",
-    obtainable: true,
-    rawDescription:
-    (before: string) =>
-      before + "\\n（「{SPRITE_PRESET#3901}冒险地点」只能通过冒险生成，无法加入牌组）",
-  },
-];
+export const overrideData: OverrideData<AllRawData> = {
+  characters: [
+    defineOverride<CharacterRawData>(null, "CHS", {
+      id: 1315, // 玛薇卡
+      skills: [
+        {
+          id: 13153, // 玛薇卡 Q 技能描述增加战意图标 ###非官方###
+          rawDescription: (before) =>
+            before
+              .replace(
+                "<color=#FFFFFFFF>战意</color>",
+                "<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>",
+              )
+              .replace(
+                "战意",
+                "<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>",
+              ),
+        },
+        {
+          id: 13154, // 玛薇卡 P 技能描述增加战意图标 ###非官方###
+          rawDescription: (before) =>
+            before
+              .replace("<color=#FFFFFFFF>充能</color>", "$[K310]")
+              .replace(
+                "战意",
+                "<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>",
+              ),
+        },
+      ],
+    }),
+  ],
+  entities: [
+    defineOverride<EntityRawData>(null, null, {
+      id: 113163, // 嘉明 踏云献瑞 弃用的准备技能 干扰出图 ###可能会在未来修复###
+      tags: [],
+    }),
+  ],
+  actionCards: [
+    defineOverride<ActionCardRawData>(null, null, {
+      id: 212111, // 芙宁娜天赋 id纠错
+      rawDescription: (before) => before.replace("$[S12123]", "$[S12112]"),
+    }),
+    defineOverride<ActionCardRawData>(null, null, {
+      id: 300008, // 驱逐灾厄 沙中遗事挑选卡 不可获得 ###可能会在未来修复###
+      obtainable: false,
+    }),
+    defineOverride<ActionCardRawData>(null, null, {
+      id: 300009, // 肃净污染 沙中遗事挑选卡 不可获得 ###可能会在未来修复###
+      obtainable: false,
+    }),
+    defineOverride<ActionCardRawData>(null, "CHS", {
+      id: 321032, // 沉玉谷 冒险地点 方便查询修改获得属性 描述补偿 ###非官方### 修正一处标点样式 ###可能会在未来修复###
+      obtainable: true,
+      rawDescription: (before) =>
+        before.replace(
+          "<color=#FFFFFFFF>冒险经历达到7时</color>：",
+          "<color=#FFFFFFFF>冒险经历达到7时：</color>",
+        ) +
+        "\\n（「{SPRITE_PRESET#3901}冒险地点」只能通过冒险生成，无法加入牌组）",
+    }),
+    defineOverride<ActionCardRawData>(null, "CHS", {
+      id: 321033, // 自身自体之塔 冒险地点 方便查询修改获得属性 描述补偿 ###非官方###
+      obtainable: true,
+      rawDescription: (before) =>
+        before +
+        "\\n（「{SPRITE_PRESET#3901}冒险地点」只能通过冒险生成，无法加入牌组）",
+    }),
+  ],
+};

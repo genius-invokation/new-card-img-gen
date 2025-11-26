@@ -6,6 +6,10 @@ import {
   type Version,
   VERSION_REGEX,
   type SkillRawData,
+  type CharacterRawData,
+  type EntityRawData,
+  type ActionCardRawData,
+  type OverrideContext,
 } from "./types";
 import { GlobalSettings } from "./context";
 import "./App.css";
@@ -23,11 +27,8 @@ import {
   MOCK_NEW_ENTITIES,
 } from "./mock_data";
 import { ASSETS_API_ENDPOINT, getData } from "./shared";
-import {
-  applyCharacterOverrides,
-  applyEntityOverrides,
-  applyActionCardOverrides,
-} from "./override";
+import { applyOverride } from "./override";
+import { overrideData } from "./constants";
 
 export interface RenderConfig {
   format?: "png" | "jpeg" | "webp";
@@ -116,12 +117,25 @@ export const App = () => {
         // fetch new data
         remoteFetched.data = await getData(newVersion, newLanguage);
       }
-      const data = structuredClone(remoteFetched.data);
 
+      const betaVersion = "v9999.0.0" as Version;
+      const latestVersion = versionList().at(-1) ?? betaVersion;
+      const overrideContext: OverrideContext = {
+        version:
+          newVersion === "latest"
+            ? latestVersion
+            : newVersion.endsWith("-beta")
+            ? betaVersion
+            : newVersion,
+        language: newLanguage,
+      };
       // override data
-      data.characters = applyCharacterOverrides(data.characters, newLanguage, newVersion);
-      data.entities = applyEntityOverrides(data.entities, newLanguage, newVersion);
-      data.actionCards = applyActionCardOverrides(data.actionCards, newLanguage, newVersion);
+      const data = applyOverride(
+        structuredClone(remoteFetched.data),
+        overrideData,
+        overrideContext,
+      );
+      console.log(data);
 
       const skillMapper = (newSkill: NewSkillData): SkillRawData => ({
         ...newSkill,

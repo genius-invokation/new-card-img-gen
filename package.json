@@ -16,6 +16,7 @@
     "daisyui": "^5.1.24",
     "modern-screenshot": "^4.6.6",
     "remeda": "^2.32.0",
+    "semver": "^7.7.3",
     "solid-js": "^1.9.9",
     "tailwindcss": "^4.1.13"
   },
