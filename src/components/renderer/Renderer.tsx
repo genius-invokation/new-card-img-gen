@@ -22,6 +22,7 @@ import { Watermark } from "./Watermark";
 
 export const Renderer = (props: AppConfig) => {
   const renderingObjects = createMemo<RenderingObjects>(() => {
+    const language = props.language;
     const mode = props.mode;
     const data = props.data;
     const version = props.version;
@@ -68,6 +69,7 @@ export const Renderer = (props: AppConfig) => {
         }),
     );
     const renderContext: RenderContext = {
+      language,
       skills,
       genericEntities,
       keywords,
@@ -103,7 +105,7 @@ export const Renderer = (props: AppConfig) => {
         const collected = data.actionCards.filter(
           (ac) =>
             ac.sinceVersion === version &&
-            (ac.obtainable || ac.tags.includes("GCG_TAG_ADVENTURE_PLACE")) &&
+            (ac.shareId || ac.tags.includes("GCG_TAG_ADVENTURE_PLACE")) &&
             !ac.tags.includes("GCG_TAG_TALENT"),
         );
         actionCards.push(
