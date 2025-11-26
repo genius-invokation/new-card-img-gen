@@ -67,7 +67,7 @@ export function applyOverride<T>(
         if (ov && "id" in ov) {
           const oldIndex = oldValueMap.get(ov.id);
           if (typeof oldIndex !== "undefined") {
-            const oldItem = oldValue[oldIndex];
+            const oldItem = result[oldIndex];
             result[oldIndex] = applyOverride(
               oldItem,
               ov as OverrideData<typeof oldItem>,
