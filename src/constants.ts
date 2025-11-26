@@ -633,6 +633,7 @@ export const overrideData: OverrideData<AllRawData> = {
       ],
     }),
     defineOverride<CharacterRawData>(null, "EN", {
+      id: 1315, // 玛薇卡
       skills: [
         {
           id: 13153,

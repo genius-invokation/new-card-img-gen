@@ -144,16 +144,15 @@ export interface OverrideContext {
   language: Language;
 }
 
-export type BasicOverrideData<T> =
-  | T extends (infer U)[]
-      ? OverrideData<U>[]
-      : T extends object
-      ? { [K in keyof T]?: OverrideData<T[K]> }
-      : T;
+export type BasicOverrideData<T> = T extends (infer U)[]
+  ? OverrideData<U>[]
+  : T extends object
+  ? (T extends { id: infer U } ? { id: U } : {}) & {
+      [K in keyof T]?: OverrideData<T[K]>;
+    }
+  : T;
 
-export type FnOverrideData<T> = (T extends { id: infer U }
-  ? { id: U }
-  : unknown) &
+export type FnOverrideData<T> = (T extends { id: infer U } ? { id: U } : {}) &
   ((value: T, context: OverrideContext) => T);
 
 export type OverrideData<T> = BasicOverrideData<T> | FnOverrideData<T>;
