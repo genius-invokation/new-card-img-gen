@@ -113,22 +113,24 @@ export const App = () => {
         // fetch new data
         remoteFetched.data = await getData(newVersion, newLanguage);
       }
-        const betaVersion = "v9999.0.0" as Version;
-        const latestVersion = versionList().at(-1) ?? betaVersion;
-        const overrideContext: OverrideContext = {
-          version:
-            newVersion === "latest"
-              ? latestVersion
-              : newVersion.endsWith("-beta")
-              ? betaVersion
-              : (newVersion as Version),
-          language: newLanguage,
-        };
-        const data = applyOverride(
-          structuredClone(remoteFetched.data),
-          overrideData,
-          overrideContext
-        );
+
+      const betaVersion = "v9999.0.0" as Version;
+      const latestVersion = versionList().at(-1) ?? betaVersion;
+      const overrideContext: OverrideContext = {
+        version:
+          newVersion === "latest"
+            ? latestVersion
+            : newVersion.endsWith("-beta")
+            ? betaVersion
+            : (newVersion as Version),
+        language: newLanguage,
+      };
+      // override data
+      const data = applyOverride(
+        structuredClone(remoteFetched.data),
+        overrideData,
+        overrideContext
+      );
 
       const skillMapper = (newSkill: NewSkillData): SkillRawData => ({
         ...newSkill,
