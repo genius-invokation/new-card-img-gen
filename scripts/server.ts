@@ -5,8 +5,10 @@ import exitHook from "exit-hook";
 import type { RenderAppOption } from "../src/App";
 import { Elysia, t } from "elysia";
 import type {} from "../src/vite-env";
-import type { AllRawData, Version } from "../src/types";
+import type { AllRawData, OverrideContext, Version } from "../src/types";
 import { ASSETS_API_ENDPOINT, getData } from "../src/shared";
+import { overrideData } from "../src/constants";
+import { applyOverride } from "../src/override";
 
 const server = await createServer({
   root: path.resolve(import.meta.dirname, ".."),
@@ -67,8 +69,24 @@ const bunServer = new Elysia()
             : Promise.reject(new Error(await r.text()))
       );
       if (!allData.has(dataKey)) {
-        const data = await getData(version, language, versionList);
-        allData.set(dataKey, data);
+        const data = await getData(version, language);
+        const betaVersion = "v9999.0.0" as Version;
+        const latestVersion = versionList.at(-1) ?? betaVersion;
+        const overrideContext: OverrideContext = {
+          version:
+            version === "latest"
+              ? latestVersion
+              : version.endsWith("-beta")
+              ? betaVersion
+              : (version as Version),
+          language: language,
+        };
+        const overridedData = applyOverride(
+          structuredClone(data),
+          overrideData,
+          overrideContext
+        );
+        allData.set(dataKey, overridedData);
       }
       const data = allData.get(dataKey)!;
       const opt: RenderAppOption = {

@@ -83,7 +83,7 @@ export const BalanceAdjustmentTab = withForm({
     );
     const language = form.useStore((state) => state.values.general.language);
 
-    const { allData, versinList } = useGlobalSettings();
+    const { allData } = useGlobalSettings();
     const names = createMemo(() => {
       const data = allData();
       return new Map(
@@ -94,7 +94,7 @@ export const BalanceAdjustmentTab = withForm({
     const [latestData] = createResource(
       () => (currentVersion() !== "latest" ? language() : null),
       async (lang) => {
-        return await getData("latest", lang, versinList());
+        return await getData("latest", lang);
       },
     );
 

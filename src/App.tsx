@@ -5,6 +5,7 @@ import {
   type Version,
   VERSION_REGEX,
   type SkillRawData,
+  type OverrideContext,
 } from "./types";
 import { GlobalSettings } from "./context";
 import "./App.css";
@@ -22,6 +23,8 @@ import {
   MOCK_NEW_ENTITIES,
 } from "./mock_data";
 import { ASSETS_API_ENDPOINT, getData } from "./shared";
+import { applyOverride } from "./override";
+import { overrideData } from "./constants";
 
 export interface RenderConfig {
   format?: "png" | "jpeg" | "webp";
@@ -108,10 +111,24 @@ export const App = () => {
         remoteFetched.version = newVersion;
         remoteFetched.language = newLanguage;
         // fetch new data
-        remoteFetched.data = await getData(newVersion, newLanguage, versionList());
+        remoteFetched.data = await getData(newVersion, newLanguage);
       }
-
-      const data = structuredClone(remoteFetched.data);
+        const betaVersion = "v9999.0.0" as Version;
+        const latestVersion = versionList().at(-1) ?? betaVersion;
+        const overrideContext: OverrideContext = {
+          version:
+            newVersion === "latest"
+              ? latestVersion
+              : newVersion.endsWith("-beta")
+              ? betaVersion
+              : (newVersion as Version),
+          language: newLanguage,
+        };
+        const data = applyOverride(
+          structuredClone(remoteFetched.data),
+          overrideData,
+          overrideContext
+        );
 
       const skillMapper = (newSkill: NewSkillData): SkillRawData => ({
         ...newSkill,
@@ -239,7 +256,6 @@ export const App = () => {
         remoteFetched.data = await getData(
           remoteFetched.version,
           remoteFetched.language,
-          versionList(),
         );
       } catch (e) {
         console.error(e);
@@ -273,7 +289,6 @@ export const App = () => {
           config()?.cardbackImage || INITIAL_FORM_VALUE.general.cardbackImage,
         displayStory: () => !!config()?.displayStory,
         displayId: () => !!config()?.displayId,
-        versinList: () => versionList(),
       }}
     >
       <div
