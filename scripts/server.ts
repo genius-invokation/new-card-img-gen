@@ -5,8 +5,10 @@ import exitHook from "exit-hook";
 import type { RenderAppOption } from "../src/App";
 import { Elysia, t } from "elysia";
 import type {} from "../src/vite-env";
-import type { AllRawData, Version } from "../src/types";
-import { getData } from "../src/shared";
+import type { AllRawData, OverrideContext, Version } from "../src/types";
+import { ASSETS_API_ENDPOINT, getData } from "../src/shared";
+import { overrideData } from "../src/constants";
+import { applyOverride } from "../src/override";
 
 const server = await createServer({
   root: path.resolve(import.meta.dirname, ".."),
@@ -58,9 +60,33 @@ const bunServer = new Elysia()
       const language = body.language || Language.CHS;
       const version = body.version || "latest";
       const dataKey = `${version}-${language}`;
+      const versionList = await fetch(`${ASSETS_API_ENDPOINT}/metadata`).then(
+        async (r) =>
+          r.ok
+            ? (
+                await r.json()
+              ).availableVersions
+            : Promise.reject(new Error(await r.text()))
+      );
       if (!allData.has(dataKey)) {
         const data = await getData(version, language);
-        allData.set(dataKey, data);
+        const betaVersion = "v9999.0.0" as Version;
+        const latestVersion = versionList.at(-1) ?? betaVersion;
+        const overrideContext: OverrideContext = {
+          version:
+            version === "latest"
+              ? latestVersion
+              : version.endsWith("-beta")
+              ? betaVersion
+              : (version as Version),
+          language: language,
+        };
+        const overridedData = applyOverride(
+          structuredClone(data),
+          overrideData,
+          overrideContext
+        );
+        allData.set(dataKey, overridedData);
       }
       const data = allData.get(dataKey)!;
       const opt: RenderAppOption = {
@@ -79,7 +105,7 @@ const bunServer = new Elysia()
         render: {
           format: body.renderFormat,
           quality: body.renderQuality,
-        }
+        },
       };
       return {
         success: true,
@@ -100,11 +126,11 @@ const bunServer = new Elysia()
         renderFormat: t.Optional(t.Enum(RenderFormat)),
         renderQuality: t.Optional(t.Number()),
       }),
-    },
+    }
   )
   .listen(process.env.PORT || 3000);
 console.log(
-  `Elysia running at http://${bunServer.server?.hostname}:${bunServer.server?.port}`,
+  `Elysia running at http://${bunServer.server?.hostname}:${bunServer.server?.port}`
 );
 
 exitHook(() => {

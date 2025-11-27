@@ -81,12 +81,12 @@ export const App = () => {
       return fetch(`${ASSETS_API_ENDPOINT}/metadata`).then(async (r) =>
         r.ok
           ? (await r.json()).availableVersions
-          : Promise.reject(new Error(await r.text())),
+          : Promise.reject(new Error(await r.text()))
       );
     },
     {
       initialValue: [],
-    },
+    }
   );
   const [loading, setLoading] = createSignal(false);
   const remoteFetched = {
@@ -129,7 +129,7 @@ export const App = () => {
       const data = applyOverride(
         structuredClone(remoteFetched.data),
         overrideData,
-        overrideContext,
+        overrideContext
       );
 
       const skillMapper = (newSkill: NewSkillData): SkillRawData => ({
@@ -257,7 +257,7 @@ export const App = () => {
         setLoading(true);
         remoteFetched.data = await getData(
           remoteFetched.version,
-          remoteFetched.language,
+          remoteFetched.language
         );
       } catch (e) {
         console.error(e);
