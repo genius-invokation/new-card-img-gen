@@ -92,6 +92,7 @@ export interface GlobalSettingsValue {
   cardbackImage: Accessor<string>;
   displayId: Accessor<boolean>;
   displayStory: Accessor<boolean>;
+  versinList: Accessor<Version[]>;
 }
 
 export interface RenderContext {

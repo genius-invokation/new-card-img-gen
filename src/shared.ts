@@ -4,7 +4,7 @@ import type { AllRawData, Language, OverrideContext, Version } from "./types";
 
 export const ASSETS_API_ENDPOINT = `https://static-data.7shengzhaohuan.online/api/v4`;
 
-export const getData = async (version: string, language: Language) => {
+export const getData = async (version: string, language: Language, versionList: Version[]) => {
   const data: Partial<AllRawData> = {};
   await Promise.all(
     (["characters", "action_cards", "entities", "keywords"] as const).map(
@@ -21,12 +21,6 @@ export const getData = async (version: string, language: Language) => {
         );
       }
     )
-  );
-  const [versionList] = await fetch(`${ASSETS_API_ENDPOINT}/metadata`).then(
-    async (r) =>
-      r.ok
-        ? (await r.json()).availableVersions
-        : Promise.reject(new Error(await r.text()))
   );
   const betaVersion = "v9999.0.0" as Version;
   const latestVersion = versionList.at(-1) ?? betaVersion;

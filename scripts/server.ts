@@ -6,7 +6,7 @@ import type { RenderAppOption } from "../src/App";
 import { Elysia, t } from "elysia";
 import type {} from "../src/vite-env";
 import type { AllRawData, Version } from "../src/types";
-import { getData } from "../src/shared";
+import { ASSETS_API_ENDPOINT, getData } from "../src/shared";
 
 const server = await createServer({
   root: path.resolve(import.meta.dirname, ".."),
@@ -58,8 +58,16 @@ const bunServer = new Elysia()
       const language = body.language || Language.CHS;
       const version = body.version || "latest";
       const dataKey = `${version}-${language}`;
+      const versionList = await fetch(`${ASSETS_API_ENDPOINT}/metadata`).then(
+        async (r) =>
+          r.ok
+            ? (
+                await r.json()
+              ).availableVersions
+            : Promise.reject(new Error(await r.text()))
+      );
       if (!allData.has(dataKey)) {
-        const data = await getData(version, language);
+        const data = await getData(version, language, versionList);
         allData.set(dataKey, data);
       }
       const data = allData.get(dataKey)!;
@@ -79,7 +87,7 @@ const bunServer = new Elysia()
         render: {
           format: body.renderFormat,
           quality: body.renderQuality,
-        }
+        },
       };
       return {
         success: true,
@@ -100,11 +108,11 @@ const bunServer = new Elysia()
         renderFormat: t.Optional(t.Enum(RenderFormat)),
         renderQuality: t.Optional(t.Number()),
       }),
-    },
+    }
   )
   .listen(process.env.PORT || 3000);
 console.log(
-  `Elysia running at http://${bunServer.server?.hostname}:${bunServer.server?.port}`,
+  `Elysia running at http://${bunServer.server?.hostname}:${bunServer.server?.port}`
 );
 
 exitHook(() => {
