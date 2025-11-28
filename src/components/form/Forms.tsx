@@ -32,6 +32,7 @@ export interface FormsProps {
   versionList: string[];
   loading?: boolean;
   onSubmit: (data: FormValue) => void;
+  onFormValueChange?: (data: FormValue) => void;
 }
 
 const TAB_LISTS = [
@@ -195,6 +196,7 @@ export const Forms = (props: FormsProps) => {
   createEffect(
     on(form.useStore(), ({ values }, prev) => {
       if (!R.isDeepEqual(prev?.values, values)) {
+        props.onFormValueChange?.(values);
         submitOp.call(values);
       }
     }),
@@ -214,6 +216,7 @@ export const Forms = (props: FormsProps) => {
       const text = await file.text();
       const json = JSON.parse(text);
       form.reset(json);
+      props.onFormValueChange?.(json);
       if (previewVisible() && form.state.canSubmit) {
         formEl.requestSubmit();
       }
