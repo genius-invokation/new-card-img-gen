@@ -25,6 +25,8 @@ import {
 import { ASSETS_API_ENDPOINT, getData } from "./shared";
 import { applyOverride } from "./override";
 import { overrideData } from "./constants";
+import { makePersisted } from "@solid-primitives/storage";
+import * as R from "remeda";
 
 export interface RenderConfig {
   format?: "png" | "jpeg" | "webp";
@@ -75,6 +77,23 @@ const INITIAL_FORM_VALUE: FormValue = {
 };
 
 export const App = () => {
+  const [persistedFormValue, setPersistedFormValue] = makePersisted(
+    createSignal<FormValue | null>(null),
+    {
+      name: "card-img-gen-form-value",
+      storage: localStorage,
+    }
+  );
+
+  const getInitialFormValue = (): FormValue => {
+    const persisted = persistedFormValue();
+    if (persisted) {
+      return R.mergeDeep(INITIAL_FORM_VALUE, persisted);
+    }
+    return INITIAL_FORM_VALUE;
+  };
+
+  const initialFormValue = getInitialFormValue();
   const [config, setConfig] = createSignal<AppConfig>();
   const [versionList] = createResource<Version[]>(
     () => {
@@ -302,10 +321,11 @@ export const App = () => {
             <h1 class="mb-0">卡图生成</h1>
           </header>
           <Forms
-            initialValue={INITIAL_FORM_VALUE}
+            initialValue={initialFormValue}
             versionList={versionList.state === "ready" ? versionList() : []}
             loading={loading()}
             onSubmit={onSubmitForm}
+            onFormValueChange={setPersistedFormValue}
           />
         </div>
         <input type="checkbox" checked={mobilePreviewing()} hidden />
