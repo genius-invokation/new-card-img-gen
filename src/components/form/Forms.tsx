@@ -26,6 +26,7 @@ import { useAppForm } from "./shared";
 import { OverrideTab } from "./OverrideTab";
 import { NewItemsTab } from "./NewItemTab";
 import { BalanceAdjustmentTab } from "./BalanceAdjustmentTab";
+import { saveFormValueToStorage } from "../../utils";
 
 export interface FormsProps {
   initialValue: FormValue;
@@ -195,6 +196,7 @@ export const Forms = (props: FormsProps) => {
   createEffect(
     on(form.useStore(), ({ values }, prev) => {
       if (!R.isDeepEqual(prev?.values, values)) {
+        saveFormValueToStorage(values);
         submitOp.call(values);
       }
     }),

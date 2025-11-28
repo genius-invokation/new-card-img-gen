@@ -25,6 +25,7 @@ import {
 import { ASSETS_API_ENDPOINT, getData } from "./shared";
 import { applyOverride } from "./override";
 import { overrideData } from "./constants";
+import { loadFormValueFromStorage } from "./utils";
 
 export interface RenderConfig {
   format?: "png" | "jpeg" | "webp";
@@ -50,29 +51,45 @@ if (versionFromUrl && !VERSION_REGEX.test(versionFromUrl)) {
   versionFromUrl = "latest";
 }
 
-const INITIAL_FORM_VALUE: FormValue = {
-  general: {
-    mode: "character",
-    characterId: Number(search.get("character_id") || Number.NaN) || 1503,
-    actionCardId: Number(search.get("action_card_id") || Number.NaN) || 332005,
-    language: "CHS",
-    version: versionFromUrl as Version,
-    authorName: search.get("author_name") || "❤︎ From「雨酱牌」",
-    authorImageUrl: `${import.meta.env.BASE_URL}vite.svg`,
-    cardbackImage: "UI_Gcg_CardBack_Championship_11",
-    displayId: true,
-    displayStory: true,
-    mirroredLayout: false,
-    watermarkText: "",
-  },
-  newItems: {
-    characters: MOCK_NEW_CHARACTERS,
-    actionCards: MOCK_NEW_ACTION_CARDS,
-    entities: MOCK_NEW_ENTITIES,
-    keywords: [],
-  },
-  adjustments: [],
+const getInitialFormValue = (): FormValue => {
+  const cachedFormValue = loadFormValueFromStorage<FormValue>();
+
+  const defaultFormValue: FormValue = {
+    general: {
+      mode: "character",
+      characterId: 1503,
+      actionCardId: 332005,
+      language: "CHS",
+      version: versionFromUrl as Version,
+      authorName: "❤︎ From「雨酱牌」",
+      authorImageUrl: `${import.meta.env.BASE_URL}vite.svg`,
+      cardbackImage: "UI_Gcg_CardBack_Championship_11",
+      displayId: true,
+      displayStory: true,
+      mirroredLayout: false,
+      watermarkText: "",
+    },
+    newItems: {
+      characters: MOCK_NEW_CHARACTERS,
+      actionCards: MOCK_NEW_ACTION_CARDS,
+      entities: MOCK_NEW_ENTITIES,
+      keywords: [],
+    },
+    adjustments: [],
+  };
+
+  const baseFormValue = cachedFormValue || defaultFormValue;
+
+  return {
+    ...baseFormValue,
+    general: {
+      ...baseFormValue.general,
+      version: versionFromUrl as Version,
+    },
+  };
 };
+
+const INITIAL_FORM_VALUE: FormValue = getInitialFormValue();
 
 export const App = () => {
   const [config, setConfig] = createSignal<AppConfig>();

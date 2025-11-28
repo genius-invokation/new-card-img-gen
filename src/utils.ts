@@ -60,3 +60,25 @@ export const nar = <A, B extends A>(
   const value = accessor();
   return cond(value) ? value : null;
 };
+
+const FORM_VALUE_STORAGE_KEY = "card-img-gen-form-value";
+
+export const saveFormValueToStorage = (formValue: unknown) => {
+  try {
+    localStorage.setItem(FORM_VALUE_STORAGE_KEY, JSON.stringify(formValue));
+  } catch (error) {
+    console.warn("保存表单值到 localStorage 失败:", error);
+  }
+};
+
+export const loadFormValueFromStorage = <T>(): T | null => {
+  try {
+    const stored = localStorage.getItem(FORM_VALUE_STORAGE_KEY);
+    if (stored) {
+      return JSON.parse(stored) as T;
+    }
+  } catch (error) {
+    console.warn("从 localStorage 读取表单值失败:", error);
+  }
+  return null;
+};
