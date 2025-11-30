@@ -46,7 +46,7 @@ const EMPTY_DATA: AllRawData = {
 
 const search = new URLSearchParams(window.location.search);
 
-let versionFromUrl = search.get("version") || "latest";
+let versionFromUrl = search.get("version") || undefined;
 if (versionFromUrl && !VERSION_REGEX.test(versionFromUrl)) {
   alert("URL 中的 version 参数格式错误，应为 vX.Y.Z 或 latest");
   versionFromUrl = "latest";
@@ -55,11 +55,11 @@ if (versionFromUrl && !VERSION_REGEX.test(versionFromUrl)) {
 const INITIAL_FORM_VALUE: FormValue = {
   general: {
     mode: "character",
-    characterId: Number(search.get("character_id") || Number.NaN) || 1503,
-    actionCardId: Number(search.get("action_card_id") || Number.NaN) || 332005,
+    characterId: 1503,
+    actionCardId: 332005,
     language: "CHS",
-    version: versionFromUrl as Version,
-    authorName: search.get("author_name") || "❤︎ From「雨酱牌」",
+    version: "latest",
+    authorName: "❤︎ From「雨酱牌」",
     authorImageUrl: `${import.meta.env.BASE_URL}vite.svg`,
     cardbackImage: "UI_Gcg_CardBack_Championship_11",
     displayId: true,
@@ -86,11 +86,27 @@ export const App = () => {
   );
 
   const getInitialFormValue = (): FormValue => {
+    let formValue: FormValue;
     const persisted = persistedFormValue();
-    if (persisted) {
-      return R.mergeDeep(INITIAL_FORM_VALUE, persisted);
+    if (
+      persisted?.general.version &&
+      !versionList().includes(persisted?.general.version)
+    ) {
+      formValue = R.mergeDeep(persisted, {
+        general: { version: "latest" as Version },
+      });
     }
-    return INITIAL_FORM_VALUE;
+    if (persisted) {
+      formValue = R.mergeDeep(INITIAL_FORM_VALUE, persisted);
+    } else {
+      formValue = INITIAL_FORM_VALUE;
+    }
+    if (versionFromUrl) {
+      formValue = R.mergeDeep(formValue, {
+        general: { version: versionFromUrl as Version },
+      });
+    }
+    return formValue;
   };
 
   const initialFormValue = getInitialFormValue();
