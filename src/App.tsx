@@ -76,15 +76,28 @@ const INITIAL_FORM_VALUE: FormValue = {
   adjustments: [],
 };
 
+const [persistedFormValue, setPersistedFormValue] = makePersisted(
+  createSignal<FormValue | null>(null),
+  {
+    name: "card-img-gen-form-value",
+    storage: localStorage,
+  }
+);
+
 export const App = () => {
-  const [persistedFormValue, setPersistedFormValue] = makePersisted(
-    createSignal<FormValue | null>(null),
+  const [config, setConfig] = createSignal<AppConfig>();
+  const [versionList] = createResource<Version[]>(
+    () => {
+      return fetch(`${ASSETS_API_ENDPOINT}/metadata`).then(async (r) =>
+        r.ok
+          ? (await r.json()).availableVersions
+          : Promise.reject(new Error(await r.text()))
+      );
+    },
     {
-      name: "card-img-gen-form-value",
-      storage: localStorage,
+      initialValue: [],
     }
   );
-
   const getInitialFormValue = (): FormValue => {
     let formValue: FormValue;
     const persisted = persistedFormValue();
@@ -108,21 +121,7 @@ export const App = () => {
     }
     return formValue;
   };
-
   const initialFormValue = getInitialFormValue();
-  const [config, setConfig] = createSignal<AppConfig>();
-  const [versionList] = createResource<Version[]>(
-    () => {
-      return fetch(`${ASSETS_API_ENDPOINT}/metadata`).then(async (r) =>
-        r.ok
-          ? (await r.json()).availableVersions
-          : Promise.reject(new Error(await r.text()))
-      );
-    },
-    {
-      initialValue: [],
-    }
-  );
   const [loading, setLoading] = createSignal(false);
   const remoteFetched = {
     version: INITIAL_FORM_VALUE.general.version,
