@@ -652,6 +652,26 @@ export const overrideData: OverrideData<AllRawData> = {
         },
       ],
     }),
+    defineOverride<CharacterRawData>(null, "CHS", {
+      id: 1316, // 嘉明
+      skills: [
+        {
+          id: 13164, // 嘉明 踏云献瑞 keyword描述与skill描述不同 ###可能会在未来修复###
+          rawDescription: (before) =>
+            before.replaceAll("。", "，此技能视为$[K52]。"),
+        },
+      ],
+    }),
+    defineOverride<CharacterRawData>(null, "EN", {
+      id: 1316, // 嘉明
+      skills: [
+        {
+          id: 13164,
+          rawDescription: (before) =>
+            before + ' This Skill is considered a $[K52].',
+        },
+      ],
+    }),
   ],
   entities: [
     defineOverride<EntityRawData>(null, null, {
