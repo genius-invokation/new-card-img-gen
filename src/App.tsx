@@ -101,14 +101,6 @@ export const App = () => {
   const getInitialFormValue = (): FormValue => {
     let formValue: FormValue;
     const persisted = persistedFormValue();
-    if (
-      persisted?.general.version &&
-      !versionList().includes(persisted?.general.version)
-    ) {
-      formValue = R.mergeDeep(persisted, {
-        general: { version: "latest" as Version },
-      });
-    }
     if (persisted) {
       formValue = R.mergeDeep(INITIAL_FORM_VALUE, persisted);
     } else {
@@ -131,6 +123,15 @@ export const App = () => {
   const onSubmitForm = async (newFormValue: FormValue) => {
     if (import.meta.env.DEV) {
       console.log(newFormValue);
+    }
+    if (!versionList().includes(newFormValue.general.version)) {
+      setPersistedFormValue(
+        R.mergeDeep(newFormValue, {
+          general: { version: "latest" as Version },
+        })
+      );
+    } else {
+      setPersistedFormValue(newFormValue);
     }
     const prevVersion = remoteFetched.version;
     const newVersion = newFormValue.general.version;
@@ -340,7 +341,6 @@ export const App = () => {
             versionList={versionList.state === "ready" ? versionList() : []}
             loading={loading()}
             onSubmit={onSubmitForm}
-            onFormValueChange={setPersistedFormValue}
           />
         </div>
         <input type="checkbox" checked={mobilePreviewing()} hidden />
