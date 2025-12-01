@@ -84,6 +84,22 @@ const [persistedFormValue, setPersistedFormValue] = makePersisted(
   }
 );
 
+const getInitialFormValue = (): FormValue => {
+  let formValue: FormValue;
+  const persisted = persistedFormValue();
+  if (persisted) {
+    formValue = R.mergeDeep(INITIAL_FORM_VALUE, persisted);
+  } else {
+    formValue = INITIAL_FORM_VALUE;
+  }
+  if (versionFromUrl) {
+    formValue = R.mergeDeep(formValue, {
+      general: { version: versionFromUrl as Version },
+    });
+  }
+  return formValue;
+};
+
 export const App = () => {
   const [config, setConfig] = createSignal<AppConfig>();
   const [versionList] = createResource<Version[]>(
@@ -98,21 +114,6 @@ export const App = () => {
       initialValue: [],
     }
   );
-  const getInitialFormValue = (): FormValue => {
-    let formValue: FormValue;
-    const persisted = persistedFormValue();
-    if (persisted) {
-      formValue = R.mergeDeep(INITIAL_FORM_VALUE, persisted);
-    } else {
-      formValue = INITIAL_FORM_VALUE;
-    }
-    if (versionFromUrl) {
-      formValue = R.mergeDeep(formValue, {
-        general: { version: versionFromUrl as Version },
-      });
-    }
-    return formValue;
-  };
   const initialFormValue = getInitialFormValue();
   const [loading, setLoading] = createSignal(false);
   const remoteFetched = {
