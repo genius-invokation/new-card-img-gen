@@ -25,8 +25,6 @@ import {
 import { ASSETS_API_ENDPOINT, getData } from "./shared";
 import { applyOverride } from "./override";
 import { overrideData } from "./constants";
-import { makePersisted } from "@solid-primitives/storage";
-import * as R from "remeda";
 
 export interface RenderConfig {
   format?: "png" | "jpeg" | "webp";
@@ -46,7 +44,7 @@ const EMPTY_DATA: AllRawData = {
 
 const search = new URLSearchParams(window.location.search);
 
-let versionFromUrl = search.get("version") || undefined;
+let versionFromUrl = search.get("version") || "latest";
 if (versionFromUrl && !VERSION_REGEX.test(versionFromUrl)) {
   alert("URL 中的 version 参数格式错误，应为 vX.Y.Z 或 latest");
   versionFromUrl = "latest";
@@ -55,11 +53,11 @@ if (versionFromUrl && !VERSION_REGEX.test(versionFromUrl)) {
 const INITIAL_FORM_VALUE: FormValue = {
   general: {
     mode: "character",
-    characterId: 1503,
-    actionCardId: 332005,
+    characterId: Number(search.get("character_id") || Number.NaN) || 1503,
+    actionCardId: Number(search.get("action_card_id") || Number.NaN) || 332005,
     language: "CHS",
-    version: "latest",
-    authorName: "❤︎ From「雨酱牌」",
+    version: versionFromUrl as Version,
+    authorName: search.get("author_name") || "❤︎ From「雨酱牌」",
     authorImageUrl: `${import.meta.env.BASE_URL}vite.svg`,
     cardbackImage: "UI_Gcg_CardBack_Championship_11",
     displayId: true,
@@ -76,30 +74,6 @@ const INITIAL_FORM_VALUE: FormValue = {
   adjustments: [],
 };
 
-const [persistedFormValue, setPersistedFormValue] = makePersisted(
-  createSignal<FormValue | null>(null),
-  {
-    name: "card-img-gen-form-value",
-    storage: localStorage,
-  }
-);
-
-const getInitialFormValue = (): FormValue => {
-  let formValue: FormValue;
-  const persisted = persistedFormValue();
-  if (persisted) {
-    formValue = R.mergeDeep(INITIAL_FORM_VALUE, persisted);
-  } else {
-    formValue = INITIAL_FORM_VALUE;
-  }
-  if (versionFromUrl) {
-    formValue = R.mergeDeep(formValue, {
-      general: { version: versionFromUrl as Version },
-    });
-  }
-  return formValue;
-};
-
 export const App = () => {
   const [config, setConfig] = createSignal<AppConfig>();
   const [versionList] = createResource<Version[]>(
@@ -114,7 +88,6 @@ export const App = () => {
       initialValue: [],
     }
   );
-  const initialFormValue = getInitialFormValue();
   const [loading, setLoading] = createSignal(false);
   const remoteFetched = {
     version: INITIAL_FORM_VALUE.general.version,
@@ -124,15 +97,6 @@ export const App = () => {
   const onSubmitForm = async (newFormValue: FormValue) => {
     if (import.meta.env.DEV) {
       console.log(newFormValue);
-    }
-    if (!versionList().includes(newFormValue.general.version)) {
-      setPersistedFormValue(
-        R.mergeDeep(newFormValue, {
-          general: { version: "latest" as Version },
-        })
-      );
-    } else {
-      setPersistedFormValue(newFormValue);
     }
     const prevVersion = remoteFetched.version;
     const newVersion = newFormValue.general.version;
@@ -338,7 +302,7 @@ export const App = () => {
             <h1 class="mb-0">卡图生成</h1>
           </header>
           <Forms
-            initialValue={initialFormValue}
+            initialValue={INITIAL_FORM_VALUE}
             versionList={versionList.state === "ready" ? versionList() : []}
             loading={loading()}
             onSubmit={onSubmitForm}
