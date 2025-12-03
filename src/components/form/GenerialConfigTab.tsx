@@ -59,15 +59,29 @@ export const GeneralConfigTab = withForm({
         >
           版本
         </label>
-        <form.AppField name="general.version">
-          {(field) => (
-            <field.SelectField
-              options={versionOptions()}
-              disabled={readonlyVersion()}
-              id="general.version"
-            />
-          )}
-        </form.AppField>
+        <div class="flex flex-row gap-2 w-[clamp(3rem,20rem,100%)]">
+          <form.AppField name="general.version">
+            {(field) => (
+              <field.SelectField
+                options={versionOptions()}
+                disabled={readonlyVersion()}
+                id="general.version"
+                class="flex-grow"
+              />
+            )}
+          </form.AppField>
+          <Show when={readonlyVersion()}>
+            <button
+              class="btn btn-link btn-sm p-0"
+              type="button"
+              onClick={() => {
+                form.setFieldValue("general.version", "latest");
+              }}
+            >
+              重置
+            </button>
+          </Show>
+        </div>
 
         <span class="fieldset-legend">模式</span>
         <form.AppField name="general.mode">
@@ -150,9 +164,7 @@ export const GeneralConfigTab = withForm({
           水印文本
         </label>
         <form.AppField name="general.watermarkText">
-          {(field) => (
-            <field.TextField id="general.watermarkText" />
-          )}
+          {(field) => <field.TextField id="general.watermarkText" />}
         </form.AppField>
 
         <label class="fieldset-legend" for="general.authorImageUrl">

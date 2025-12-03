@@ -76,28 +76,34 @@ const INITIAL_FORM_VALUE: FormValue = {
   adjustments: [],
 };
 
+const removeUndefined = <T extends Record<string, unknown>>(obj: T): T => {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([, v]) => typeof v !== "undefined"),
+  ) as T;
+};
+
+const formValueFromUrl = {
+  general: removeUndefined({
+    characterId: Number(search.get("character_id") || Number.NaN) || void 0,
+    actionCardId: Number(search.get("action_card_id") || Number.NaN) || void 0,
+    version: (versionFromUrl as Version) || void 0,
+  }),
+} as const;
+
 const [persistedFormValue, setPersistedFormValue] = makePersisted(
+  // eslint-disable-next-line solid/reactivity
   createSignal<FormValue | null>(null),
   {
     name: "card-img-gen-form-value",
     storage: localStorage,
-  }
+  },
 );
 
 const getInitialFormValue = (): FormValue => {
-  let formValue: FormValue;
-  const persisted = persistedFormValue();
-  if (persisted) {
-    formValue = R.mergeDeep(INITIAL_FORM_VALUE, persisted);
-  } else {
-    formValue = INITIAL_FORM_VALUE;
-  }
-  if (versionFromUrl) {
-    formValue = R.mergeDeep(formValue, {
-      general: { version: versionFromUrl as Version },
-    });
-  }
-  return formValue;
+  return R.mergeDeep(
+    R.mergeDeep(INITIAL_FORM_VALUE, persistedFormValue() || {}),
+    formValueFromUrl,
+  );
 };
 
 export const App = () => {
@@ -107,12 +113,12 @@ export const App = () => {
       return fetch(`${ASSETS_API_ENDPOINT}/metadata`).then(async (r) =>
         r.ok
           ? (await r.json()).availableVersions
-          : Promise.reject(new Error(await r.text()))
+          : Promise.reject(new Error(await r.text())),
       );
     },
     {
       initialValue: [],
-    }
+    },
   );
   const initialFormValue = getInitialFormValue();
   const [loading, setLoading] = createSignal(false);
@@ -125,15 +131,7 @@ export const App = () => {
     if (import.meta.env.DEV) {
       console.log(newFormValue);
     }
-    if (!versionList().includes(newFormValue.general.version)) {
-      setPersistedFormValue(
-        R.mergeDeep(newFormValue, {
-          general: { version: "latest" as Version },
-        })
-      );
-    } else {
-      setPersistedFormValue(newFormValue);
-    }
+    setPersistedFormValue(newFormValue);
     const prevVersion = remoteFetched.version;
     const newVersion = newFormValue.general.version;
     const prevLanguage = remoteFetched.language;
@@ -165,7 +163,7 @@ export const App = () => {
       const data = applyOverride(
         structuredClone(remoteFetched.data),
         overrideData,
-        overrideContext
+        overrideContext,
       );
 
       const skillMapper = (newSkill: NewSkillData): SkillRawData => ({
@@ -293,7 +291,7 @@ export const App = () => {
         setLoading(true);
         remoteFetched.data = await getData(
           remoteFetched.version,
-          remoteFetched.language
+          remoteFetched.language,
         );
       } catch (e) {
         console.error(e);
