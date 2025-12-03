@@ -109,6 +109,10 @@ export const SPECIAL_ENERGY_MAP: Record<
     type: `${import.meta.env.BASE_URL}assets/UI_TeyvatCard_LifeBg_Mavuika1.png`,
     count: 3,
   },
+  1116: {
+    type: `${import.meta.env.BASE_URL}assets/UI_TeyvatCard_LifeBg_SKK01.png`,
+    count: 1,
+  },
 };
 
 export const COST_TYPE_IMG_NAME_MAP: Record<string, string> = {
@@ -124,6 +128,7 @@ export const COST_TYPE_IMG_NAME_MAP: Record<string, string> = {
   GCG_COST_ENERGY: "Energy",
   GCG_COST_LEGEND: "Legend",
   GCG_COST_SPECIAL_ENERGY: "Energy_Mavuika",
+  GCG_COST_SKIRK_SPECIAL_ENERGY: "Energy_SKK",
 };
 
 export const COST_TYPE_SPRITE_MAP: Record<string, string> = {
@@ -139,6 +144,7 @@ export const COST_TYPE_SPRITE_MAP: Record<string, string> = {
   GCG_COST_ENERGY: "{SPRITE_PRESET#1110}",
   GCG_COST_LEGEND: "{SPRITE_PRESET#1112}",
   GCG_COST_SPECIAL_ENERGY: "{SPRITE_PRESET#4008}",
+  GCG_COST_SKIRK_SPECIAL_ENERGY: "{SPRITE_PRESET#4009}",
 };
 
 export const TYPE_TAG_TEXT_MAP: Record<Language, Record<string, string>> = {
@@ -169,6 +175,7 @@ export const TYPE_TAG_TEXT_MAP: Record<Language, Record<string, string>> = {
     GCG_TAG_NATION_FONTAINE: "枫丹",
     GCG_TAG_NATION_NATLAN: "纳塔",
     GCG_TAG_NATION_SNEZHNAYA: "至冬",
+    GCG_TAG_NATION_COSMIC_CALAMITY: "寰宇劫灭",
     GCG_TAG_CAMP_ERIMITE: "镀金旅团",
     GCG_TAG_CAMP_FATUI: "愚人众",
     GCG_TAG_CAMP_MONSTER: "魔物",
@@ -231,6 +238,7 @@ export const TYPE_TAG_TEXT_MAP: Record<Language, Record<string, string>> = {
     GCG_TAG_NATION_FONTAINE: "Fontaine",
     GCG_TAG_NATION_NATLAN: "Natlan",
     GCG_TAG_NATION_SNEZHNAYA: "Snezhnaya",
+    GCG_TAG_NATION_COSMIC_CALAMITY: "Cosmic Calamity",
     GCG_TAG_CAMP_ERIMITE: "The Eremites",
     GCG_TAG_CAMP_FATUI: "Fatui",
     GCG_TAG_CAMP_MONSTER: "Monster",
@@ -289,6 +297,7 @@ export const TYPE_TAG_IMG_NAME_MAP: Record<string, string> = {
   GCG_TAG_NATION_FONTAINE: "Faction_Fontaine",
   GCG_TAG_NATION_NATLAN: "Faction_Natlan",
   GCG_TAG_NATION_SNEZHNAYA: "Faction_Snezhnaya",
+  GCG_TAG_NATION_COSMIC_CALAMITY: "Faction_CosmicCalamity",
   GCG_TAG_CAMP_ERIMITE: "Faction_Erimite",
   GCG_TAG_CAMP_FATUI: "Faction_Fatui",
   GCG_TAG_CAMP_MONSTER: "Faction_Monster",
@@ -412,6 +421,10 @@ export const DESCRIPTION_ICON_IMAGES = {
     imageUrl: `${
       import.meta.env.BASE_URL
     }assets/UI_Gcg_Keyword_Fighting_Spirit.png`,
+  },
+  4009: {
+    //  ###非官方###
+    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Energy_SKK.png`,
   },
   3003: { tagIcon: "GCG_TAG_WEAPON" },
   3004: { tagIcon: "GCG_TAG_ARTIFACT" },
@@ -610,11 +623,10 @@ export const overrideData: OverrideData<AllRawData> = {
         {
           id: 13153, // 玛薇卡 Q 技能描述增加战意图标 ###非官方###
           rawDescription: (before) =>
-            before
-              .replaceAll(
-                "战意",
-                "<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>",
-              ),
+            before.replaceAll(
+              "战意",
+              "<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>"
+            ),
         },
         {
           id: 13154, // 玛薇卡 P 技能描述增加战意图标 ###非官方###
@@ -623,7 +635,7 @@ export const overrideData: OverrideData<AllRawData> = {
               .replaceAll("<color=#FFFFFFFF>充能</color>", "$[K310]")
               .replaceAll(
                 "战意",
-                "<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>",
+                "<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>"
               ),
         },
       ],
@@ -634,11 +646,10 @@ export const overrideData: OverrideData<AllRawData> = {
         {
           id: 13153,
           rawDescription: (before: string) =>
-            before
-              .replaceAll(
-                "Fighting Spirit",
-                "<color=#D8B456FF>{SPRITE_PRESET#4008}Fighting Spirit</color>",
-              ),
+            before.replaceAll(
+              "Fighting Spirit",
+              "<color=#D8B456FF>{SPRITE_PRESET#4008}Fighting Spirit</color>"
+            ),
         },
         {
           id: 13154,
@@ -647,7 +658,7 @@ export const overrideData: OverrideData<AllRawData> = {
               .replaceAll("<color=#FFFFFFFF>Energy</color>", "$[K310]")
               .replaceAll(
                 "Fighting Spirit",
-                "<color=#D8B456FF>{SPRITE_PRESET#4008}Fighting Spirit</color>",
+                "<color=#D8B456FF>{SPRITE_PRESET#4008}Fighting Spirit</color>"
               ),
         },
       ],
@@ -668,7 +679,67 @@ export const overrideData: OverrideData<AllRawData> = {
         {
           id: 13164,
           rawDescription: (before) =>
-            before + ' This Skill is considered a $[K52].',
+            before + " This Skill is considered a $[K52].",
+        },
+      ],
+    }),
+    defineOverride<CharacterRawData>(null, "CHS", {
+      id: 1116, // 丝柯克
+      skills: [
+        {
+          id: 11162,
+          rawDescription: (before: string) =>
+            before.replaceAll(
+              "蛇之狡谋",
+              "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>"
+            ),
+        },
+        {
+          id: 11163,
+          rawDescription: (before: string) =>
+            before
+              .replaceAll(
+                "蛇之狡谋",
+                "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>"
+              )
+              .replaceAll(
+                "战意",
+                "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>"
+              )
+              .replaceAll("的穿透伤害", "$[K5]")
+        },
+        {
+          id: 11164,
+          rawDescription: (before: string) =>
+            before
+              .replaceAll(
+                "蛇之狡谋",
+                "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>"
+              )
+              .replaceAll("充能", "$[K310]").replaceAll("冰扩散", "冰元素扩散").replaceAll("冰结晶", "冰元素结晶"),
+        },
+      ],
+    }),
+    defineOverride<CharacterRawData>(null, "CHS", {
+      id: 6605,
+      skills: [
+        {
+          id: 11165,
+          rawDescription: (before: string) =>
+            before.replaceAll(
+              "蛇之狡谋",
+              "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>"
+            ),
+        },
+      ],
+    }),
+    defineOverride<CharacterRawData>(null, "CHS", {
+      id: 1416, // 欧洛伦
+      skills: [
+        {
+          id: 14162, 
+          rawDescription: (before) =>
+            before.replaceAll("。\\n<color=#FFFFFFFF>行动阶段开始时：</color>造成1点$[D__KEY__ELEMENT]", "，生成$[C114162]"),
         },
       ],
     }),
@@ -677,6 +748,14 @@ export const overrideData: OverrideData<AllRawData> = {
     defineOverride<EntityRawData>(null, null, {
       id: 113163, // 嘉明 踏云献瑞 弃用的准备技能 干扰出图 ###可能会在未来修复###
       tags: [],
+    }),
+    defineOverride<EntityRawData>(null, "CHS", {
+      id: 111162,
+      rawDescription: (before: string) =>
+        before.replaceAll(
+          "蛇之狡谋",
+          "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>"
+        ),
     }),
   ],
   actionCards: [
@@ -689,7 +768,23 @@ export const overrideData: OverrideData<AllRawData> = {
       rawDescription: (before) =>
         before.replace(
           "<color=#FFFFFFFF>冒险经历达到7时</color>：",
-          "<color=#FFFFFFFF>冒险经历达到7时：</color>",
+          "<color=#FFFFFFFF>冒险经历达到7时：</color>"
+        ),
+    }),
+    defineOverride<ActionCardRawData>(null, "CHS", {
+      id: 111161,
+      rawDescription: (before) =>
+        before.replaceAll(
+          "蛇之狡谋",
+          "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>"
+        ),
+    }),
+    defineOverride<ActionCardRawData>(null, "CHS", {
+      id: 111163,
+      rawDescription: (before) =>
+        before.replaceAll(
+          "蛇之狡谋",
+          "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>"
         ),
     }),
   ],
