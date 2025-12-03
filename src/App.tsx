@@ -123,8 +123,8 @@ export const App = () => {
   const initialFormValue = getInitialFormValue();
   const [loading, setLoading] = createSignal(false);
   const remoteFetched = {
-    version: INITIAL_FORM_VALUE.general.version,
-    language: INITIAL_FORM_VALUE.general.language,
+    version: initialFormValue.general.version,
+    language: initialFormValue.general.language,
     data: null as AllRawData | null,
   };
   const onSubmitForm = async (newFormValue: FormValue) => {
