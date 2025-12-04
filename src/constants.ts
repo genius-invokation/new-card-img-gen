@@ -625,7 +625,7 @@ export const overrideData: OverrideData<AllRawData> = {
           rawDescription: (before) =>
             before.replaceAll(
               "战意",
-              "<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>"
+              "<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>",
             ),
         },
         {
@@ -635,7 +635,7 @@ export const overrideData: OverrideData<AllRawData> = {
               .replaceAll("<color=#FFFFFFFF>充能</color>", "$[K310]")
               .replaceAll(
                 "战意",
-                "<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>"
+                "<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>",
               ),
         },
       ],
@@ -648,7 +648,7 @@ export const overrideData: OverrideData<AllRawData> = {
           rawDescription: (before: string) =>
             before.replaceAll(
               "Fighting Spirit",
-              "<color=#D8B456FF>{SPRITE_PRESET#4008}Fighting Spirit</color>"
+              "<color=#D8B456FF>{SPRITE_PRESET#4008}Fighting Spirit</color>",
             ),
         },
         {
@@ -658,7 +658,7 @@ export const overrideData: OverrideData<AllRawData> = {
               .replaceAll("<color=#FFFFFFFF>Energy</color>", "$[K310]")
               .replaceAll(
                 "Fighting Spirit",
-                "<color=#D8B456FF>{SPRITE_PRESET#4008}Fighting Spirit</color>"
+                "<color=#D8B456FF>{SPRITE_PRESET#4008}Fighting Spirit</color>",
               ),
         },
       ],
@@ -691,7 +691,7 @@ export const overrideData: OverrideData<AllRawData> = {
           rawDescription: (before: string) =>
             before.replaceAll(
               "蛇之狡谋",
-              "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>"
+              "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>",
             ),
         },
         {
@@ -700,13 +700,13 @@ export const overrideData: OverrideData<AllRawData> = {
             before
               .replaceAll(
                 "蛇之狡谋",
-                "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>"
+                "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>",
               )
               .replaceAll(
                 "战意",
-                "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>"
+                "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>",
               )
-              .replaceAll("的穿透伤害", "$[K5]")
+              .replaceAll("的穿透伤害", "$[K5]"),
         },
         {
           id: 11164,
@@ -714,9 +714,36 @@ export const overrideData: OverrideData<AllRawData> = {
             before
               .replaceAll(
                 "蛇之狡谋",
-                "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>"
+                "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>",
               )
-              .replaceAll("充能", "$[K310]").replaceAll("冰扩散", "冰元素扩散").replaceAll("冰结晶", "冰元素结晶"),
+              .replaceAll("充能", "$[K310]")
+              .replaceAll("冰扩散", "冰元素扩散")
+              .replaceAll("冰结晶", "冰元素结晶"),
+        },
+      ],
+    }),
+    defineOverride<CharacterRawData>(null, "EN", {
+      id: 1116,
+      skills: [
+        {
+          id: 11162,
+          rawDescription: `Gain 2 points of <color=#543BA7FF>{SPRITE_PRESET#4009}Serpent's Subtlety</color>, and create 1 <color=#FFFFFFFF>$[K1045]</color> to your Hand. (Once per round)`,
+        },
+        {
+          id: 11163,
+          rawDescription: `Consume all <color=#543BA7FF>{SPRITE_PRESET#4009}Serpent's Subtlety</color> to deal $[D__KEY__ELEMENT] equal to the amount consumed to the opposing active character, and 2 $[K5] to all opposing standby characters. If 7 points are consumed, instead deal 2 $[D__KEY__ELEMENT].`,
+        },
+        {
+          id: 11164,
+          rawDescription: (before) =>
+            before
+              .replaceAll(
+                `Serpent's Subtlety`,
+                `<color=#543BA7FF>{SPRITE_PRESET#4009}Serpent's Subtlety</color>`,
+              )
+              .replaceAll(`Energy`, `$[K310]`)
+              .replaceAll("Cryo Swirl", "Cryo-infused Swirl")
+              .replaceAll(`Void Rift`, `$[K1047]`),
         },
       ],
     }),
@@ -728,8 +755,23 @@ export const overrideData: OverrideData<AllRawData> = {
           rawDescription: (before: string) =>
             before.replaceAll(
               "蛇之狡谋",
-              "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>"
+              "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>",
             ),
+        },
+      ],
+    }),
+    defineOverride<CharacterRawData>(null, "EN", {
+      id: 6605,
+      skills: [
+        {
+          id: 11165,
+          rawDescription: (before) =>
+            before
+              .replace(`Discard`, `$[K56]`)
+              .replace(
+                `1 Serpent's Subtlety`,
+                `1 point of <color=#543BA7FF>{SPRITE_PRESET#4009}Serpent's Subtlety</color>`,
+              ),
         },
       ],
     }),
@@ -737,12 +779,28 @@ export const overrideData: OverrideData<AllRawData> = {
       id: 1416, // 欧洛伦
       skills: [
         {
-          id: 14162, 
+          id: 14162,
           rawDescription: (before) =>
-            before.replaceAll("。\\n<color=#FFFFFFFF>行动阶段开始时：</color>造成1点$[D__KEY__ELEMENT]", "，生成$[C114162]"),
+            before.replaceAll(
+              "。\\n<color=#FFFFFFFF>行动阶段开始时：</color>造成1点$[D__KEY__ELEMENT]",
+              "，生成$[C114162]",
+            ),
         },
       ],
     }),
+    defineOverride<CharacterRawData>(null, "EN", {
+      id: 2207,
+      skills: [
+        {
+          id: 22072,
+          rawDescription: `Deals $[D__KEY__DAMAGE] $[D__KEY__ELEMENT], then put up to 1 card with the highest original Elemental Dice cost from your hand to the bottom of your deck, and create 1 <color=#FFFFFFFF>$[C124051]</color> into your Hand.`
+        },
+        {
+          id: 22074,
+          rawDescription: `(Passive) When you play or $[K56] <color=#FFFFFFFF>$[C124051]</color>: heal your most injured character for 1 HP.`
+        }
+      ]
+    })
   ],
   entities: [
     defineOverride<EntityRawData>(null, null, {
@@ -754,9 +812,21 @@ export const overrideData: OverrideData<AllRawData> = {
       rawDescription: (before: string) =>
         before.replaceAll(
           "蛇之狡谋",
-          "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>"
+          "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>",
         ),
     }),
+    defineOverride<EntityRawData>(null, "EN", {
+      id: 111162,
+      rawDescription: (before: string) =>
+        before.replace(
+          `1 Serpent's Subtlety`,
+          `1 point of <color=#543BA7FF>{SPRITE_PRESET#4009}Serpent's Subtlety</color>`,
+        ),
+    }),
+    defineOverride<EntityRawData>(null, "EN", {
+      id: 301041,
+      rawDescription: (before) => before.replace(`deal 5 $[K5]`, `deal 5 $[K5] to the character with the lowest HP (including yours)`)
+    })
   ],
   actionCards: [
     defineOverride<ActionCardRawData>(null, null, {
@@ -768,7 +838,7 @@ export const overrideData: OverrideData<AllRawData> = {
       rawDescription: (before) =>
         before.replace(
           "<color=#FFFFFFFF>冒险经历达到7时</color>：",
-          "<color=#FFFFFFFF>冒险经历达到7时：</color>"
+          "<color=#FFFFFFFF>冒险经历达到7时：</color>",
         ),
     }),
     defineOverride<ActionCardRawData>(null, "CHS", {
@@ -776,7 +846,7 @@ export const overrideData: OverrideData<AllRawData> = {
       rawDescription: (before) =>
         before.replaceAll(
           "蛇之狡谋",
-          "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>"
+          "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>",
         ),
     }),
     defineOverride<ActionCardRawData>(null, "CHS", {
@@ -784,8 +854,35 @@ export const overrideData: OverrideData<AllRawData> = {
       rawDescription: (before) =>
         before.replaceAll(
           "蛇之狡谋",
-          "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>"
+          "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>",
         ),
     }),
+    defineOverride<ActionCardRawData>(null, "EN", {
+      id: 111163,
+      rawDescription: `Discard 1 card with an original Elemental Dice cost of 3, Skirk gains 2 point of <color=#543BA7FF>{SPRITE_PRESET#4009}Serpent's Subtlety</color>`,
+    }),
+    defineOverride<ActionCardRawData>(null, "EN", {
+      id: 211161,
+      rawDescription: (before) => `$[K2]: Equip to your <color=#FFFFFFFF>$[A1116]</color>.\\n` + before,
+    }),
+    defineOverride<ActionCardRawData>(null, "EN", {
+      id: 311310,
+      rawDescription: `<color=#FFFFFFFF>When the character to which this is attached triggers an Elemental Reaction:</color> Deal +1 DMG.\\n<color=#FFFFFFFF>After you triggers an Elemental Reaction:</color> gain 1 <color=#FFFFFFFF>Blooming Thoughts
+</color>, when <color=#FFFFFFFF>Blooming Thoughts
+</color> is not less then 2, consume 2 <color=#FFFFFFFF>Blooming Thoughts
+</color> and the character to which this is attached gains 1 $[K310].`
+    }),
+    defineOverride<ActionCardRawData>(null, "EN", {
+      id: 321034,
+      rawDescription: (before) => before.replace(`$[K1048]`, `<color=#FFFFFFFF>Battle Plan</color> (The character to which this is attached uses 1 fewer Elemental Die when using their Skill next time. (Can stack, no stack limit))`).replace(`$[K1049]`, `$[C301041]`)
+    }),
+    defineOverride<ActionCardRawData>(null, "EN", {
+      id: 322032,
+      rawDescription: (before) => before.replace(`When one of your Summons enters or leaves the field:`, `After you use a {SPRITE_PRESET#3008}Technique:`)
+    }),
+    defineOverride<ActionCardRawData>(null, "EN", {
+      id: 332053,
+      rawDescription: `${''}Select a card from your Support Zone and discard it. After that, add 1 to number of effects and $[K3] of all your $[K1035].`
+    })
   ],
 };
