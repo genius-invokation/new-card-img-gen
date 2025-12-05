@@ -765,11 +765,7 @@ export const overrideData: OverrideData<AllRawData> = {
     }),
     defineOverride<ActionCardRawData>(null, "CHS", {
       id: 321032, // 沉玉谷 修正一处标点样式 ###可能会在未来修复###
-      rawDescription: (before) =>
-        before.replace(
-          "<color=#FFFFFFFF>冒险经历达到7时</color>：",
-          "<color=#FFFFFFFF>冒险经历达到7时：</color>"
-        ),
+      rawDescription: (before) => before.replace("</color>：", "：</color>"),
     }),
     defineOverride<ActionCardRawData>(null, "CHS", {
       id: 111161,
