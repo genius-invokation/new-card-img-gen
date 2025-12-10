@@ -614,52 +614,46 @@ export const ADVENTURE_PLACE_ADDITIONAL_DESC: Record<Language, string> = {
   EN: `(You cannot add {SPRITE_PRESET#3901}$[K66] Spot to your deck)`,
 };
 
+export function delicateFightingSpirit(before: string) {
+  return before
+    .replaceAll(
+      "战意",
+      "<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>",
+    )
+    .replaceAll(
+      "Fighting Spirit",
+      "<color=#D8B456FF>{SPRITE_PRESET#4008}Fighting Spirit</color>",
+    );
+}
+
+export function delicateSerpentsSubtlety(before: string) {
+  return before
+    .replaceAll(
+      "蛇之狡谋",
+      "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>",
+    )
+    .replaceAll(
+      "Serpent's Subtlety",
+      "<color=#543BA7FF>{SPRITE_PRESET#4009}Serpent's Subtlety</color>",
+    );
+}
+
 // 覆盖数据 - 用于部分更新现有数据
 export const overrideData: OverrideData<AllRawData> = {
   characters: [
-    defineOverride<CharacterRawData>(null, "CHS", {
+    defineOverride<CharacterRawData>(null, null, {
       id: 1315, // 玛薇卡
       skills: [
         {
-          id: 13153, // 玛薇卡 Q 技能描述增加战意图标 ###非官方###
-          rawDescription: (before) =>
-            before.replaceAll(
-              "战意",
-              "<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>"
-            ),
+          id: 13153, // 玛薇卡 Q 增加战意图标 ###非官方###
+          rawDescription: delicateFightingSpirit,
         },
         {
-          id: 13154, // 玛薇卡 P 技能描述增加战意图标 ###非官方###
-          rawDescription: (before) =>
-            before
-              .replaceAll("<color=#FFFFFFFF>充能</color>", "$[K310]")
-              .replaceAll(
-                "战意",
-                "<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>"
-              ),
-        },
-      ],
-    }),
-    defineOverride<CharacterRawData>(null, "EN", {
-      id: 1315, // 玛薇卡
-      skills: [
-        {
-          id: 13153,
+          id: 13154, // 玛薇卡 P 增加战意图标 ###非官方###
           rawDescription: (before: string) =>
-            before.replaceAll(
-              "Fighting Spirit",
-              "<color=#D8B456FF>{SPRITE_PRESET#4008}Fighting Spirit</color>"
-            ),
-        },
-        {
-          id: 13154,
-          rawDescription: (before: string) =>
-            before
-              .replaceAll("<color=#FFFFFFFF>Energy</color>", "$[K310]")
-              .replaceAll(
-                "Fighting Spirit",
-                "<color=#D8B456FF>{SPRITE_PRESET#4008}Fighting Spirit</color>"
-              ),
+            delicateFightingSpirit(before)
+              .replace("<color=#FFFFFFFF>充能</color>", "$[K310]")
+              .replace("<color=#FFFFFFFF>Energy</color>", "$[K310]"),
         },
       ],
     }),
@@ -669,7 +663,7 @@ export const overrideData: OverrideData<AllRawData> = {
         {
           id: 13164, // 嘉明 踏云献瑞 keyword描述与skill描述不同 ###可能会在未来修复###
           rawDescription: (before) =>
-            before.replaceAll("。", "，此技能视为$[K52]。"),
+            before.replace("。", "，此技能视为$[K52]。"),
         },
       ],
     }),
@@ -683,63 +677,32 @@ export const overrideData: OverrideData<AllRawData> = {
         },
       ],
     }),
-    defineOverride<CharacterRawData>(null, "CHS", {
+    defineOverride<CharacterRawData>(null, null, {
       id: 1116, // 丝柯克
       skills: [
         {
-          id: 11162,
-          rawDescription: (before: string) =>
-            before.replaceAll(
-              "蛇之狡谋",
-              "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>"
-            ),
+          id: 11162, // 丝柯克 E 增加蛇之狡谋图标 ###非官方###
+          rawDescription: delicateSerpentsSubtlety,
         },
         {
-          id: 11163,
-          rawDescription: (before: string) =>
-            before
-              .replaceAll(
-                "蛇之狡谋",
-                "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>"
-              )
-              .replaceAll(
-                "战意",
-                "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>"
-              )
-              .replaceAll("的穿透伤害", "$[K5]")
+          id: 11163, // 丝柯克 Q 增加蛇之狡谋图标 ###非官方###
+          rawDescription: delicateSerpentsSubtlety,
         },
         {
-          id: 11164,
+          id: 11164, // 丝柯克 P 增加蛇之狡谋图标 ###非官方###
           rawDescription: (before: string) =>
-            before
-              .replaceAll(
-                "蛇之狡谋",
-                "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>"
-              )
-              .replaceAll("充能", "$[K310]").replaceAll("冰扩散", "冰元素扩散").replaceAll("冰结晶", "冰元素结晶"),
+            delicateSerpentsSubtlety(before)
+              .replace("充能", "$[K310]")
+              .replace("Energy", "$[K310]"),
         },
       ],
     }),
-    defineOverride<CharacterRawData>(null, "CHS", {
-      id: 6605,
+    defineOverride<CharacterRawData>(null, null, {
+      id: 6605, // 丝柯克 翻面
       skills: [
         {
-          id: 11165,
-          rawDescription: (before: string) =>
-            before.replaceAll(
-              "蛇之狡谋",
-              "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>"
-            ),
-        },
-      ],
-    }),
-    defineOverride<CharacterRawData>(null, "CHS", {
-      id: 1416, // 欧洛伦
-      skills: [
-        {
-          id: 14162, 
-          rawDescription: (before) =>
-            before.replaceAll("。\\n<color=#FFFFFFFF>行动阶段开始时：</color>造成1点$[D__KEY__ELEMENT]", "，生成$[C114162]"),
+          id: 11165, // 丝柯克 Q 增加蛇之狡谋图标 ###非官方###
+          rawDescription: delicateSerpentsSubtlety,
         },
       ],
     }),
@@ -749,39 +712,31 @@ export const overrideData: OverrideData<AllRawData> = {
       id: 113163, // 嘉明 踏云献瑞 弃用的准备技能 干扰出图 ###可能会在未来修复###
       tags: [],
     }),
-    defineOverride<EntityRawData>(null, "CHS", {
-      id: 111162,
-      rawDescription: (before: string) =>
-        before.replaceAll(
-          "蛇之狡谋",
-          "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>"
-        ),
+    defineOverride<EntityRawData>(null, null, {
+      id: 114142, // 伊安珊 动能标示 修复引用错误 ###可能会在未来修复###
+      rawDescription: (before) => before.replace("$[C113151]", "$[C114141]"),
+    }),
+    defineOverride<EntityRawData>(null, null, {
+      id: 111162, // 丝柯克 七相一闪 增加蛇之狡谋图标 ###非官方###
+      rawDescription: delicateSerpentsSubtlety,
     }),
   ],
   actionCards: [
     defineOverride<ActionCardRawData>(null, null, {
-      id: 212111, // 芙宁娜天赋 id纠错
+      id: 212111, // 芙宁娜天赋 修复引用错误
       rawDescription: (before) => before.replace("$[S12123]", "$[S12112]"),
     }),
     defineOverride<ActionCardRawData>(null, "CHS", {
       id: 321032, // 沉玉谷 修正一处标点样式 ###可能会在未来修复###
       rawDescription: (before) => before.replace("</color>：", "：</color>"),
     }),
-    defineOverride<ActionCardRawData>(null, "CHS", {
-      id: 111161,
-      rawDescription: (before) =>
-        before.replaceAll(
-          "蛇之狡谋",
-          "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>"
-        ),
+    defineOverride<ActionCardRawData>(null, null, {
+      id: 111161, // 丝柯克 诸武相授 增加蛇之狡谋图标 ###非官方###
+      rawDescription: delicateSerpentsSubtlety,
     }),
-    defineOverride<ActionCardRawData>(null, "CHS", {
-      id: 111163,
-      rawDescription: (before) =>
-        before.replaceAll(
-          "蛇之狡谋",
-          "<color=#543BA7FF>{SPRITE_PRESET#4009}蛇之狡谋</color>"
-        ),
+    defineOverride<ActionCardRawData>(null, null, {
+      id: 111163, // 丝柯克 虚境裂隙 增加蛇之狡谋图标 ###非官方###
+      rawDescription: delicateSerpentsSubtlety,
     }),
   ],
 };
