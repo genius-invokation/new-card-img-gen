@@ -21,7 +21,7 @@ import { Text } from "./Text";
 import "./Children.css";
 
 export const Children = (props: { children: ParsedChild[] }) => {
-  const { displayId } = useGlobalSettings();
+  const { displayId, language } = useGlobalSettings();
   const renderContext = useRenderContext();
 
   return (
@@ -90,7 +90,10 @@ export const Children = (props: { children: ParsedChild[] }) => {
                     }
                   />
                 </Show>
-                <div class={`keyword-description`}>
+                <div 
+                  class={`keyword-description`}
+                  data-justify={["CHS", "CHT"].includes(language())}
+                >
                   <Description
                     description={
                       (child as ParsedActionCard | ParsedEntity | ParsedKeyword)

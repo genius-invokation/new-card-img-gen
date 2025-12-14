@@ -127,3 +127,11 @@
   text-align: justify;
   text-indent: 0;
 }
+
+.action-card .keyword-description {
+  text-align: left;
+}
+
+.action-card .keyword-description[data-justify="true"] {
+  text-align: justify;
+}
