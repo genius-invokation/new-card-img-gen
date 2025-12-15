@@ -9,7 +9,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: genius-invokation/card-img-renderer
+  IMAGE_NAME: piovium/card-img-renderer
 
 jobs:
   build-and-push-image:
