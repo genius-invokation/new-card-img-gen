@@ -2,7 +2,7 @@
   display: flex;
 }
 
-.action-card:first-child {
+.action-card:first-of-type {
   margin-top: 10rem;
 }
 
