@@ -29,7 +29,7 @@
   text-indent: 0;
 }
 
-.dashed-line {
+.balance-adjustment .dashed-line {
   border-top: solid 2px black;
   border-image-source: repeating-linear-gradient(
     to right,
