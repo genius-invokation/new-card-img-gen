@@ -98,13 +98,19 @@ const parseAdjustmentText = (text: string): JSX.Element[] => {
 
   if (currentIndex < text.length) {
     parts.push(
-      <span class="record-text-light">{text.substring(currentIndex)}</span>,
+      <span class="record-text-light">
+        <Text text={text.substring(currentIndex)} />
+      </span>,
     );
   }
 
   return parts.length > 0
     ? parts
-    : [<span class="record-text-light">{text}</span>];
+    : [
+        <span class="record-text-light">
+          <Text text={text} />
+        </span>
+      ];
 };
 
 interface AdjustmentRecordProps {
@@ -149,7 +155,9 @@ const AdjustmentRecord = (props: AdjustmentRecordProps) => {
 
   return (
     <div class="adjustment-record">
-      <div class="record-title">{title()}</div>
+      <div class="record-title">
+        <Text text={title()} />
+      </div>
       <Show
         when={isInline()}
         fallback={
