@@ -176,7 +176,7 @@ export const TYPE_TAG_TEXT_MAP: Record<Language, Record<string, string>> = {
     GCG_TAG_NATION_NATLAN: "纳塔",
     GCG_TAG_NATION_SNEZHNAYA: "至冬",
     GCG_TAG_NATION_COSMIC_CALAMITY: "寰宇劫灭",
-    GCG_TAG_CAMP_ERIMITE: "镀金旅团",
+    GCG_TAG_CAMP_EREMITE: "镀金旅团",
     GCG_TAG_CAMP_FATUI: "愚人众",
     GCG_TAG_CAMP_MONSTER: "魔物",
     GCG_TAG_CAMP_SACREAD: "圣骸兽",
@@ -239,7 +239,7 @@ export const TYPE_TAG_TEXT_MAP: Record<Language, Record<string, string>> = {
     GCG_TAG_NATION_NATLAN: "Natlan",
     GCG_TAG_NATION_SNEZHNAYA: "Snezhnaya",
     GCG_TAG_NATION_COSMIC_CALAMITY: "Cosmic Calamity",
-    GCG_TAG_CAMP_ERIMITE: "The Eremites",
+    GCG_TAG_CAMP_EREMITE: "The Eremites",
     GCG_TAG_CAMP_FATUI: "Fatui",
     GCG_TAG_CAMP_MONSTER: "Monster",
     GCG_TAG_CAMP_SACREAD: "Sacread",
@@ -298,7 +298,7 @@ export const TYPE_TAG_IMG_NAME_MAP: Record<string, string> = {
   GCG_TAG_NATION_NATLAN: "Faction_Natlan",
   GCG_TAG_NATION_SNEZHNAYA: "Faction_Snezhnaya",
   GCG_TAG_NATION_COSMIC_CALAMITY: "Faction_CosmicCalamity",
-  GCG_TAG_CAMP_ERIMITE: "Faction_Erimite",
+  GCG_TAG_CAMP_EREMITE: "Faction_Eremite",
   GCG_TAG_CAMP_FATUI: "Faction_Fatui",
   GCG_TAG_CAMP_MONSTER: "Faction_Monster",
   GCG_TAG_CAMP_SACREAD: "Faction_Sacred",
@@ -454,7 +454,7 @@ export const DESCRIPTION_ICON_IMAGES = {
   3504: { tagIcon: "GCG_TAG_ARKHE_PNEUMA" },
   3505: { tagIcon: "GCG_TAG_ARKHE_OUSIA" },
   // ?: { tagIcon: "GCG_TAG_CAMP_SACREAD" },
-  // ?: { tagIcon: "GCG_TAG_CAMP_ERIMITE" },
+  // ?: { tagIcon: "GCG_TAG_CAMP_EREMITE" },
   3901: { tagIcon: "GCG_TAG_ADVENTURE_PLACE" }, //  ###非官方###
 } as Record<number, { imageUrl?: string; tagIcon?: string }>;
 
