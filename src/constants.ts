@@ -607,6 +607,10 @@ export const VERSION_REPLACE_STRS: Record<string, Record<Language, string>> = {
     CHS: "「月之四」",
     EN: "Luna IV",
   },
+  "6.4": {
+    CHS: "「月之五」",
+    EN: "Luna V",
+  },
 };
 
 export const ADVENTURE_PLACE_ADDITIONAL_DESC: Record<Language, string> = {
